@@ -18,7 +18,7 @@ async def analyze_command(hikari: Hikari) -> Hikari:
     try:
         if hikari.Status == 'init':  # 状态为init时才解析
             if not hikari.Input.Command_Text:
-                return hikari.success("请发送wws help查看帮助")
+                return hikari.error("请发送wws help查看帮助")
             hikari.Input.Command_Text = html.unescape(
                 str(hikari.Input.Command_Text)).strip()
             hikari = await extract_with_special_name(hikari)

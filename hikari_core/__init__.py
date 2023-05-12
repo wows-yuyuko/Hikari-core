@@ -44,18 +44,22 @@ async def init_hikari(
         hikari = Hikari(UserInfo=userinfo,
                         Input=input, Output=output)
         hikari = await analyze_command(hikari)
-        hikari: Hikari = await hikari.Function(hikari)
+        if not hikari.Status == "error" and hikari.Function:
+            hikari: Hikari = await hikari.Function(hikari)
+            if hikari.Output.Data_Type == '''<class 'str'>''':
+                logger.info(hikari.Output.Data)
+                return hikari
+            else:
+                if hikari_config.auto_rendering:
+                    template = env.get_template(hikari.Output.Template)
+                    template_data = await set_render_params(hikari.Output.Data)
+                    content = await template.render_async(template_data)
+                    hikari.success(
+                        await html_to_pic(content, wait=0, viewport={"width": hikari.Output.Width, "height": hikari.Output.Height}, use_browser=hikari_config.use_browser))
+                logger.info(hikari.Output.Data_Type)
         if hikari.Output.Data_Type == '''<class 'str'>''':
-            return hikari
-        else:
-            if hikari_config.auto_rendering:
-                template = env.get_template(hikari.Output.Template)
-                template_data = await set_render_params(hikari.Output.Data)
-                content = await template.render_async(template_data)
-                hikari.success(
-                    await html_to_pic(content, wait=0, viewport={"width": hikari.Output.Width, "height": hikari.Output.Height}, use_browser=hikari_config.use_browser))
-            logger.info(hikari.Output.Data_Type)
-            return hikari
+            logger.info(hikari.Output.Data)
+        return hikari
     except Exception:
         logger.error(traceback.format_exc())
         return hikari.error("解析指令时发生错误，请确认输入参数无误")
