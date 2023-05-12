@@ -9,7 +9,7 @@ from loguru import logger
 
 from .data_source import template_path
 from .model import Hikari, Input, Output, Ship, UserInfo
-from .analysis import analysis_command
+from .analyze import analyze_command
 
 
 def startup():
@@ -36,7 +36,7 @@ async def init_hikari(platform: str, PlatformId: str, command_text: str) -> Hika
     output_data = Output()
     Hikari_data = Hikari(UserInfo=userinfo_data,
                          Input=input_data, Output=output_data)
-    Hikari_data = analysis_command(Hikari_data)
+    Hikari_data = analyze_command(Hikari_data)
     return Hikari_data
 
 
