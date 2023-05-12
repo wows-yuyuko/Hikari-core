@@ -20,13 +20,16 @@ class Ship(BaseModel):
 
 
 class Input(BaseModel):
-    Command_Text: Optional[str]  # 输入的指令,可带wws
-    Search_Type: Optional[int]  # 1:me  2:@  3:server+name
+    Command_Text: Optional[str]  # 输入的指令,请提前去除wws
+    Command_List: Optional[List]
+    Search_Type: Optional[int] = 3  # 1:me  2:@  3:server+name or default
+    Platform: Optional[str]
+    PlatformId: Optional[str]
     Server: Optional[str]
     AccountName: Optional[str]
     AccountId: Optional[int]
     ClanName: Optional[str]
-    Recent_Day: int = Field(1, gt=0, description="recent向前查找天数")
+    Recent_Day: Optional[int] = 0
     Recent_Date: Optional[date]
     Select_Index: Optional[int]
     Select_Data: Optional[List]
@@ -37,6 +40,7 @@ class Output(BaseModel):
     Yuyuko_Code: Optional[int]
     Data_Type: str = Field("str", description="返回的类型")
     Data: Union[str, int, bytes] = Field("初始化", description="返回的数据")
+    Template: Optional[str]
 
 
 class Hikari(BaseModel):
@@ -49,8 +53,19 @@ class Hikari(BaseModel):
     class Config:
         arbitrary_types_allowed = True
 
+    def error(self, error_data):
+        self.Status = "error"
+        self.Output.Data = error_data
+        self.Output.Data_Type = str(type(error_data))
+        return self
 
-#async def init_hikari(platform: str, PlatformId: str, command_text: str) -> Hikari:
+    def success(self, success_data):
+        self.Status = "success"
+        self.Output.Data = success_data
+        self.Output.Data_Type = str(type(success_data))
+        return self
+
+# async def init_hikari(platform: str, PlatformId: str, command_text: str) -> Hikari:
 #    userinfo_data = UserInfo(Platform=platform, PlatformId=PlatformId)
 #    ship_data = Ship()
 #    input_data = Input(Command_Text=command_text, ShipInfo=ship_data)

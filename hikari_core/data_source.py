@@ -6,6 +6,7 @@ from typing import Tuple
 
 dir_path = Path(__file__).parent
 template_path = dir_path / "Template"
+yuyuko_url = "https://api.wows.shinoaki.com"
 
 
 @dataclass

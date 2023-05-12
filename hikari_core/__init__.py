@@ -1,45 +1,57 @@
-import asyncio
 import os
 import time
-import traceback
 
-import httpx
-import orjson
 from loguru import logger
 
+from .analyze import analyze_command
 from .data_source import template_path
 from .model import Hikari, Input, Output, Ship, UserInfo
-from .analyze import analyze_command
+from .utils import startup
 
 
-def startup():
-    try:
-        url = "https://benx1n.oss-cn-beijing.aliyuncs.com/template_Hikari_Latest/template.json"
-        with httpx.Client() as client:
-            resp = client.get(url, timeout=20)
-            result = orjson.loads(resp.content)
-            for each in result:
-                for name, url in each.items():
-                    resp = client.get(url, timeout=20)
-                    with open(template_path / name, "wb+") as file:
-                        file.write(resp.content)
-        print(f"success {time.time()}")
-    except Exception:
-        logger.error(traceback.format_exc())
-        return
-
-
-async def init_hikari(platform: str, PlatformId: str, command_text: str) -> Hikari:
+async def init_hikari(
+    platform: str,
+    PlatformId: str,
+    command_text: str = None,
+    proxy: str = None,
+    auto_rendering: bool = True,
+    auto_image: bool = True
+) -> Hikari:
     userinfo_data = UserInfo(Platform=platform, PlatformId=PlatformId)
     ship_data = Ship()
     input_data = Input(Command_Text=command_text, ShipInfo=ship_data)
     output_data = Output()
-    Hikari_data = Hikari(UserInfo=userinfo_data,
+    hikari_data = Hikari(UserInfo=userinfo_data,
                          Input=input_data, Output=output_data)
-    Hikari_data = analyze_command(Hikari_data)
-    return Hikari_data
+    hikari_data = await analyze_command(hikari_data)
+    logger.info(hikari_data.dict())
+    return hikari_data
 
 
 mtime = os.path.getmtime(template_path/"wws-info.html")
 if time.time()-mtime > 86400:
     startup()
+logger.add(
+    "hikari-core-logs/error.log",
+    rotation="00:00",
+    retention="1 week",
+    diagnose=False,
+    level="ERROR",
+    encoding="utf-8",
+)
+logger.add(
+    "hikari-core-logs/info.log",
+    rotation="00:00",
+    retention="1 week",
+    diagnose=False,
+    level="INFO",
+    encoding="utf-8",
+)
+logger.add(
+    "hikari-core-logs/warning.log",
+    rotation="00:00",
+    retention="1 week",
+    diagnose=False,
+    level="WARNING",
+    encoding="utf-8",
+)

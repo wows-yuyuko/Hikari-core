@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Protocol, Tuple,runtime_checkable
+from typing import Protocol, Tuple, runtime_checkable, List
 
 # from .game.ban_search import get_BanInfo
 # from .game.box_check import check_christmas_box
@@ -16,6 +16,7 @@ from .moudle.wws_recent import get_RecentInfo
 # from .moudle.wws_record import get_record
 # from .moudle.wws_ship import get_ShipInfo, get_ShipInfoRecent
 # from .moudle.wws_shiprank import get_ShipRank
+
 
 @runtime_checkable
 class Func(Protocol):
@@ -57,7 +58,7 @@ second_command_list = [
 ]
 
 
-async def findFunction_and_replaceKeywords(match_list, command_List, default_func):
+async def findFunction_and_replaceKeywords(match_list, command_List, default_func) -> Tuple[command, List]:
     for com in command_List:
         for kw in com.keywords:
             for i, match_kw in enumerate(match_list):
@@ -69,7 +70,7 @@ async def findFunction_and_replaceKeywords(match_list, command_List, default_fun
     return command(None, default_func, None), match_list
 
 
-async def select_command(search_list):
+async def select_command(search_list) -> Tuple[Func, List]:
     command, search_list = await findFunction_and_replaceKeywords(
         search_list, first_command_list, get_AccountInfo
     )
