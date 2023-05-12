@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "hikari-core"
+version = "0.1.0"
+description = ""
+authors = ["benx1n <1119809439@qq.com>"]
+readme = "README.md"
+packages = [{include = "hikari_core"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
