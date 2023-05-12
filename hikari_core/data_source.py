@@ -9,6 +9,37 @@ template_path = dir_path / "Template"
 yuyuko_url = "https://api.wows.shinoaki.com"
 
 
+class config:
+    proxy: str = None
+    http2: bool = True
+    token: str = None
+    auto_rendering: bool = True
+    use_browser: str = "chromium"
+
+
+hikari_config = config()
+
+
+async def set_config(proxy: str = None, http2: bool = True, token: str = None, auto_rendering: bool = True, use_browser: str = "chromium"):
+    """配置Hikari-core
+
+    Args:
+        proxy (str): 访问WG使用的代理，格式http://localhost:7890
+        http2 (bool): 是否开启http2，默认启用
+        token (str): #请加群联系雨季获取api_key和token Q群:967546463
+        auto_rendering (bool): 是否自动渲染图片，默认启用
+        use_broswer (str): chromium/firefox，默认chromium
+
+    Returns:
+        Hikari: 可通过Hikari.Output.Data内数据判断是否输出
+    """
+    hikari_config.proxy = proxy
+    hikari_config.http2 = http2
+    hikari_config.token = token
+    hikari_config.auto_rendering = auto_rendering
+    hikari_config.use_browser = use_browser
+
+
 @dataclass
 class matching:
     keywords: Tuple[str, ...]
@@ -171,43 +202,9 @@ color_data = {
 }
 
 
-async def set_infoparams(List):
+async def set_render_params(List):
     try:
         result = {"template_path": template_path, "data": List}
-        return result
-    except Exception:
-        traceback.print_exc()
-
-
-async def set_recentparams(List):
-    try:
-        result = {"data": List}
-        return result
-    except Exception:
-        traceback.print_exc()
-
-
-async def set_shipSelectparams(List):
-    try:
-        result = {"data": List}
-        return result
-    except Exception:
-        traceback.print_exc()
-
-
-async def set_shipparams(List):
-    try:
-        result = {"data": List}
-        return result
-    except Exception:
-        traceback.print_exc()
-
-
-async def set_shipRecentparams(List):
-    try:
-        result = {
-            "data": List,
-        }
         return result
     except Exception:
         traceback.print_exc()

@@ -1,10 +1,13 @@
 from datetime import date
-from typing import List, Optional, Union
+from typing import List, Optional, Protocol, Union, runtime_checkable
 
 from pydantic import BaseModel, Field
 
-from .command_select import Func
 
+@runtime_checkable
+class Func(Protocol):
+    async def __call__(self, **kwargs):
+        ...
 
 class UserInfo(BaseModel):
     Platform: str
@@ -41,6 +44,8 @@ class Output(BaseModel):
     Data_Type: str = Field("str", description="返回的类型")
     Data: Union[str, int, bytes] = Field("初始化", description="返回的数据")
     Template: Optional[str]
+    Width: Optional[int]
+    Height: Optional[int]
 
 
 class Hikari(BaseModel):
@@ -65,11 +70,11 @@ class Hikari(BaseModel):
         self.Output.Data_Type = str(type(success_data))
         return self
 
-# async def init_hikari(platform: str, PlatformId: str, command_text: str) -> Hikari:
-#    userinfo_data = UserInfo(Platform=platform, PlatformId=PlatformId)
-#    ship_data = Ship()
-#    input_data = Input(Command_Text=command_text, ShipInfo=ship_data)
-#    output_data = Output()
-#    Hikari_data = Hikari(UserInfo=userinfo_data,
-#                         Input=input_data, Output=output_data)
-#    return Hikari_data
+    def wait(self, select_data: List):
+        self.Status = "wait"
+        self.Input.Select_Data = select_data
+        self.Output.Data = "等待选择"
+        self.Output.Data_Type = str(type(self.Output.Data))
+        return self
+
+

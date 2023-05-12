@@ -105,14 +105,14 @@ async def get_all_shipList():
         return None
 
 
-async def get_AccountIdByName(server: str, name: str):
+async def get_AccountIdByName(server: str, name: str) -> str:
     try:
         url = "https://api.wows.shinoaki.com/public/wows/account/search/user"
         params = {"server": server, "userName": name}
         resp = await client_yuyuko.get(url, params=params, timeout=None)
         result = orjson.loads(resp.content)
         if result["code"] == 200 and result["data"]:
-            return result["data"]["accountId"]
+            return int(result["data"]["accountId"])
         else:
             return result["message"]
     except (TimeoutError, ConnectTimeout):
