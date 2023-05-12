@@ -10,8 +10,8 @@ from typing import Protocol, Tuple,runtime_checkable
 # from .moudle.wws_bind import (change_BindInfo, delete_BindInfo, get_BindInfo,
 #                              set_BindInfo, set_special_BindInfo)
 # from .moudle.wws_clan import get_ClanInfo
-from moudle.wws_info import get_AccountInfo
-from moudle.wws_recent import get_RecentInfo
+from .moudle.wws_info import get_AccountInfo
+from .moudle.wws_recent import get_RecentInfo
 
 # from .moudle.wws_record import get_record
 # from .moudle.wws_ship import get_ShipInfo, get_ShipInfoRecent

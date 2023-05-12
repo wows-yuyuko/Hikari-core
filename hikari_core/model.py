@@ -1,8 +1,9 @@
 from datetime import date
 from typing import List, Optional, Union
 
-from command_select import Func
 from pydantic import BaseModel, Field
+
+from .command_select import Func
 
 
 class UserInfo(BaseModel):
@@ -49,11 +50,11 @@ class Hikari(BaseModel):
         arbitrary_types_allowed = True
 
 
-userinfo = UserInfo(Platform="QQ", PlatformId="1119809439")
-ship = Ship()
-input = Input(ShipInfo=ship)
-output = Output()
-Hikari1 = Hikari(UserInfo=userinfo, Ship=ship, Input=input, Output=output)
-Hikari1.UserInfo = {"TEM": "QQ"}
-Hikari1.Input.Recent_Day = 3
-print(Hikari1.dict())
+#async def init_hikari(platform: str, PlatformId: str, command_text: str) -> Hikari:
+#    userinfo_data = UserInfo(Platform=platform, PlatformId=PlatformId)
+#    ship_data = Ship()
+#    input_data = Input(Command_Text=command_text, ShipInfo=ship_data)
+#    output_data = Output()
+#    Hikari_data = Hikari(UserInfo=userinfo_data,
+#                         Input=input_data, Output=output_data)
+#    return Hikari_data
