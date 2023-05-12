@@ -9,6 +9,7 @@ class Func(Protocol):
     async def __call__(self, **kwargs):
         ...
 
+
 class UserInfo(BaseModel):
     Platform: str
     PlatformId: str
@@ -49,7 +50,7 @@ class Output(BaseModel):
 
 
 class Hikari(BaseModel):
-    Status: str = "init"
+    Status: str = "init"            #init:初始化 success:请求成功  failed:请求成功但API有错误或空返回  error:异常及本地错误
     UserInfo: UserInfo
     Function: Func = None
     Input: Optional[Input]
@@ -70,11 +71,15 @@ class Hikari(BaseModel):
         self.Output.Data_Type = str(type(success_data))
         return self
 
+    def failed(self, failed_data):
+        self.Status = "failed"
+        self.Output.Data = failed_data
+        self.Output.Data_Type = str(type(failed_data))
+        return self
+
     def wait(self, select_data: List):
         self.Status = "wait"
         self.Input.Select_Data = select_data
         self.Output.Data = "等待选择"
         self.Output.Data_Type = str(type(self.Output.Data))
         return self
-
-

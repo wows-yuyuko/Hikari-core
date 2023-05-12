@@ -42,11 +42,11 @@ async def get_AccountInfo(hikari: Hikari) -> Hikari:
             hikari.Output.Height = 1000
             return hikari.success(result["data"])
         elif result["code"] == 403:
-            return hikari.success(f"{result['message']}\n请先绑定账号")
+            return hikari.failed(f"{result['message']}\n请先绑定账号")
         elif result["code"] == 500:
-            return hikari.success(f"{result['message']}\n这是服务器问题，请联系雨季麻麻")
+            return hikari.failed(f"{result['message']}\n这是服务器问题，请联系雨季麻麻")
         else:
-            return hikari.success(f"{result['message']}")
+            return hikari.failed(f"{result['message']}")
     except (TimeoutError, ConnectTimeout):
         logger.warning(traceback.format_exc())
         return hikari.erroe("请求超时了，请过会儿再尝试哦~")

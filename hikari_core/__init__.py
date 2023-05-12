@@ -6,7 +6,8 @@ import jinja2
 from loguru import logger
 
 from .analyze import analyze_command
-from .data_source import set_render_params, template_path, hikari_config, set_config
+from .data_source import (hikari_config, set_config, set_render_params,
+                          template_path)
 from .Html_Render import html_to_pic
 from .model import Hikari, Input, Output, Ship, UserInfo
 from .utils import startup
@@ -68,6 +69,7 @@ async def init_hikari(
 mtime = os.path.getmtime(template_path/"wws-info.html")
 if time.time()-mtime > 86400:
     startup()
+
 logger.add(
     "hikari-core-logs/error.log",
     rotation="00:00",
