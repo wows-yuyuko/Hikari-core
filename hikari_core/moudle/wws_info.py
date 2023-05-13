@@ -26,15 +26,12 @@ async def get_AccountInfo(hikari: Hikari_Model) -> Hikari_Model:
             logger.success("跳过上报数据，直接请求")
         url = "https://api.wows.shinoaki.com/public/wows/account/user/info"
         if hikari.Input.Search_Type == 3:
-            params = {"server": hikari.Input.Server,
-                      "accountId": hikari.Input.AccountId}
+            params = {"server": hikari.Input.Server, "accountId": hikari.Input.AccountId}
         else:
-            params = {"server": hikari.Input.Platform,
-                      "accountId": hikari.Input.PlatformId}
+            params = {"server": hikari.Input.Platform, "accountId": hikari.Input.PlatformId}
         resp = await client_yuyuko.get(url, params=params, timeout=None)
         result = orjson.loads(resp.content)
-        logger.success(
-            f"本次请求总耗时{resp.elapsed.total_seconds()*1000}，服务器计算耗时:{result['queryTime']}")
+        logger.success(f"本次请求总耗时{resp.elapsed.total_seconds()*1000}，服务器计算耗时:{result['queryTime']}")
         hikari.Output.Yuyuko_Code = result["code"]
         if result["code"] == 200 and result["data"]:
             hikari.Output.Template = "wws-info.html"

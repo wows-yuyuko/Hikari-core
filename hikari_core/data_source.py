@@ -41,85 +41,19 @@ class matching:
 
 
 nations = [
-    matching(("commonwealth", "英联邦",), "commonwealth",),
-    matching(
-        (
-            "europe",
-            "欧洲",
-        ),
-        "europe",
-    ),
-    matching(
-        (
-            "france",
-            "法国",
-        ),
-        "france",
-    ),
-    matching(
-        (
-            "germany",
-            "德国",
-        ),
-        "germany",
-    ),
-    matching(
-        (
-            "italy",
-            "意大利",
-        ),
-        "italy",
-    ),
-    matching(
-        (
-            "japan",
-            "日本",
-        ),
-        "japan",
-    ),
-    matching(
-        (
-            "pan_america",
-            "泛美",
-        ),
-        "pan_america",
-    ),
-    matching(
-        (
-            "pan_asia",
-            "泛亚",
-        ),
-        "pan_asia",
-    ),
+    matching(("commonwealth", "英联邦"), "commonwealth"),
+    matching(("europe", "欧洲"), "europe"),
+    matching(("france", "法国"), "france"),
+    matching(("germany", "德国"), "germany"),
+    matching(("italy", "意大利"), "italy"),
+    matching(("japan", "日本"), "japan"),
+    matching(("pan_america", "泛美"), "pan_america"),
+    matching(("pan_asia", "泛亚"), "pan_asia"),
     matching(("uk", "英国", "United_Kingdom"), "United_Kingdom"),
-    matching(
-        (
-            "usa",
-            "美国",
-        ),
-        "usa",
-    ),
-    matching(
-        (
-            "ussr",
-            "苏联",
-        ),
-        "Russia",
-    ),
-    matching(
-        (
-            "netherlands",
-            "荷兰",
-        ),
-        "netherlands",
-    ),
-    matching(
-        (
-            "spain",
-            "西班牙",
-        ),
-        "spain",
-    ),
+    matching(("usa", "美国"), "usa"),
+    matching(("ussr", "苏联"), "Russia"),
+    matching(("netherlands", "荷兰"), "netherlands"),
+    matching(("spain", "西班牙"), "spain"),
 ]
 
 shiptypes = [
@@ -243,9 +177,7 @@ async def set_ShipRank_Numbers(data, server, shipId):
             xp = int(each.select("td span")[7].string.replace(" ", ""))
             maxXp = int(each.select("td span")[8].string.replace(" ", ""))
             planesDestroyed = float(each.select("td span")[9].string)
-            planesDestroyedColor = await search_color(
-                each.select("td span")[9].attrs["style"]
-            )
+            planesDestroyedColor = await search_color(each.select("td span")[9].attrs["style"])
             maxPlanesDestroyed = int(each.select("td span")[10].string)
             info = {
                 "accountId": accountId,

@@ -9,14 +9,15 @@
 @GitHub         : https://github.com/yanyongyu
 """
 __author__ = "yanyongyu"
-
-from typing import Optional, AsyncIterator
+# fmt: off
 from contextlib import asynccontextmanager
+from typing import AsyncIterator, Optional
 
 from loguru import logger
-from playwright.async_api import Page, Error, Browser, Playwright, async_playwright
+from playwright.async_api import (Browser, Error, Page, Playwright,
+                                  async_playwright)
 
-
+# fmt:on
 _browser: Optional[Browser] = None
 _playwright: Optional[Playwright] = None
 
@@ -75,10 +76,9 @@ async def install_browser(use_browser):
     import sys
 
     from playwright.__main__ import main
+
     logger.info("使用镜像源进行下载")
-    os.environ[
-        "PLAYWRIGHT_DOWNLOAD_HOST"
-    ] = "https://npmmirror.com/mirrors/playwright/"
+    os.environ["PLAYWRIGHT_DOWNLOAD_HOST"] = "https://npmmirror.com/mirrors/playwright/"
     success = False
 
     if use_browser == "firefox":

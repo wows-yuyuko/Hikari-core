@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Protocol, Tuple, runtime_checkable, List
+from typing import List, Protocol, Tuple, runtime_checkable
 
 # from .game.ban_search import get_BanInfo
 # from .game.box_check import check_christmas_box
@@ -38,7 +38,7 @@ first_command_list = [  # 同指令中越长的匹配词越靠前
     # command(("特殊绑定",), set_special_BindInfo),
     # command(("ship.rank", "rank"), get_ShipRank),
     # command(("bind", "绑定", "set"), set_BindInfo),
-    command(("recent", "近期",), None, get_RecentInfo,),
+    command(("recent", "近期"), None, get_RecentInfo),
     # command(("ship","单船",),None,get_ShipInfo,),
     # command(("record", "历史记录"), None, get_record),
     # command(("clan", "军团", "公会", "工会"), None, get_ClanInfo),
@@ -71,10 +71,8 @@ async def findFunction_and_replaceKeywords(match_list, command_List, default_fun
 
 
 async def select_command(search_list) -> Tuple[Func, List]:
-    command, search_list = await findFunction_and_replaceKeywords(
-        search_list, first_command_list, get_AccountInfo
-    )
-    if command.func == None:
+    command, search_list = await findFunction_and_replaceKeywords(search_list, first_command_list, get_AccountInfo)
+    if command.func is None:
         command, search_list = await findFunction_and_replaceKeywords(
             search_list, second_command_list, command.default_func
         )

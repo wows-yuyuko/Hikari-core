@@ -4,18 +4,15 @@ import traceback
 
 import jinja2
 from loguru import logger
+from pydantic import ValidationError
 
 from .analyze import analyze_command
-from .data_source import (hikari_config, set_config, set_render_params,
-                          template_path)
+from .data_source import set_config, set_render_params, template_path
 from .Html_Render import html_to_pic
 from .model import Hikari_Model, Input_Model, UserInfo_Model
 from .utils import startup
-from pydantic import ValidationError
 
-env = jinja2.Environment(
-    loader=jinja2.FileSystemLoader(template_path), enable_async=True
-)
+env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_path), enable_async=True)
 env.globals.update(
     time=time,
     abs=abs,
@@ -29,7 +26,7 @@ async def init_hikari(
     command_text: str = None,
     auto_rendering: bool = True,
     auto_image: bool = True,
-    use_broswer: str = "chromium"
+    use_broswer: str = "chromium",
 ) -> Hikari_Model:
     """Hikari初始化，如果进行过set_config，则会覆盖这边的对应配置
 
@@ -51,7 +48,7 @@ async def init_hikari(
         hikari = await analyze_command(hikari)
         if not hikari.Status == "error" and hikari.Function:
             hikari: Hikari_Model = await hikari.Function(hikari)
-            if hikari.Output.Data_Type == '''<class 'str'>''':
+            if hikari.Output.Data_Type == """<class 'str'>""":
                 logger.info(hikari.Output.Data)
                 return hikari
             else:
@@ -61,9 +58,15 @@ async def init_hikari(
                     content = await template.render_async(template_data)
                     if auto_image:
                         hikari.success(
-                            await html_to_pic(content, wait=0, viewport={"width": hikari.Output.Width, "height": hikari.Output.Height}, use_browser=use_broswer))
+                            await html_to_pic(
+                                content,
+                                wait=0,
+                                viewport={"width": hikari.Output.Width, "height": hikari.Output.Height},
+                                use_browser=use_broswer,
+                            )
+                        )
                 logger.info(hikari.Output.Data_Type)
-        if hikari.Output.Data_Type == '''<class 'str'>''':
+        if hikari.Output.Data_Type == """<class 'str'>""":
             logger.info(hikari.Output.Data)
         return hikari
     except ValidationError:
@@ -71,11 +74,11 @@ async def init_hikari(
         return Hikari_Model().error("参数校验错误，请联系开发者确认入参是否符合Model")
     except Exception:
         logger.error(traceback.format_exc())
-        return Hikari_Model().error("解析指令时发生错误，请确认输入参数无误")
+        return Hikari_Model().error("Hikari-core顶层错误，请检查log")
 
 
-mtime = os.path.getmtime(template_path/"wws-info.html")
-if time.time()-mtime > 86400:
+mtime = os.path.getmtime(template_path / "wws-info.html")
+if time.time() - mtime > 86400:
     startup()
 
 logger.add(

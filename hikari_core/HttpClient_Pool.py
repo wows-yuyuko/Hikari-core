@@ -11,8 +11,8 @@ proxy = {"https://": "http://localhost:7890"}
 
 yuyuko_headers = {
     # 'Authorization': config.api_token,
-    'accept': 'application/json',
-    'Content-Type': 'application/json',
+    "accept": "application/json",
+    "Content-Type": "application/json",
 }
 
 
@@ -21,21 +21,22 @@ async def before_request(request: Request):
 
 
 async def after_response(response: Response):
-    logger.info(
-        f"本次响应的状态码:{response.status_code} {response.http_version} {response.request}")
+    logger.info(f"本次响应的状态码:{response.status_code} {response.http_version} {response.request}")
+
 
 client_yuyuko = httpx.AsyncClient(
     headers=yuyuko_headers,
     event_hooks={
-        "request": [before_request,],
-        "response": [after_response,]
+        "request": [
+            before_request,
+        ],
+        "response": [
+            after_response,
+        ],
     },
-    http2=True
+    http2=True,
 )
 
-client_wg = httpx.AsyncClient(
-    proxies=proxy
-)
+client_wg = httpx.AsyncClient(proxies=proxy)
 
-client_default = httpx.AsyncClient(
-)
+client_default = httpx.AsyncClient()

@@ -72,15 +72,7 @@ async def get_ship_byName(shipname: str):
         List = []
         if result["code"] == 200 and result["data"]:
             for each in result["data"]:
-                List.append(
-                    [
-                        each["id"],
-                        each["shipNameCn"],
-                        each["shipNameNumbers"],
-                        each["tier"],
-                        each['shipType']
-                    ]
-                )
+                List.append([each["id"], each["shipNameCn"], each["shipNameNumbers"], each["tier"], each["shipType"]])
             return List
         else:
             return None
@@ -153,19 +145,12 @@ async def check_yuyuko_cache(server, id):
                 await get_wg_info(cache_data, "DEV", result["data"]["DEV"])
             elif "pvp" in result["data"]:
                 tasks = []
-                loop = asyncio.get_running_loop()
                 for key in result["data"]:
-                    tasks.append(
-                        asyncio.ensure_future(
-                            get_wg_info(cache_data, key, result["data"][key])
-                        )
-                    )
+                    tasks.append(asyncio.ensure_future(get_wg_info(cache_data, key, result["data"][key])))
                 await asyncio.gather(*tasks)
             if not cache_data:
                 return False
-            data_base64 = b64encode(
-                gzip.compress(orjson.dumps(cache_data))
-            ).decode()
+            data_base64 = b64encode(gzip.compress(orjson.dumps(cache_data))).decode()
             params["data"] = data_base64
             resp = await client_yuyuko.post(yuyuko_cache_url, json=params, timeout=5)
             result = orjson.loads(resp.content)

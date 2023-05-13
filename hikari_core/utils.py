@@ -35,11 +35,7 @@ async def match_keywords(match_list, Lists):
     for List in Lists:
         for kw in List.keywords:
             for match_kw in match_list:
-                if (
-                    match_kw == kw
-                    or match_kw.upper() == kw.upper()
-                    or match_kw.lower() == kw.lower()
-                ):
+                if match_kw == kw or match_kw.upper() == kw.upper() or match_kw.lower() == kw.lower():
                     match_list.remove(match_kw)
                     return List.match_keywords, match_list
     return None, match_list
@@ -72,9 +68,7 @@ class FreqLimiter:
         return bool(time.time() >= self.next_time[key])
 
     def start_cd(self, key, cd_time=0):
-        self.next_time[key] = time.time() + (
-            cd_time if cd_time > 0 else self.default_cd
-        )
+        self.next_time[key] = time.time() + (cd_time if cd_time > 0 else self.default_cd)
 
     def left_time(self, key) -> float:
         return self.next_time[key] - time.time()

@@ -15,11 +15,10 @@ from .utils import match_keywords
 
 async def analyze_command(hikari: Hikari_Model) -> Hikari_Model:
     try:
-        if hikari.Status == 'init':  # 状态为init时才解析
+        if hikari.Status == "init":  # 状态为init时才解析
             if not hikari.Input.Command_Text:
                 return hikari.error("请发送wws help查看帮助")
-            hikari.Input.Command_Text = html.unescape(
-                str(hikari.Input.Command_Text)).strip()
+            hikari.Input.Command_Text = html.unescape(str(hikari.Input.Command_Text)).strip()
             hikari = await extract_with_special_name(hikari)
             hikari.Function, hikari.Input.Command_List = await select_command(hikari.Input.Command_List)
             hikari = await extract_with_me_or_at(hikari)
@@ -32,12 +31,10 @@ async def analyze_command(hikari: Hikari_Model) -> Hikari_Model:
 
 async def extract_with_special_name(hikari: Hikari_Model) -> Hikari_Model:
     try:
-        match = re.search(r"(\(|（)(.*?)(\)|）)",
-                          hikari.Input.Command_Text)  # 是否存在（），存在则需提取出来
+        match = re.search(r"(\(|（)(.*?)(\)|）)", hikari.Input.Command_Text)  # 是否存在（），存在则需提取出来
         if match:
             hikari.Input.AccountName = match.group(2)
-            hikari.Input.Command_List = hikari.Input.Command_Text.replace(
-                match.group(0), "").split()
+            hikari.Input.Command_List = hikari.Input.Command_Text.replace(match.group(0), "").split()
         else:
             hikari.Input.Command_List = hikari.Input.Command_Text.split()
         return hikari
@@ -79,7 +76,9 @@ async def extract_with_function(hikari: Hikari_Model) -> Hikari_Model:
                     hikari.Input.Command_List.remove(i)
             if hikari.Input.Search_Type == 3:
                 if len(hikari.Input.Command_List) == 2:
-                    hikari.Input.Server, hikari.Input.Command_List = await match_keywords(hikari.Input.Command_List, servers)
+                    hikari.Input.Server, hikari.Input.Command_List = await match_keywords(
+                        hikari.Input.Command_List, servers
+                    )
                     if hikari.Input.Server:
                         hikari.Input.AccountName = str(hikari.Input.Command_List[0])
                         hikari.Input.Command_List.remove(hikari.Input.Command_List[0])
