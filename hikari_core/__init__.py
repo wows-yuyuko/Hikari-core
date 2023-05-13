@@ -9,8 +9,9 @@ from .analyze import analyze_command
 from .data_source import (hikari_config, set_config, set_render_params,
                           template_path)
 from .Html_Render import html_to_pic
-from .model import Hikari, Input, Output, Ship, UserInfo
+from .model import Hikari_Model, Input_Model, UserInfo_Model
 from .utils import startup
+from pydantic import ValidationError
 
 env = jinja2.Environment(
     loader=jinja2.FileSystemLoader(template_path), enable_async=True
@@ -29,7 +30,7 @@ async def init_hikari(
     auto_rendering: bool = True,
     auto_image: bool = True,
     use_broswer: str = "chromium"
-) -> Hikari:
+) -> Hikari_Model:
     """Hikari初始化，如果进行过set_config，则会覆盖这边的对应配置
 
     Args:
@@ -44,15 +45,12 @@ async def init_hikari(
         Hikari: 可通过Hikari.Output.Data内数据判断是否输出
     """
     try:
-        userinfo = UserInfo(Platform=platform, PlatformId=PlatformId)
-        ship = Ship()
-        input = Input(Command_Text=command_text, ShipInfo=ship)
-        output = Output()
-        hikari = Hikari(UserInfo=userinfo,
-                        Input=input, Output=output)
+        userinfo = UserInfo_Model(Platform=platform, PlatformId=PlatformId)
+        input = Input_Model(Command_Text=command_text)
+        hikari = Hikari_Model(UserInfo=userinfo, Input=input)
         hikari = await analyze_command(hikari)
         if not hikari.Status == "error" and hikari.Function:
-            hikari: Hikari = await hikari.Function(hikari)
+            hikari: Hikari_Model = await hikari.Function(hikari)
             if hikari.Output.Data_Type == '''<class 'str'>''':
                 logger.info(hikari.Output.Data)
                 return hikari
@@ -68,9 +66,12 @@ async def init_hikari(
         if hikari.Output.Data_Type == '''<class 'str'>''':
             logger.info(hikari.Output.Data)
         return hikari
+    except ValidationError:
+        logger.error(traceback.format_exc())
+        return Hikari_Model().error("参数校验错误，请联系开发者确认入参是否符合Model")
     except Exception:
         logger.error(traceback.format_exc())
-        return hikari.error("解析指令时发生错误，请确认输入参数无误")
+        return Hikari_Model().error("解析指令时发生错误，请确认输入参数无误")
 
 
 mtime = os.path.getmtime(template_path/"wws-info.html")

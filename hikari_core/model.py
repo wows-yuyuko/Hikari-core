@@ -10,12 +10,12 @@ class Func(Protocol):
         ...
 
 
-class UserInfo(BaseModel):
-    Platform: str
-    PlatformId: str
+class UserInfo_Model(BaseModel):
+    Platform: str = "QQ"
+    PlatformId: str = "1119809439"
 
 
-class Ship(BaseModel):
+class Ship_Model(BaseModel):
     Ship_Nation: Optional[str]
     Ship_Tier: Optional[int]
     Ship_Type: Optional[str]
@@ -23,8 +23,8 @@ class Ship(BaseModel):
     Ship_Id: Optional[int]
 
 
-class Input(BaseModel):
-    Command_Text: Optional[str]  # 输入的指令,请提前去除wws
+class Input_Model(BaseModel):
+    Command_Text: Optional[str] = ""  # 输入的指令,请提前去除wws
     Command_List: Optional[List]
     Search_Type: Optional[int] = 3  # 1:me  2:@  3:server+name or default
     Platform: Optional[str]
@@ -37,10 +37,10 @@ class Input(BaseModel):
     Recent_Date: Optional[date]
     Select_Index: Optional[int]
     Select_Data: Optional[List]
-    ShipInfo: Optional[Ship]
+    ShipInfo: Ship_Model = Ship_Model()
 
 
-class Output(BaseModel):
+class Output_Model(BaseModel):
     Yuyuko_Code: Optional[int]
     Data_Type: str = Field("str", description="返回的类型")
     Data: Union[str, int, bytes] = Field("初始化", description="返回的数据")
@@ -49,12 +49,12 @@ class Output(BaseModel):
     Height: Optional[int]
 
 
-class Hikari(BaseModel):
-    Status: str = "init"            #init:初始化 success:请求成功  failed:请求成功但API有错误或空返回  error:异常及本地错误
-    UserInfo: UserInfo
+class Hikari_Model(BaseModel):
+    Status: str = "init"  # init:初始化 success:请求成功  failed:请求成功但API有错误或空返回  error:异常及本地错误
+    UserInfo: UserInfo_Model = UserInfo_Model()
     Function: Func = None
-    Input: Optional[Input]
-    Output: Optional[Output]
+    Input: Input_Model = Input_Model()
+    Output: Output_Model = Output_Model()
 
     class Config:
         arbitrary_types_allowed = True

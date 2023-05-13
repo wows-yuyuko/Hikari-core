@@ -6,11 +6,11 @@ from httpx import ConnectTimeout
 from loguru import logger
 
 from ..HttpClient_Pool import client_yuyuko
-from ..model import Hikari
+from ..model import Hikari_Model
 from .publicAPI import check_yuyuko_cache, get_AccountIdByName
 
 
-async def get_AccountInfo(hikari: Hikari) -> Hikari:
+async def get_AccountInfo(hikari: Hikari_Model) -> Hikari_Model:
     try:
         if hikari.Status == "init":
             if hikari.Input.Search_Type == 3:

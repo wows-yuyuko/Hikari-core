@@ -7,13 +7,13 @@ from loguru import logger
 
 from .command_select import select_command
 from .data_source import servers
-from .model import Hikari
+from .model import Hikari_Model
 from .moudle.wws_info import get_AccountInfo
 from .moudle.wws_recent import get_RecentInfo
 from .utils import match_keywords
 
 
-async def analyze_command(hikari: Hikari) -> Hikari:
+async def analyze_command(hikari: Hikari_Model) -> Hikari_Model:
     try:
         if hikari.Status == 'init':  # 状态为init时才解析
             if not hikari.Input.Command_Text:
@@ -30,7 +30,7 @@ async def analyze_command(hikari: Hikari) -> Hikari:
         return hikari.error("解析指令时发生错误，请确认输入参数无误")
 
 
-async def extract_with_special_name(hikari: Hikari) -> Hikari:
+async def extract_with_special_name(hikari: Hikari_Model) -> Hikari_Model:
     try:
         match = re.search(r"(\(|（)(.*?)(\)|）)",
                           hikari.Input.Command_Text)  # 是否存在（），存在则需提取出来
@@ -46,7 +46,7 @@ async def extract_with_special_name(hikari: Hikari) -> Hikari:
         return hikari.error("解析指令时发生错误，请确认输入参数无误")
 
 
-async def extract_with_me_or_at(hikari: Hikari) -> Hikari:
+async def extract_with_me_or_at(hikari: Hikari_Model) -> Hikari_Model:
     try:
         for i in hikari.Input.Command_List:
             if str(i).lower() == "me":
@@ -68,7 +68,7 @@ async def extract_with_me_or_at(hikari: Hikari) -> Hikari:
         return hikari.error("解析指令时发生错误，请确认输入参数无误")
 
 
-async def extract_with_function(hikari: Hikari) -> Hikari:
+async def extract_with_function(hikari: Hikari_Model) -> Hikari_Model:
     try:
         if hikari.Function in [get_AccountInfo, get_RecentInfo]:
             if datetime.now().hour < 7:
