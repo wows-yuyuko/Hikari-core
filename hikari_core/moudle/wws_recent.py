@@ -12,9 +12,9 @@ import orjson
 from httpx import ConnectTimeout
 from loguru import logger
 
-from ..data_source import (servers, set_damageColor,
-                           set_upinfo_color, set_winColor, template_path)
-from ..HttpClient_Pool import client_yuyuko
+from ..data_source import (servers, set_damageColor, set_upinfo_color,
+                           set_winColor, template_path)
+from ..HttpClient_Pool import get_client_yuyuko
 from ..utils import match_keywords
 from .publicAPI import check_yuyuko_cache, get_AccountIdByName
 
@@ -90,6 +90,7 @@ async def get_RecentInfo(server_type, info, ev):
         else:
             logger.success("跳过上报数据，直接请求")
         url = "https://api.wows.shinoaki.com//api/wows/recent/v2/recent/info"
+        client_yuyuko = await get_client_yuyuko()
         resp = await client_yuyuko.get(url, params=params, timeout=None)
         result = orjson.loads(resp.content)
         if result["code"] == 200:

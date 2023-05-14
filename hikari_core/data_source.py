@@ -4,34 +4,11 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Tuple
 
+from pydantic import BaseModel
+
 dir_path = Path(__file__).parent
 template_path = dir_path / "Template"
 yuyuko_url = "https://api.wows.shinoaki.com"
-
-
-class config:
-    proxy: str = None
-    http2: bool = True
-    token: str = None
-
-
-hikari_config = config()
-
-
-async def set_config(proxy: str = None, http2: bool = True, token: str = None):
-    """配置Hikari-core
-
-    Args:
-        proxy (str): 访问WG使用的代理，格式http://localhost:7890
-        http2 (bool): 是否开启http2，默认启用
-        token (str): #请加群联系雨季获取api_key和token Q群:967546463
-
-    Returns:
-        Hikari: 可通过Hikari.Output.Data内数据判断是否输出
-    """
-    hikari_config.proxy = proxy
-    hikari_config.http2 = http2
-    hikari_config.token = token
 
 
 @dataclass

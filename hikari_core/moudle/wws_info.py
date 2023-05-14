@@ -5,7 +5,7 @@ import orjson
 from httpx import ConnectTimeout
 from loguru import logger
 
-from ..HttpClient_Pool import client_yuyuko
+from ..HttpClient_Pool import get_client_yuyuko
 from ..model import Hikari_Model
 from .publicAPI import check_yuyuko_cache, get_AccountIdByName
 
@@ -29,6 +29,7 @@ async def get_AccountInfo(hikari: Hikari_Model) -> Hikari_Model:
             params = {"server": hikari.Input.Server, "accountId": hikari.Input.AccountId}
         else:
             params = {"server": hikari.Input.Platform, "accountId": hikari.Input.PlatformId}
+        client_yuyuko = await get_client_yuyuko()
         resp = await client_yuyuko.get(url, params=params, timeout=None)
         result = orjson.loads(resp.content)
         logger.success(f"本次请求总耗时{resp.elapsed.total_seconds()*1000}，服务器计算耗时:{result['queryTime']}")
