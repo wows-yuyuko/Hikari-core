@@ -5,6 +5,7 @@ import time
 import traceback
 from collections import defaultdict
 from datetime import datetime, timedelta
+from typing import List, Optional, Tuple
 
 import httpx
 import orjson
@@ -31,7 +32,17 @@ def startup():
         return
 
 
-async def match_keywords(match_list, Lists):
+async def match_keywords(match_list, Lists) -> Tuple[Optional[str], List]:
+    """字段列表匹配(仅匹配单个元素)
+
+    Args:
+        match_list (List): 待匹配列表
+        Lists (List): 匹配字符列表
+
+    Returns:
+        match_keywards (str/None):匹配到的字段
+        match_list (List): 去除匹配字符后的列表
+    """
     for List in Lists:
         for kw in List.keywords:
             for match_kw in match_list:
@@ -41,7 +52,17 @@ async def match_keywords(match_list, Lists):
     return None, match_list
 
 
-async def find_and_replace_keywords(match_list, Lists):
+async def find_and_replace_keywords(match_list, Lists) -> Tuple[Optional[str], List]:
+    """字段列表匹配(可匹配同元素内更小长度)
+
+    Args:
+        match_list (List): 待匹配列表
+        Lists (List): 匹配字符列表
+
+    Returns:
+        match_keywards (str/None):匹配到的字段
+        match_list (List): 去除匹配字符后的列表
+    """
     for List in Lists:
         for kw in List.keywords:
             for i, match_kw in enumerate(match_list):
@@ -53,7 +74,15 @@ async def find_and_replace_keywords(match_list, Lists):
     return None, match_list
 
 
-def encode_gzip(bytes):
+def encode_gzip(bytes) -> str:
+    """gzip压缩
+
+    Args:
+        bytes (bytes): 需要压缩的content
+
+    Returns:
+        str (str): 压缩后数据
+    """
     buf = io.BytesIO(bytes)
     gf = gzip.GzipFile(fileobj=buf)
     return gf.read().decode("utf-8")
@@ -109,6 +138,14 @@ async def download(url, path, proxy={}):
             f.write(content)
 
 
-async def byte2md5(bytes):
+async def byte2md5(bytes) -> str:
+    """bytes转为md5
+
+    Args:
+        bytes (bytes): 原始数据
+
+    Returns:
+        str (str): md5
+    """
     res = hashlib.md5(bytes).hexdigest()
     return res
