@@ -76,9 +76,7 @@ async def extract_with_function(hikari: Hikari_Model) -> Hikari_Model:
                     hikari.Input.Command_List.remove(i)
             if hikari.Input.Search_Type == 3:
                 if len(hikari.Input.Command_List) == 2:
-                    hikari.Input.Server, hikari.Input.Command_List = await match_keywords(
-                        hikari.Input.Command_List, servers
-                    )
+                    hikari.Input.Server, hikari.Input.Command_List = await match_keywords(hikari.Input.Command_List, servers)
                     if hikari.Input.Server:
                         hikari.Input.AccountName = str(hikari.Input.Command_List[0])
                         hikari.Input.Command_List.remove(hikari.Input.Command_List[0])

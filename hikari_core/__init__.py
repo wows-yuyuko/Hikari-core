@@ -75,10 +75,10 @@ async def init_hikari(
         return Hikari_Model().error("Hikari-core顶层错误，请检查log")
 
 
-startup()
-scheduler = BackgroundScheduler(timezone="Asia/Shanghai")
-scheduler.add_job(startup, 'cron', hour=4)
-scheduler.start()
+#startup()
+#scheduler = BackgroundScheduler(timezone="Asia/Shanghai")
+#scheduler.add_job(startup, 'cron', hour=4)
+#scheduler.start()
 
 logger.add(
     "hikari-core-logs/error.log",
