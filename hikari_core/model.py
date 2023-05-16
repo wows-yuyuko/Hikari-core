@@ -20,6 +20,7 @@ class Ship_Model(BaseModel):
     Ship_Tier: Optional[int]
     Ship_Type: Optional[str]
     Ship_Name: Optional[str]
+    ship_Name_Numbers: Optional[str]
     Ship_Id: Optional[int]
 
 
@@ -80,11 +81,11 @@ class Hikari_Model(BaseModel):
     def wait(self, select_data: List):
         self.Status = "wait"
         self.Input.Select_Data = select_data
-        self.Output.Data = "等待选择"
+        self.Output.Data = select_data
         self.Output.Data_Type = str(type(self.Output.Data))
         return self
 
-    def set_template_into(self, template_name: str, width: int, height: int):
+    def set_template_info(self, template_name: str, width: int, height: int):
         """配置模板解析参数
 
         Args:

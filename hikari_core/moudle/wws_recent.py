@@ -48,7 +48,7 @@ async def get_RecentInfo(hikari: Hikari_Model) -> Hikari_Model:
         hikari.Output.Yuyuko_Code = result["code"]
         if result["code"] == 200:
             if result["data"]["shipData"][0]["shipData"]:
-                hikari = hikari.set_template_into("wws-info-recent.html", 1200, 100)
+                hikari = hikari.set_template_info("wws-info-recent.html", 1200, 100)
                 return hikari.success(result["data"])
             else:
                 return hikari.failed("该日期数据记录不存在")

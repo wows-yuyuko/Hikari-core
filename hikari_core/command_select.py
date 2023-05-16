@@ -1,3 +1,4 @@
+# fmt: off
 from dataclasses import dataclass
 from typing import List, Protocol, Tuple, runtime_checkable
 
@@ -12,10 +13,11 @@ from typing import List, Protocol, Tuple, runtime_checkable
 # from .moudle.wws_clan import get_ClanInfo
 from .moudle.wws_info import get_AccountInfo
 from .moudle.wws_recent import get_RecentInfo
-
 # from .moudle.wws_record import get_record
-# from .moudle.wws_ship import get_ShipInfo, get_ShipInfoRecent
+from .moudle.wws_ship_info import get_ShipInfo
+
 # from .moudle.wws_shiprank import get_ShipRank
+# fmt: on
 
 
 @runtime_checkable
@@ -39,7 +41,7 @@ first_command_list = [  # 同指令中越长的匹配词越靠前
     # command(("ship.rank", "rank"), get_ShipRank),
     # command(("bind", "绑定", "set"), set_BindInfo),
     command(("recent", "近期"), None, get_RecentInfo),
-    # command(("ship","单船",),None,get_ShipInfo,),
+    command(("ship", "单船"), None, get_ShipInfo),
     # command(("record", "历史记录"), None, get_record),
     # command(("clan", "军团", "公会", "工会"), None, get_ClanInfo),
     # command(("随机表情包",), get_Random_Ocr_Pic),
@@ -73,7 +75,5 @@ async def findFunction_and_replaceKeywords(match_list, command_List, default_fun
 async def select_command(search_list) -> Tuple[Func, List]:
     command, search_list = await findFunction_and_replaceKeywords(search_list, first_command_list, get_AccountInfo)
     if command.func is None:
-        command, search_list = await findFunction_and_replaceKeywords(
-            search_list, second_command_list, command.default_func
-        )
+        command, search_list = await findFunction_and_replaceKeywords(search_list, second_command_list, command.default_func)
     return command.func, search_list

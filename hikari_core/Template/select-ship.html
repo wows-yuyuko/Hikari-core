@@ -85,21 +85,21 @@
 				<div class="ship-item">
 					<div class="index"></div>
 					<div class="ship-inf">
-						<div class="ship-level">{{ ship[3] }}</div>
+						<div class="ship-level">{{ ship['Ship_Tier'] }}</div>
 						<div class="icon">
-							{% if ship[4] == 'Destroyer' %}
+							{% if ship['Ship_Type'] == 'Destroyer' %}
 							<img src="https://hikari-resource.oss-cn-shanghai.aliyuncs.com/shipType_Icon/icon_sunk_destroyer.png">
-							{% elif ship[4] == 'Cruiser' %}
+							{% elif ship['Ship_Type'] == 'Cruiser' %}
 							<img src="https://hikari-resource.oss-cn-shanghai.aliyuncs.com/shipType_Icon/icon_sunk_cruiser.png">
-							{% elif ship[4] == 'Battleship' %}
+							{% elif ship['Ship_Type'] == 'Battleship' %}
 							<img src="https://hikari-resource.oss-cn-shanghai.aliyuncs.com/shipType_Icon/icon_sunk_battleship.png">
-							{% elif ship[4] == 'AirCarrier' %}
+							{% elif ship['Ship_Type'] == 'AirCarrier' %}
 							<img src="https://hikari-resource.oss-cn-shanghai.aliyuncs.com/shipType_Icon/icon_sunk_aircarrier.png">
-							{% elif ship[4] == 'Submarine' %}
+							{% elif ship['Ship_Type'] == 'Submarine' %}
 							<img src="https://hikari-resource.oss-cn-shanghai.aliyuncs.com/shipType_Icon/icon_sunk_submarine.png">
 							{% endif %}
 						</div>
-						<div class="ship-name">{{ ship[1] }}</div>
+						<div class="ship-name">{{ ship['Ship_Name'] }}</div>
 					</div>
 				</div>
 				{% endfor %}

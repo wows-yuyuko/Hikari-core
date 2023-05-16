@@ -10,6 +10,7 @@ from .data_source import servers
 from .model import Hikari_Model
 from .moudle.wws_info import get_AccountInfo
 from .moudle.wws_recent import get_RecentInfo
+from .moudle.wws_ship_info import get_ShipInfo
 from .utils import match_keywords
 
 
@@ -79,11 +80,27 @@ async def extract_with_function(hikari: Hikari_Model) -> Hikari_Model:
                     hikari.Input.Server, hikari.Input.Command_List = await match_keywords(hikari.Input.Command_List, servers)
                     if hikari.Input.Server:
                         hikari.Input.AccountName = str(hikari.Input.Command_List[0])
-                        hikari.Input.Command_List.remove(hikari.Input.Command_List[0])
+                    else:
+                        return hikari.error("服务器名输入错误")
+                else:
+                    return hikari.error("您似乎准备用游戏昵称查询水表，请检查参数中是否包含服务器和游戏昵称，以空格分隔，顺序不限")
+
+        elif hikari.Function in [get_ShipInfo]:
+            if hikari.Input.Search_Type == 3:
+                if len(hikari.Input.Command_List) == 3:
+                    hikari.Input.Server, hikari.Input.Command_List = await match_keywords(hikari.Input.Command_List, servers)
+                    if hikari.Input.Server:
+                        hikari.Input.AccountName = str(hikari.Input.Command_List[0])
+                        hikari.Input.ShipInfo.Ship_Name = str(hikari.Input.Command_List[1])
                     else:
                         return hikari.error("服务器参数输入错误")
                 else:
-                    return hikari.error("您似乎准备用游戏昵称查询水表，请检查参数中是否包含服务器和游戏昵称，以空格区分")
+                    return hikari.error("您似乎准备用服务器+昵称查询单船总体战绩，请检查参数是否缺少或溢出，以空格分隔，顺序不限")
+            else:
+                if len(hikari.Input.Command_List) == 1:
+                    hikari.Input.ShipInfo.Ship_Name = str(hikari.Input.Command_List[0])
+                else:
+                    return hikari.error("您似乎准备用me或@查询单船总体战绩，请检查参数是否缺少或溢出，以空格分隔，顺序不限")
         return hikari
     except Exception:
         logger.error(traceback.format_exc())

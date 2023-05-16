@@ -15,7 +15,8 @@ from .Html_Render import html_to_pic
 from .model import Hikari_Model, Input_Model, UserInfo_Model
 from .utils import startup
 
-# fmt : on
+# fmt: on
+
 env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_path), enable_async=True)
 env.globals.update(
     time=time,
@@ -30,7 +31,7 @@ async def init_hikari(
     PlatformId: str,
     command_text: str = None,
 ) -> Hikari_Model:
-    """Hikari初始化，如果进行过set_config，则会覆盖这边的对应配置
+    """Hikari初始化
 
     Args:
         platform (str): 平台类型
@@ -38,36 +39,17 @@ async def init_hikari(
         command_text (str): 传入指令，不带wws
 
     Returns:
-        Hikari_Model: 可通过Hikari.Output.Data内数据判断是否输出
+        Hikari_Model: 可通过Hikari.Status和Hikari.Output.Data内数据判断是否输出
     """
     try:
         userinfo = UserInfo_Model(Platform=platform, PlatformId=PlatformId)
         input = Input_Model(Command_Text=command_text)
         hikari = Hikari_Model(UserInfo=userinfo, Input=input)
         hikari = await analyze_command(hikari)
-        if not hikari.Status == "error" and hikari.Function:
-            hikari: Hikari_Model = await hikari.Function(hikari)
-            if hikari.Output.Data_Type == """<class 'str'>""":
-                logger.info(hikari.Output.Data)
-                return hikari
-            else:
-                if hikari_config.auto_rendering:
-                    template = env.get_template(hikari.Output.Template)
-                    template_data = await set_render_params(hikari.Output.Data)
-                    content = await template.render_async(template_data)
-                    if hikari_config.auto_image:
-                        hikari.success(
-                            await html_to_pic(
-                                content,
-                                wait=0,
-                                viewport={"width": hikari.Output.Width, "height": hikari.Output.Height},
-                                use_browser=hikari_config.use_broswer,
-                            )
-                        )
-                logger.info(hikari.Output.Data_Type)
-        if hikari.Output.Data_Type == """<class 'str'>""":
-            logger.info(hikari.Output.Data)
-        return hikari
+        if not hikari.Status == "init" or not hikari.Function:
+            return hikari
+        hikari: Hikari_Model = await hikari.Function(hikari)
+        return await output_hikari(hikari)
     except ValidationError:
         logger.error(traceback.format_exc())
         return Hikari_Model().error("参数校验错误，请联系开发者确认入参是否符合Model")
@@ -76,10 +58,61 @@ async def init_hikari(
         return Hikari_Model().error("Hikari-core顶层错误，请检查log")
 
 
-#startup()
-#scheduler = BackgroundScheduler(timezone="Asia/Shanghai")
-#scheduler.add_job(startup, 'cron', hour=4)
-#scheduler.start()
+async def callback_hikari(hikari: Hikari_Model) -> Hikari_Model:
+    """回调wait状态的Hikari
+
+    Args:
+        hikari (Hikari_Model):前置或自行构造的Hikari_Model，可通过from hikari_core import Hikari_Model引入
+
+    Returns:
+        Hikari_Model: 可通过Hikari.Status和Hikari.Output.Data内数据判断是否输出
+    """
+    try:
+        if not hikari.Status == "wait":
+            return hikari.error("当前请求状态错误，请确认是否为wait")
+        if not hikari.Function:
+            return hikari.error("缺少请求方法")
+        hikari: Hikari_Model = await hikari.Function(hikari)
+        return await output_hikari(hikari)
+
+    except Exception:
+        logger.error(traceback.format_exc())
+        return Hikari_Model().error("Hikari-core顶层错误，请检查log")
+
+
+async def output_hikari(hikari: Hikari_Model) -> Hikari_Model:
+    """输出Hikari
+
+    Args:
+        hikari (Hikari_Model):前置或自行构造的Hikari_Model，可通过from hikari_core import Hikari_Model引入
+
+    Returns:
+        Hikari_Model: 可通过Hikari.Status和Hikari.Output.Data内数据判断是否输出
+    """
+    try:
+        if hikari.Status in ["success", "wait"] and hikari_config.auto_rendering:
+            template = env.get_template(hikari.Output.Template)
+            template_data = await set_render_params(hikari.Output.Data)
+            content = await template.render_async(template_data)
+            hikari.Output.Data = content
+
+            if hikari_config.auto_image:
+                hikari.Output.Data = await html_to_pic(
+                    content,
+                    wait=0,
+                    viewport={"width": hikari.Output.Width, "height": hikari.Output.Height},
+                    use_browser=hikari_config.use_broswer,
+                )
+        return hikari
+    except Exception:
+        logger.error(traceback.format_exc())
+        return Hikari_Model().error("Hikari-core顶层错误，请检查log")
+
+
+# startup()
+# scheduler = BackgroundScheduler(timezone="Asia/Shanghai")
+# scheduler.add_job(startup, 'cron', hour=4)
+# scheduler.start()
 
 logger.add(
     "hikari-core-logs/error.log",

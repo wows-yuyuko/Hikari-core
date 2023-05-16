@@ -35,7 +35,7 @@ async def get_AccountInfo(hikari: Hikari_Model) -> Hikari_Model:
         logger.success(f"本次请求总耗时{resp.elapsed.total_seconds()*1000}，服务器计算耗时:{result['queryTime']}")
         hikari.Output.Yuyuko_Code = result["code"]
         if result["code"] == 200 and result["data"]:
-            hikari = hikari.set_template_into("wws-info.html", 920, 1000)
+            hikari = hikari.set_template_info("wws-info.html", 920, 1000)
             return hikari.success(result["data"])
         elif result["code"] == 403:
             return hikari.failed(f"{result['message']}\n请先绑定账号")

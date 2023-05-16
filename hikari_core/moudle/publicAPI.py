@@ -1,3 +1,4 @@
+# fmt: off
 import asyncio
 import gzip
 import traceback
@@ -6,12 +7,17 @@ from base64 import b64encode
 from typing import List, Tuple
 
 import orjson
+from bs4 import BeautifulSoup
 from httpx import ConnectTimeout
 from loguru import logger
 
-from ..data_source import levels, nations, shiptypes
-from ..HttpClient_Pool import get_client_wg, get_client_yuyuko
+from ..data_source import levels, nations, number_url_homes, shiptypes
+from ..HttpClient_Pool import (get_client_default, get_client_wg,
+                               get_client_yuyuko)
+from ..model import Ship_Model
 from ..utils import match_keywords
+
+# fmt: on
 
 
 async def get_nation_list():
@@ -65,7 +71,7 @@ async def get_ship_name(server_type, infolist: List, bot, ev):
         return "wuwuwu出了点问题，请联系麻麻解决"
 
 
-async def get_ship_byName(shipname: str):
+async def get_ship_byName(shipname: str) -> List:
     try:
         url = "https://api.wows.shinoaki.com/public/wows/encyclopedia/ship/search"
         params = {"county": "", "level": "", "shipName": shipname, "shipType": ""}
@@ -75,7 +81,16 @@ async def get_ship_byName(shipname: str):
         List = []
         if result["code"] == 200 and result["data"]:
             for each in result["data"]:
-                List.append([each["id"], each["shipNameCn"], each["shipNameNumbers"], each["tier"], each["shipType"]])
+                List.append(
+                    Ship_Model(
+                        Ship_Nation=each["country"],
+                        Ship_Tier=each["tier"],
+                        Ship_Type=each["shipType"],
+                        Ship_Name=each["shipNameCn"],
+                        ship_Name_Numbers=each["shipNameNumbers"],
+                        Ship_Id=each["id"],
+                    )
+                )
             return List
         else:
             return None
@@ -182,4 +197,73 @@ async def get_wg_info(params, key, url):
     except Exception:
         logger.error(traceback.format_exc())
         logger.error(f"上报url：{url}")
+        return
+
+
+async def get_MyShipRank_yuyuko(params) -> int:
+    try:
+        url = "https://api.wows.shinoaki.com/upload/numbers/data/upload/user/ship/rank"
+        client_yuyuko = await get_client_yuyuko()
+        resp = await client_yuyuko.get(url, params=params, timeout=None)
+        result = orjson.loads(resp.content)
+        if result["code"] == 200 and result["data"]:
+            if result["data"]["ranking"]:
+                return result["data"]["ranking"]
+            elif not result["data"]["ranking"] and not result["data"]["serverId"] == "cn":
+                ranking = await get_MyShipRank_Numbers(result["data"]["httpUrl"], result["data"]["serverId"])
+                if ranking:
+                    await post_MyShipRank_yuyuko(
+                        result["data"]["accountId"],
+                        ranking,
+                        result["data"]["serverId"],
+                        result["data"]["shipId"],
+                    )
+                return ranking
+            else:
+                return None
+        else:
+            return None
+    except Exception:
+        logger.error(traceback.format_exc())
+        return None
+
+
+async def get_MyShipRank_Numbers(url, server) -> int:
+    try:
+        data = None
+        client_default = await get_client_default()
+        client_default = await get_client_default()
+        resp = await client_default.get(url, timeout=10)
+        if resp.content:
+            result = orjson.loads(resp.content)
+            page_url = str(result["url"]).replace("\\", "")
+            nickname = str(result["nickname"])
+            my_rank_url = f"{number_url_homes[server]}{page_url}"
+            resp = await client_default.get(my_rank_url, timeout=10)
+            soup = BeautifulSoup(resp.content, "html.parser")
+            data = soup.select_one(f'tr[data-nickname="{nickname}"]').select_one("td").string
+        if data and data.isdigit():
+            return data
+        else:
+            return None
+    except Exception:
+        logger.error(traceback.format_exc())
+        return None
+
+
+async def post_MyShipRank_yuyuko(accountId, ranking, serverId, shipId):
+    try:
+        url = "https://api.wows.shinoaki.com/upload/numbers/data/upload/user/ship/rank"
+        post_data = {
+            "accountId": int(accountId),
+            "ranking": int(ranking),
+            "serverId": serverId,
+            "shipId": int(shipId),
+        }
+        client_yuyuko = await get_client_yuyuko()
+        resp = await client_yuyuko.post(url, json=post_data, timeout=None)
+        result = orjson.loads(resp.content)
+        return
+    except Exception:
+        logger.error(traceback.format_exc())
         return

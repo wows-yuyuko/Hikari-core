@@ -382,10 +382,10 @@
 						<span>最后战斗时间：</span><span>{{ time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(abs(data['shipInfo']['lastBattlesTime']))) }}</span>
 					</div>
 					
-					{% if shipRank %}
+					{% if data['shipRank'] %}
 					<div class="ranking">
 						<div class="ranking_border"><span
-								style="color: #606266;">排名</span>&nbsp;&nbsp;<span>{{shipRank}}</span>
+								style="color: #606266;">排名</span>&nbsp;&nbsp;<span>{{data['shipRank']}}</span>
 						</div>
 					</div>
 					{% endif %}
