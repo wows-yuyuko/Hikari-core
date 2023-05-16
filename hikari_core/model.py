@@ -83,3 +83,19 @@ class Hikari_Model(BaseModel):
         self.Output.Data = "等待选择"
         self.Output.Data_Type = str(type(self.Output.Data))
         return self
+
+    def set_template_into(self, template_name: str, width: int, height: int):
+        """配置模板解析参数
+
+        Args:
+            template_name (str): 模板名
+            width (int): 宽度
+            height (int): 高度
+
+        Returns:
+            Hikari_Model
+        """
+        self.Output.Template = template_name
+        self.Output.Width = width
+        self.Output.Height = height
+        return self

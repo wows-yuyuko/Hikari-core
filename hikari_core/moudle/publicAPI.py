@@ -3,7 +3,7 @@ import gzip
 import traceback
 from asyncio.exceptions import TimeoutError
 from base64 import b64encode
-from typing import List
+from typing import List, Tuple
 
 import orjson
 from httpx import ConnectTimeout

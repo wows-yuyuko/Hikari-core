@@ -21,6 +21,7 @@ env.globals.update(
     time=time,
     abs=abs,
     enumerate=enumerate,
+    int=int,
 )
 
 

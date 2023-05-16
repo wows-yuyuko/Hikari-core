@@ -1,114 +1,68 @@
-import re
-import time
 import traceback
 from asyncio.exceptions import TimeoutError
 from datetime import datetime
-from pathlib import Path
-from typing import List
 
-import httpx
-import jinja2
 import orjson
 from httpx import ConnectTimeout
 from loguru import logger
 
-from ..data_source import (servers, set_damageColor, set_upinfo_color,
-                           set_winColor, template_path)
 from ..HttpClient_Pool import get_client_yuyuko
-from ..utils import match_keywords
+from ..model import Hikari_Model
 from .publicAPI import check_yuyuko_cache, get_AccountIdByName
 
-#from nonebot_plugin_htmlrender import html_to_pic
+# from nonebot_plugin_htmlrender import html_to_pic
 
 
-env = jinja2.Environment(
-    loader=jinja2.FileSystemLoader(template_path), enable_async=True
-)
-env.globals.update(
-    set_damageColor=set_damageColor,
-    set_winColor=set_winColor,
-    set_upinfo_color=set_upinfo_color,
-    time=time,
-    int=int,
-    abs=abs,
-    enumerate=enumerate,
-)
-
-async def get_RecentInfo(server_type, info, ev):
+async def get_RecentInfo(hikari: Hikari_Model) -> Hikari_Model:
     try:
-        params, day = None, 0
-        if datetime.now().hour < 7:
-            day = 1
-        if isinstance(info, List):
-            for i in info:  # 查找日期,没找到默认一天
-                if str(i).isdigit() and len(i) <= 3:
-                    day = str(i)
-                    info.remove(i)
-            for i in info:  # 是否包含me或@，包含则调用平台接口
-                if i == "me":
-                    params = {
-                        "server": server_type,
-                        "accountId": int(ev.user_id),
-                        "day": day,
-                        "status": 0,
-                    }
-                match = re.search(r"CQ:at,qq=(\d+)", i)
-                if match:
-                    params = {
-                        "server": server_type,
-                        "accountId": int(match.group(1)),
-                        "day": day,
-                        "status": 0,
-                    }
-                    break
-            if not params and len(info) == 2:
-                param_server, info = await match_keywords(info, servers)
-                if param_server:
-                    param_accountid = await get_AccountIdByName(
-                        param_server, str(info[0])
-                    )
-                    if isinstance(param_accountid, int):
-                        params = {
-                            "server": param_server,
-                            "accountId": param_accountid,
-                            "day": day,
-                            "status": 0,
-                        }
-                    else:
-                        return f"{param_accountid}"
-                else:
-                    return "服务器参数似乎输错了呢"
-            elif params:
-                pass
-            else:
-                return "您似乎准备用游戏昵称查询水表，请检查参数中是否包含服务器和游戏昵称，以空格区分"
+        if hikari.Status == "init":
+            if hikari.Input.Search_Type == 3:
+                hikari.Input.AccountId = await get_AccountIdByName(hikari.Input.Server, hikari.Input.AccountName)
+                if not isinstance(hikari.Input.AccountId, int):
+                    return hikari.error(f"{hikari.Input.AccountId}")
         else:
-            return "参数似乎出了问题呢"
-        is_cache = await check_yuyuko_cache(params["server"], params["accountId"])
+            return hikari.error("当前请求状态错误")
+        is_cache = await check_yuyuko_cache(hikari.Input.Server, hikari.Input.AccountId)
         if is_cache:
             logger.success("上报数据成功")
         else:
             logger.success("跳过上报数据，直接请求")
         url = "https://api.wows.shinoaki.com//api/wows/recent/v2/recent/info"
+        if hikari.Input.Search_Type == 3:
+            params = {
+                "server": hikari.Input.Server,
+                "accountId": hikari.Input.AccountId,
+                "day": hikari.Input.Recent_Day,
+                "status": 0,
+            }
+        else:
+            params = {
+                "server": hikari.Input.Platform,
+                "accountId": hikari.Input.PlatformId,
+                "day": hikari.Input.Recent_Day,
+                "status": 0,
+            }
         client_yuyuko = await get_client_yuyuko()
         resp = await client_yuyuko.get(url, params=params, timeout=None)
         result = orjson.loads(resp.content)
+        hikari.Output.Yuyuko_Code = result["code"]
         if result["code"] == 200:
             if result["data"]["shipData"][0]["shipData"]:
-                template = env.get_template("wws-info-recent.html")
+                hikari = hikari.set_template_into("wws-info-recent.html", 1200, 100)
+                return hikari.success(result["data"])
             else:
-                return "该日期数据记录不存在"
+                return hikari.failed("该日期数据记录不存在")
         elif result["code"] == 403:
-            return f"{result['message']}\n请先绑定账号"
+            return hikari.failed(f"{result['message']}\n请先绑定账号")
         elif result["code"] == 404 or result["code"] == 405:
-            return f"{result['message']}\n您可以发送wws help查看recent相关说明"
+            return hikari.failed(f"{result['message']}\n您可以发送wws help查看recent相关说明")
         elif result["code"] == 500:
-            return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"
+            return hikari.failed(f"{result['message']}\n这是服务器问题，请联系雨季麻麻")
         else:
-            return f"{result['message']}"
+            return hikari.failed(f"{result['message']}")
     except (TimeoutError, ConnectTimeout):
         logger.warning(traceback.format_exc())
-        return "wuwuu好像出了点问题，过一会儿还是不行的话请联系麻麻~"
+        return hikari.erroe("请求超时了，请过会儿再尝试哦~")
     except Exception:
-        logger.warning(traceback.format_exc())
-        return "wuwuu好像出了点问题，过一会儿还是不行的话请联系麻麻~"
+        logger.error(traceback.format_exc())
+        return hikari.error("wuwuwu出了点问题，请联系麻麻解决")

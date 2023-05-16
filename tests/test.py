@@ -9,8 +9,8 @@ from hikari_core import hikari_config, init_hikari, set_hikari_config
 
 
 async def start():
-    set_hikari_config(use_broswer="chromium", http2=False, proxy="http://localhost:7890")
-    hikari_data = await init_hikari("QQ", "1119809439", "me")
+    set_hikari_config(use_broswer="chromium", http2=False, proxy="http://localhost:7890", token="")
+    hikari_data = await init_hikari("QQ", "1119809439", "cn 在原七海Channel recent 30")
     if hikari_config.auto_rendering and hikari_config.auto_image:
         with open('test.png', 'wb') as f:
             f.write(hikari_data.Output.Data)
