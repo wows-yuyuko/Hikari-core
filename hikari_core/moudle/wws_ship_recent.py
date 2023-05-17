@@ -8,13 +8,12 @@ from loguru import logger
 
 from ..HttpClient_Pool import get_client_yuyuko
 from ..model import Hikari_Model
-from .publicAPI import (check_yuyuko_cache, get_AccountIdByName,
-                        get_MyShipRank_yuyuko, get_ship_byName)
+from .publicAPI import check_yuyuko_cache, get_AccountIdByName, get_ship_byName
 
 # fmt: on
 
 
-async def get_ShipInfo(hikari: Hikari_Model) -> Hikari_Model:
+async def get_ShipRecent(hikari: Hikari_Model) -> Hikari_Model:
     try:
         if hikari.Status == "init":
             shipList = await get_ship_byName(hikari.Input.ShipInfo.Ship_Name)
@@ -46,13 +45,22 @@ async def get_ShipInfo(hikari: Hikari_Model) -> Hikari_Model:
         else:
             logger.success("跳过上报数据，直接请求")
 
-        url = "https://api.wows.shinoaki.com/public/wows/account/ship/info"
+        url = "https://api.wows.shinoaki.com/api/wows/recent/v2/recent/info/ship"
         if hikari.Input.Search_Type == 3:
-            params = {"server": hikari.Input.Server, "accountId": hikari.Input.AccountId, "shipId": hikari.Input.ShipInfo.Ship_Id}
+            params = {
+                "server": hikari.Input.Server,
+                "accountId": hikari.Input.AccountId,
+                "shipId": hikari.Input.ShipInfo.Ship_Id,
+                "day": hikari.Input.Recent_Day,
+            }
         else:
-            params = {"server": hikari.Input.Platform, "accountId": hikari.Input.PlatformId, "shipId": hikari.Input.ShipInfo.Ship_Id}
+            params = {
+                "server": hikari.Input.Platform,
+                "accountId": hikari.Input.PlatformId,
+                "shipId": hikari.Input.ShipInfo.Ship_Id,
+                "day": hikari.Input.Recent_Day,
+            }
 
-        ranking = await get_MyShipRank_yuyuko(params)
         client_yuyuko = await get_client_yuyuko()
         resp = await client_yuyuko.get(url, params=params, timeout=None)
         result = orjson.loads(resp.content)
@@ -60,10 +68,7 @@ async def get_ShipInfo(hikari: Hikari_Model) -> Hikari_Model:
         hikari.Output.Yuyuko_Code = result["code"]
 
         if result["code"] == 200 and result["data"]:
-            if not result["data"]["shipInfo"]["battles"] and not result["data"]["rankSolo"]["battles"]:
-                return hikari.failed("查询不到战绩数据")
-            hikari.set_template_info("wws-ship.html", 800, 100)
-            result["data"]["shipRank"] = ranking
+            hikari.set_template_info("wws-ship-recent.html", 800, 100)
             return hikari.success(result["data"])
         elif result["code"] == 403:
             return hikari.failed(f"{result['message']}\n请先绑定账号")

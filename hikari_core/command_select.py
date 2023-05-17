@@ -15,6 +15,7 @@ from .moudle.wws_info import get_AccountInfo
 from .moudle.wws_recent import get_RecentInfo
 # from .moudle.wws_record import get_record
 from .moudle.wws_ship_info import get_ShipInfo
+from .moudle.wws_ship_recent import get_ShipRecent
 
 # from .moudle.wws_shiprank import get_ShipRank
 # fmt: on
@@ -53,8 +54,8 @@ first_command_list = [  # 同指令中越长的匹配词越靠前
 ]
 
 second_command_list = [
-    # command(("recent","近期",),get_ShipInfoRecent,),
-    # command(("ship","单船",),get_ShipInfoRecent,),
+    command(("recent", "近期"), get_ShipRecent),
+    command(("ship", "单船"), get_ShipRecent),
     # command(("clan", "军团", "公会", "工会"), get_record),
     # command(("record", "历史记录"), get_record),
 ]
