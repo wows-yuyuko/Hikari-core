@@ -24,7 +24,7 @@ async def get_AccountInfo(hikari: Hikari_Model) -> Hikari_Model:
             logger.success("上报数据成功")
         else:
             logger.success("跳过上报数据，直接请求")
-        url = "https://api.wows.shinoaki.com/public/wows/account/user/info"
+        url = "https://v3-api.wows.shinoaki.com/public/wows/account/user/info"
         if hikari.Input.Search_Type == 3:
             params = {"server": hikari.Input.Server, "accountId": hikari.Input.AccountId}
         else:
