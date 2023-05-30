@@ -32,7 +32,6 @@ async def get_AccountInfo(hikari: Hikari_Model) -> Hikari_Model:
         client_yuyuko = await get_client_yuyuko()
         resp = await client_yuyuko.get(url, params=params, timeout=None)
         result = orjson.loads(resp.content)
-        logger.success(f"本次请求总耗时{resp.elapsed.total_seconds()*1000}，服务器计算耗时:{result['queryTime']}")
         hikari.Output.Yuyuko_Code = result["code"]
         if result["code"] == 200 and result["data"]:
             hikari = hikari.set_template_info("wws-info.html", 920, 1000)
