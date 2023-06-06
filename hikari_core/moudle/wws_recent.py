@@ -27,27 +27,28 @@ async def get_RecentInfo(hikari: Hikari_Model) -> Hikari_Model:
             logger.success("上报数据成功")
         else:
             logger.success("跳过上报数据，直接请求")
-        url = "https://api.wows.shinoaki.com//api/wows/recent/v2/recent/info"
+        url = "https://recent.wows.shinoaki.com:8890/api/wows/recent/day/info"
         if hikari.Input.Search_Type == 3:
             params = {
                 "server": hikari.Input.Server,
                 "accountId": hikari.Input.AccountId,
+                "dateTime": hikari.Input.Recent_Date,
                 "day": hikari.Input.Recent_Day,
-                "status": 0,
             }
         else:
             params = {
                 "server": hikari.Input.Platform,
                 "accountId": hikari.Input.PlatformId,
+                "dateTime": hikari.Input.Recent_Date,
                 "day": hikari.Input.Recent_Day,
-                "status": 0,
             }
+        print(params)
         client_yuyuko = await get_client_yuyuko()
         resp = await client_yuyuko.get(url, params=params, timeout=None)
         result = orjson.loads(resp.content)
         hikari.Output.Yuyuko_Code = result["code"]
         if result["code"] == 200:
-            if result["data"]["shipData"][0]["shipData"]:
+            if result["data"]["battleTypeInfo"]['PVP']['battle'] or result["data"]["battleTypeInfo"]['RANK_SOLO']['battle']:
                 hikari = hikari.set_template_info("wws-info-recent.html", 1200, 100)
                 return hikari.success(result["data"])
             else:

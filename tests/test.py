@@ -12,7 +12,7 @@ from hikari_core import callback_hikari, hikari_config, init_hikari, set_hikari_
 async def start():
     start_time = time.time()
     set_hikari_config(use_broswer="chromium", http2=False, proxy="http://localhost:7890", token="")
-    hikari_data = await init_hikari("QQ", "1119809439", "cn 在原七海Channel")
+    hikari_data = await init_hikari("QQ", "2622749113", "cn 沙与尘之哀 recent 3")
     if hikari_data.Status == "success":
         with open('test.png', 'wb') as f:
             f.write(hikari_data.Output.Data)

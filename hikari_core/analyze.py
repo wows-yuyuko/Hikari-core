@@ -1,5 +1,6 @@
 import html
 import re
+import time
 import traceback
 from datetime import datetime
 
@@ -72,12 +73,25 @@ async def extract_with_function(hikari: Hikari_Model) -> Hikari_Model:
         if hikari.Function in [get_AccountInfo, get_RecentInfo, get_ShipInfo, get_ShipRecent]:
             if datetime.now().hour < 7:
                 hikari.Input.Recent_Day = 1
+            # 判断day,date
+            delete_list = []
             for i in hikari.Input.Command_List:
                 if str(i).isdigit() and len(i) <= 3:
                     hikari.Input.Recent_Day = int(i)
-                    hikari.Input.Command_List.remove(i)
+                    delete_list.append(i)
+                try:
+                    time.strptime(str(i), "%Y-%m-%d")
+                    hikari.Input.Recent_Date = str(i)
+                    delete_list.append(i)
+                    hikari.Input.Recent_Day = 0  # 存在date时day强制为0
+                except ValueError:
+                    continue
+            # 移除day,date
+            for each in delete_list:
+                hikari.Input.Command_List.remove(each)
             if hikari.Function in [get_AccountInfo, get_RecentInfo]:
                 if hikari.Input.Search_Type == 3:
+                    print(hikari.Input.Command_List)
                     if len(hikari.Input.Command_List) == 2:
                         hikari.Input.Server, hikari.Input.Command_List = await match_keywords(hikari.Input.Command_List, servers)
                         if hikari.Input.Server:

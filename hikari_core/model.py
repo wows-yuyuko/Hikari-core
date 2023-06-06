@@ -1,3 +1,4 @@
+import time
 from datetime import date
 from typing import List, Optional, Protocol, Union, runtime_checkable
 
@@ -35,7 +36,7 @@ class Input_Model(BaseModel):
     AccountId: Optional[int]
     ClanName: Optional[str]
     Recent_Day: Optional[int] = 0
-    Recent_Date: Optional[date]
+    Recent_Date: Optional[str] = time.strftime("%Y-%m-%d", time.localtime())
     Select_Index: Optional[int]
     Select_Data: Optional[List]
     ShipInfo: Ship_Model = Ship_Model()
