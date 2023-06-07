@@ -469,7 +469,7 @@
 					{% endif %}
 					
 					{% if data['battleTypeInfo']['RANK_SOLO']['battle'] %}
-					<<div class="information-col">
+					<div class="information-col">
 						<div class="information-col-item information-type">排位</div>
 						<div class="information-col-item">{{ data['battleTypeInfo']['RANK_SOLO']['battleInfo']['battleInfo']['battle'] }}</div>
 						<div class="information-col-item" style="color: {{ data['battleTypeInfo']['RANK_SOLO']['battleInfo']['avgInfo']['winsData']['color'] }};">{{ data['battleTypeInfo']['RANK_SOLO']['battleInfo']['avgInfo']['win'] }}%</div>
@@ -537,9 +537,9 @@
 							<div class="random-col-item flex-3 ship-level">{{ ship['shipInfo']['level'] }}</div>
 							<div class="random-col-item flex-8">{{ ship['shipInfo']['nameCn'] }}</div>
 							<div class="random-col-item flex-3">{{ ship['typeInfo']['RANK_SOLO']['battleInfo']['battleInfo']['battle'] }}</div>
-							<div class="random-col-item flex-3" style="color: {{ ship['typeInfo']['RANK_SOLO']['prInfo']['color'] }};">{{ ship['typeInfo']['PVP']['prInfo']['value'] }}</div>
-							<div class="random-col-item flex-3" style="color: {{ ship['typeInfo']['RANK_SOLO']['battleInfo']['avgInfo']['winsData']['color'] }};">{{ ship['typeInfo']['PVP']['battleInfo']['avgInfo']['win'] }}%</div>
-							<div class="random-col-item flex-4" style="color: {{ ship['typeInfo']['RANK_SOLO']['battleInfo']['avgInfo']['damageData']['color'] }};">{{ ship['typeInfo']['PVP']['battleInfo']['avgInfo']['damage'] }}</div>
+							<div class="random-col-item flex-3" style="color: {{ ship['typeInfo']['RANK_SOLO']['prInfo']['color'] }};">{{ ship['typeInfo']['RANK_SOLO']['prInfo']['value'] }}</div>
+							<div class="random-col-item flex-3" style="color: {{ ship['typeInfo']['RANK_SOLO']['battleInfo']['avgInfo']['winsData']['color'] }};">{{ ship['typeInfo']['RANK_SOLO']['battleInfo']['avgInfo']['win'] }}%</div>
+							<div class="random-col-item flex-4" style="color: {{ ship['typeInfo']['RANK_SOLO']['battleInfo']['avgInfo']['damageData']['color'] }};">{{ ship['typeInfo']['RANK_SOLO']['battleInfo']['avgInfo']['damage'] }}</div>
 							<div class="random-col-item flex-3">{{ '%.2f' | format(ship['typeInfo']['RANK_SOLO']['battleInfo']['avgInfo']['frags']) }}</div>
 							<div class="random-col-item flex-3">{{ '%.2f' | format(ship['typeInfo']['RANK_SOLO']['battleInfo']['hitRatioInfo']['ratioMain']) }}%</div>
 						</div>
@@ -550,10 +550,7 @@
 				
 				<div class="footer">
 					<p>©西行寺雨季&nbsp;&nbsp;©本心</p>
-					<p>https://github.com/benx1n/HikariBot</p>
-					<p>QQ频道搜索”yuyuko”即可使用稳定的腾讯官方机器人~</p>
-					<p>Design By 冷眠 H5 Converted By C1ystal</p>
-					<p>赞助鸣谢：科长、男人们的定远号、海上最速暴毙传说</p>
+					<p>V3测试</p>
 				</div>
 				
 			</div>

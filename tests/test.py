@@ -6,13 +6,14 @@ from pathlib import Path
 dir_path = Path(__file__).parent.parent
 sys.path.append(f"{dir_path}")
 
-from hikari_core import callback_hikari, hikari_config, init_hikari, set_hikari_config
+from hikari_core import (callback_hikari, hikari_config, init_hikari,
+                         set_hikari_config)
 
 
 async def start():
     start_time = time.time()
     set_hikari_config(use_broswer="chromium", http2=False, proxy="http://localhost:7890", token="")
-    hikari_data = await init_hikari("QQ", "2622749113", "cn 沙与尘之哀 recent 3")
+    hikari_data = await init_hikari("QQ", "2622749113", "cn 沙与尘之哀 recent")
     if hikari_data.Status == "success":
         with open('test.png', 'wb') as f:
             f.write(hikari_data.Output.Data)
