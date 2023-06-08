@@ -40,6 +40,7 @@ async def create_client_yuyuko() -> AsyncClient:
         },
         http2=hikari_config.http2,
     )
+    logger.info("创建client_yuyuko")
     return _client_yuyuko
 
 
@@ -48,14 +49,16 @@ async def create_client_wg() -> AsyncClient:
         proxy = {"https://": hikari_config.proxy}
     else:
         proxy = {}
-    global client_wg
+    global _client_wg
     _client_wg = httpx.AsyncClient(proxies=proxy)
+    logger.info("创建client_wg")
     return _client_wg
 
 
 async def create_client_default() -> AsyncClient:
     global _client_default
     _client_default = httpx.AsyncClient()
+    logger.info("创建client_default")
     return _client_default
 
 
@@ -69,3 +72,24 @@ async def get_client_wg() -> AsyncClient:
 
 async def get_client_default() -> AsyncClient:
     return _client_default if _client_default else await create_client_default()
+
+
+async def recreate_client_yuyuko():
+    _client_yuyuko = await get_client_yuyuko()
+    logger.info("重新创建yuyuko连接池")
+    await _client_yuyuko.aclose()
+    _client_yuyuko = await create_client_yuyuko()
+
+
+async def recreate_client_wg():
+    _client_wg = await get_client_wg()
+    logger.info("重新创建wg连接池")
+    await _client_wg.aclose()
+    _client_wg = await create_client_wg()
+
+
+async def recreate_client_default():
+    _client_default = await get_client_default()
+    logger.info("重新创建default连接池")
+    await _client_default.aclose()
+    _client_default = await create_client_default()

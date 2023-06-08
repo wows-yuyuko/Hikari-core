@@ -8,12 +8,13 @@ from typing import List, Tuple
 
 import orjson
 from bs4 import BeautifulSoup
-from httpx import ConnectTimeout
+from httpx import ConnectTimeout, PoolTimeout
 from loguru import logger
 
 from ..data_source import levels, nations, number_url_homes, shiptypes
 from ..HttpClient_Pool import (get_client_default, get_client_wg,
-                               get_client_yuyuko)
+                               get_client_yuyuko, recreate_client_default,
+                               recreate_client_wg, recreate_client_yuyuko)
 from ..model import Ship_Model
 from ..utils import match_keywords
 
@@ -30,6 +31,9 @@ async def get_nation_list():
         for nation in result["data"]:
             msg: str = msg + f"{nation['cn']}：{nation['nation']}\n"
         return msg
+    except PoolTimeout:
+        await recreate_client_yuyuko()
+        return
     except Exception:
         logger.error(traceback.format_exc())
 
@@ -66,6 +70,9 @@ async def get_ship_name(server_type, infolist: List, bot, ev):
         return msg
     except (TimeoutError, ConnectTimeout):
         logger.warning(traceback.format_exc())
+    except PoolTimeout:
+        await recreate_client_yuyuko()
+        return
     except Exception:
         logger.error(traceback.format_exc())
         return "wuwuwu出了点问题，请联系麻麻解决"
@@ -96,6 +103,9 @@ async def get_ship_byName(shipname: str) -> List:
             return None
     except (TimeoutError, ConnectTimeout):
         logger.warning(traceback.format_exc())
+    except PoolTimeout:
+        await recreate_client_yuyuko()
+        return
     except Exception:
         logger.error(traceback.format_exc())
         return None
@@ -112,6 +122,9 @@ async def get_all_shipList():
             return result["data"]
         else:
             return None
+    except PoolTimeout:
+        await recreate_client_yuyuko()
+        return
     except Exception:
         return None
 
@@ -130,6 +143,9 @@ async def get_AccountIdByName(server: str, name: str) -> str:
     except (TimeoutError, ConnectTimeout):
         logger.warning(traceback.format_exc())
         return "请求超时了，请过一会儿重试哦~"
+    except PoolTimeout:
+        await recreate_client_yuyuko()
+        return
     except Exception:
         logger.error(traceback.format_exc())
         return "好像出了点问题呢，可能是网络问题，如果重试几次还不行的话，请联系麻麻解决"
@@ -149,6 +165,9 @@ async def get_ClanIdByName(server: str, tag: str):
             return result["data"]
         else:
             return None
+    except PoolTimeout:
+        await recreate_client_yuyuko()
+        return
     except Exception:
         logger.error(traceback.format_exc())
         return None
@@ -182,6 +201,9 @@ async def check_yuyuko_cache(server, id):
             else:
                 return False
         return False
+    except PoolTimeout:
+        await recreate_client_yuyuko()
+        return
     except Exception:
         logger.error(traceback.format_exc())
         return False
@@ -194,6 +216,9 @@ async def get_wg_info(params, key, url):
         wg_result = orjson.loads(resp.content)
         if resp.status_code == 200 and wg_result["status"] == "ok":
             params[key] = resp.text
+    except PoolTimeout:
+        await recreate_client_wg()
+        return
     except Exception:
         logger.error(traceback.format_exc())
         logger.error(f"上报url：{url}")
@@ -223,6 +248,9 @@ async def get_MyShipRank_yuyuko(params) -> int:
                 return None
         else:
             return None
+    except PoolTimeout:
+        await recreate_client_yuyuko()
+        return
     except Exception:
         logger.error(traceback.format_exc())
         return None
@@ -231,7 +259,6 @@ async def get_MyShipRank_yuyuko(params) -> int:
 async def get_MyShipRank_Numbers(url, server) -> int:
     try:
         data = None
-        client_default = await get_client_default()
         client_default = await get_client_default()
         resp = await client_default.get(url, timeout=10)
         if resp.content:
@@ -246,6 +273,9 @@ async def get_MyShipRank_Numbers(url, server) -> int:
             return data
         else:
             return None
+    except PoolTimeout:
+        await recreate_client_default()
+        return
     except Exception:
         logger.error(traceback.format_exc())
         return None
@@ -263,6 +293,9 @@ async def post_MyShipRank_yuyuko(accountId, ranking, serverId, shipId):
         client_yuyuko = await get_client_yuyuko()
         resp = await client_yuyuko.post(url, json=post_data, timeout=None)
         result = orjson.loads(resp.content)
+        return
+    except PoolTimeout:
+        await recreate_client_yuyuko()
         return
     except Exception:
         logger.error(traceback.format_exc())

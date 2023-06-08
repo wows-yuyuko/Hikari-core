@@ -2,10 +2,10 @@ import traceback
 from asyncio.exceptions import TimeoutError
 
 import orjson
-from httpx import ConnectTimeout
+from httpx import ConnectTimeout, PoolTimeout
 from loguru import logger
 
-from ..HttpClient_Pool import get_client_yuyuko
+from ..HttpClient_Pool import get_client_yuyuko, recreate_client_yuyuko
 from ..model import Hikari_Model
 from .publicAPI import check_yuyuko_cache, get_AccountIdByName
 
@@ -44,7 +44,10 @@ async def get_AccountInfo(hikari: Hikari_Model) -> Hikari_Model:
             return hikari.failed(f"{result['message']}")
     except (TimeoutError, ConnectTimeout):
         logger.warning(traceback.format_exc())
-        return hikari.erroe("请求超时了，请过会儿再尝试哦~")
+        return hikari.error("请求超时了，请过会儿再尝试哦~")
+    except PoolTimeout:
+        await recreate_client_yuyuko()
+        return hikari.error("连接池异常，请尝试重新查询~")
     except Exception:
         logger.error(traceback.format_exc())
         return hikari.error("wuwuwu出了点问题，请联系麻麻解决")
