@@ -7,22 +7,22 @@ from pydantic import BaseModel
 class Config_Model(BaseModel):
     proxy: Optional[str]
     http2: bool = True
-    token: Optional[str] = "123456:111111111111"
+    token: Optional[str] = '123456:111111111111'
     auto_rendering: bool = True
     auto_image: bool = True
-    use_broswer: Optional[str] = "chromium"
+    use_broswer: Optional[str] = 'chromium'
 
 
 hikari_config = Config_Model()
 
 
-def set_hikari_config(
+def set_hikari_config(  # noqa: PLR0913
     proxy: Optional[str],
     http2: bool = True,
-    token: Optional[str] = "123456:111111111111",
+    token: Optional[str] = '123456:111111111111',
     auto_rendering: bool = True,
     auto_image: bool = True,
-    use_broswer: Optional[str] = "chromium",
+    use_broswer: Optional[str] = 'chromium',
 ):
     """配置Hikari-core
 
@@ -35,11 +35,11 @@ def set_hikari_config(
         use_broswer (str): chromium/firefox，默认chromium，性能大约为firefox三倍
 
     """
-    global hikari_config
+    global hikari_config  # noqa: PLW0602
     hikari_config.proxy = proxy
     hikari_config.http2 = http2
     hikari_config.token = token
     hikari_config.auto_rendering = auto_rendering
     hikari_config.auto_image = auto_image
     hikari_config.use_broswer = use_broswer
-    logger.info(f"当前hikari-core配置\n{hikari_config}")
+    logger.info(f'当前hikari-core配置\n{hikari_config}')

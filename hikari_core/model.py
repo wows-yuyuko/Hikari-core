@@ -1,5 +1,4 @@
 import time
-from datetime import date
 from typing import List, Optional, Protocol, Union, runtime_checkable
 
 from pydantic import BaseModel, Field
@@ -12,8 +11,8 @@ class Func(Protocol):
 
 
 class UserInfo_Model(BaseModel):
-    Platform: str = "QQ"
-    PlatformId: str = "1119809439"
+    Platform: str = 'QQ'
+    PlatformId: str = '1119809439'
 
 
 class Ship_Model(BaseModel):
@@ -26,7 +25,7 @@ class Ship_Model(BaseModel):
 
 
 class Input_Model(BaseModel):
-    Command_Text: Optional[str] = ""  # 输入的指令,请提前去除wws
+    Command_Text: Optional[str] = ''  # 输入的指令,请提前去除wws
     Command_List: Optional[List]
     Search_Type: Optional[int] = 3  # 1:me  2:@  3:server+name or default
     Platform: Optional[str]
@@ -36,7 +35,7 @@ class Input_Model(BaseModel):
     AccountId: Optional[int]
     ClanName: Optional[str]
     Recent_Day: Optional[int] = 0
-    Recent_Date: Optional[str] = time.strftime("%Y-%m-%d", time.localtime())
+    Recent_Date: Optional[str] = time.strftime('%Y-%m-%d', time.localtime())
     Select_Index: Optional[int]
     Select_Data: Optional[List]
     ShipInfo: Ship_Model = Ship_Model()
@@ -44,15 +43,15 @@ class Input_Model(BaseModel):
 
 class Output_Model(BaseModel):
     Yuyuko_Code: Optional[int]
-    Data_Type: str = Field("str", description="返回的类型")
-    Data: Union[str, int, bytes] = Field("初始化", description="返回的数据")
+    Data_Type: str = Field('str', description='返回的类型')
+    Data: Union[str, int, bytes] = Field('初始化', description='返回的数据')
     Template: Optional[str]
     Width: Optional[int]
     Height: Optional[int]
 
 
 class Hikari_Model(BaseModel):
-    Status: str = "init"  # init:初始化 success:请求成功  failed:请求成功但API有错误或空返回  error:异常及本地错误
+    Status: str = 'init'  # init:初始化 success:请求成功  failed:请求成功但API有错误或空返回  error:异常及本地错误
     UserInfo: UserInfo_Model = UserInfo_Model()
     Function: Func = None
     Input: Input_Model = Input_Model()
@@ -62,25 +61,25 @@ class Hikari_Model(BaseModel):
         arbitrary_types_allowed = True
 
     def error(self, error_data):
-        self.Status = "error"
+        self.Status = 'error'
         self.Output.Data = error_data
         self.Output.Data_Type = str(type(error_data))
         return self
 
     def success(self, success_data):
-        self.Status = "success"
+        self.Status = 'success'
         self.Output.Data = success_data
         self.Output.Data_Type = str(type(success_data))
         return self
 
     def failed(self, failed_data):
-        self.Status = "failed"
+        self.Status = 'failed'
         self.Output.Data = failed_data
         self.Output.Data_Type = str(type(failed_data))
         return self
 
     def wait(self, select_data: List):
-        self.Status = "wait"
+        self.Status = 'wait'
         self.Input.Select_Data = select_data
         self.Output.Data = select_data
         self.Output.Data_Type = str(type(self.Output.Data))

@@ -17,60 +17,60 @@ from .data_source import template_path
 
 def startup():
     try:
-        url = "https://benx1n.oss-cn-beijing.aliyuncs.com/template_Hikari_Latest/template.json"
+        url = 'https://benx1n.oss-cn-beijing.aliyuncs.com/template_Hikari_Latest/template.json'
         with httpx.Client() as client:
             resp = client.get(url, timeout=20)
             result = orjson.loads(resp.content)
             for each in result:
                 for name, url in each.items():
                     resp = client.get(url, timeout=20)
-                    with open(template_path / name, "wb+") as file:
+                    with open(template_path / name, 'wb+') as file:
                         file.write(resp.content)
-        print(f"success {time.time()}")
+        print(f'success {time.time()}')
     except Exception:
         logger.error(traceback.format_exc())
         return
 
 
-async def match_keywords(match_list, Lists) -> Tuple[Optional[str], List]:
+async def match_keywords(match_list, lists) -> Tuple[Optional[str], List]:
     """字段列表匹配(仅匹配单个元素)
 
     Args:
         match_list (List): 待匹配列表
-        Lists (List): 匹配字符列表
+        lists (List): 匹配字符列表
 
     Returns:
         match_keywards (str/None):匹配到的字段
         match_list (List): 去除匹配字符后的列表
     """
-    for List in Lists:
-        for kw in List.keywords:
+    for each in lists:
+        for kw in each.keywords:
             for match_kw in match_list:
                 if match_kw == kw or match_kw.upper() == kw.upper() or match_kw.lower() == kw.lower():
                     match_list.remove(match_kw)
-                    return List.match_keywords, match_list
+                    return each.match_keywords, match_list
     return None, match_list
 
 
-async def find_and_replace_keywords(match_list, Lists) -> Tuple[Optional[str], List]:
+async def find_and_replace_keywords(match_list, lists) -> Tuple[Optional[str], List]:
     """字段列表匹配(可匹配同元素内更小长度)
 
     Args:
         match_list (List): 待匹配列表
-        Lists (List): 匹配字符列表
+        lists (List): 匹配字符列表
 
     Returns:
         match_keywards (str/None):匹配到的字段
         match_list (List): 去除匹配字符后的列表
     """
-    for List in Lists:
-        for kw in List.keywords:
+    for each in lists:
+        for kw in each.keywords:
             for i, match_kw in enumerate(match_list):
                 if match_kw.find(kw) + 1:
-                    match_list[i] = str(match_kw).replace(kw, "")
-                    if match_list[i] == "":
-                        match_list.remove("")
-                    return List.match_keywords, match_list
+                    match_list[i] = str(match_kw).replace(kw, '')
+                    if not match_list[i]:
+                        match_list.remove('')
+                    return each.match_keywords, match_list
     return None, match_list
 
 
@@ -85,7 +85,7 @@ def encode_gzip(bytes) -> str:
     """
     buf = io.BytesIO(bytes)
     gf = gzip.GzipFile(fileobj=buf)
-    return gf.read().decode("utf-8")
+    return gf.read().decode('utf-8')
 
 
 class FreqLimiter:
@@ -104,7 +104,7 @@ class FreqLimiter:
 
 
 class DailyNumberLimiter:
-    tz = pytz.timezone("Asia/Shanghai")
+    tz = pytz.timezone('Asia/Shanghai')
 
     def __init__(self, max_num):
         self.today = -1
@@ -129,12 +129,12 @@ class DailyNumberLimiter:
         self.count[key] = 0
 
 
-async def download(url, path, proxy={}):
+async def download(url, path, proxy=None):
     async with httpx.AsyncClient(proxies=proxy) as client:
         resp = await client.get(url, timeout=None)
         content = resp.read()
-        content = content.replace(b"\n", b"\r\n")
-        with open(path, "wb") as f:
+        content = content.replace(b'\n', b'\r\n')
+        with open(path, 'wb') as f:
             f.write(content)
 
 

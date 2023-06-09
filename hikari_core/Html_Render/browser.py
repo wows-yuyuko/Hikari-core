@@ -8,16 +8,13 @@
 @Description    : None
 @GitHub         : https://github.com/yanyongyu
 """
-__author__ = "yanyongyu"
-# fmt: off
+__author__ = 'yanyongyu'
 from contextlib import asynccontextmanager
 from typing import AsyncIterator, Optional
 
 from loguru import logger
-from playwright.async_api import (Browser, Error, Page, Playwright,
-                                  async_playwright)
+from playwright.async_api import Browser, Error, Page, Playwright, async_playwright
 
-# fmt:on
 _browser: Optional[Browser] = None
 _playwright: Optional[Playwright] = None
 
@@ -35,14 +32,14 @@ async def init(use_browser, **kwargs) -> Browser:
 
 
 async def launch_browser(use_browser, **kwargs) -> Browser:
-    assert _playwright is not None, "Playwright 没有安装"
-    if use_browser == "firefox":
-        logger.info("使用 firefox 启动")
+    assert _playwright is not None, 'Playwright 没有安装'
+    if use_browser == 'firefox':
+        logger.info('使用 firefox 启动')
         return await _playwright.firefox.launch(**kwargs)
 
     else:
         # 默认使用 chromium
-        logger.info("使用 chromium 启动")
+        logger.info('使用 chromium 启动')
         return await _playwright.chromium.launch(**kwargs)
 
 
@@ -77,23 +74,23 @@ async def install_browser(use_browser):
 
     from playwright.__main__ import main
 
-    logger.info("使用镜像源进行下载")
-    os.environ["PLAYWRIGHT_DOWNLOAD_HOST"] = "https://npmmirror.com/mirrors/playwright/"
+    logger.info('使用镜像源进行下载')
+    os.environ['PLAYWRIGHT_DOWNLOAD_HOST'] = 'https://npmmirror.com/mirrors/playwright/'
     success = False
 
-    if use_browser == "firefox":
-        logger.info("正在安装 firefox")
-        sys.argv = ["", "install", "firefox"]
+    if use_browser == 'firefox':
+        logger.info('正在安装 firefox')
+        sys.argv = ['', 'install', 'firefox']
     else:
         # 默认使用 chromium
-        logger.info("正在安装 chromium")
-        sys.argv = ["", "install", "chromium"]
+        logger.info('正在安装 chromium')
+        sys.argv = ['', 'install', 'chromium']
     try:
-        logger.info("正在安装依赖")
-        os.system("playwright install-deps")
+        logger.info('正在安装依赖')
+        os.system('playwright install-deps')
         main()
     except SystemExit as e:
         if e.code == 0:
             success = True
     if not success:
-        logger.error("浏览器更新失败, 请检查网络连通性")
+        logger.error('浏览器更新失败, 请检查网络连通性')

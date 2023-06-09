@@ -1,4 +1,3 @@
-# fmt: off
 from dataclasses import dataclass
 from typing import List, Protocol, Tuple, runtime_checkable
 
@@ -13,12 +12,12 @@ from typing import List, Protocol, Tuple, runtime_checkable
 # from .moudle.wws_clan import get_ClanInfo
 from .moudle.wws_info import get_AccountInfo
 from .moudle.wws_recent import get_RecentInfo
+
 # from .moudle.wws_record import get_record
 from .moudle.wws_ship_info import get_ShipInfo
 from .moudle.wws_ship_recent import get_ShipRecent
 
 # from .moudle.wws_shiprank import get_ShipRank
-# fmt: on
 
 
 @runtime_checkable
@@ -41,8 +40,8 @@ first_command_list = [  # 同指令中越长的匹配词越靠前
     # command(("特殊绑定",), set_special_BindInfo),
     # command(("ship.rank", "rank"), get_ShipRank),
     # command(("bind", "绑定", "set"), set_BindInfo),
-    command(("recent", "近期"), None, get_RecentInfo),
-    command(("ship", "单船"), None, get_ShipInfo),
+    command(('recent', '近期'), None, get_RecentInfo),
+    command(('ship', '单船'), None, get_ShipInfo),
     # command(("record", "历史记录"), None, get_record),
     # command(("clan", "军团", "公会", "工会"), None, get_ClanInfo),
     # command(("随机表情包",), get_Random_Ocr_Pic),
@@ -54,8 +53,8 @@ first_command_list = [  # 同指令中越长的匹配词越靠前
 ]
 
 second_command_list = [
-    command(("recent", "近期"), get_ShipRecent),
-    command(("ship", "单船"), get_ShipRecent),
+    command(('recent', '近期'), get_ShipRecent),
+    command(('ship', '单船'), get_ShipRecent),
     # command(("clan", "军团", "公会", "工会"), get_record),
     # command(("record", "历史记录"), get_record),
 ]
@@ -66,9 +65,9 @@ async def findFunction_and_replaceKeywords(match_list, command_List, default_fun
         for kw in com.keywords:
             for i, match_kw in enumerate(match_list):
                 if match_kw.find(kw) + 1:
-                    match_list[i] = str(match_kw).replace(kw, "")
-                    if match_list[i] == "":  # 为空时才删除，防止未加空格没有被split切割
-                        match_list.remove("")
+                    match_list[i] = str(match_kw).replace(kw, '')
+                    if not match_list[i]:  # 为空时才删除，防止未加空格没有被split切割
+                        match_list.remove('')
                     return com, match_list
     return command(None, default_func, None), match_list
 
