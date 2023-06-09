@@ -39,7 +39,7 @@ def set_hikari_config(
     hikari_config.proxy = proxy
     hikari_config.http2 = http2
     hikari_config.token = token
-    hikari_config.auto_image = auto_rendering
+    hikari_config.auto_rendering = auto_rendering
     hikari_config.auto_image = auto_image
     hikari_config.use_broswer = use_broswer
     logger.info(f"当前hikari-core配置\n{hikari_config}")
