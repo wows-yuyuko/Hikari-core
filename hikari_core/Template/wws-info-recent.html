@@ -327,6 +327,38 @@
 			display: flex;
 			height: 90px;
 		}
+
+		.frag-data {
+			display: flex;
+			margin: 30px 90px;
+		}
+		
+		.frag-data-col {
+			display: flex;
+			flex: 1;
+			margin-bottom: 20px;
+		}
+		.frag-item {
+			flex: 1;
+			text-align: center;
+			background-color: #F2F2F2;
+			border-radius: 16px;
+			margin: 0 10px;
+        }
+		
+		.frag-key,.frag-value {
+			height: 100px;
+			font-size: 35px;
+		}
+		
+		.frag-key {
+			color: #606266;
+			font-weight: normal;
+			line-height: 120px;
+		}
+		.frag-value {
+			line-height: 80px;
+		}
 	</style>
 	<body>
 		<div class="main-content">
@@ -547,6 +579,38 @@
 					{% endfor %}
 				</div>
 				{% endif %}
+
+				<div class="information-header">击沉数据</div>
+				<div class="frag-data">
+					<div class="frag-data-col">
+						<div class="frag-item">
+							<div class="frag-key">主炮击沉</div>
+							<div class="frag-value">{{ data['battleTypeInfo']['PVP']['battleInfo']['fragsInfo']['fragsByMain'] + data['battleTypeInfo']['RANK_SOLO']['battleInfo']['fragsInfo']['fragsByMain'] }}</div>
+						</div>
+						<div class="frag-item">
+							<div class="frag-key">副炮击沉</div>
+							<div class="frag-value">{{ data['battleTypeInfo']['PVP']['battleInfo']['fragsInfo']['fragsByAtba'] + data['battleTypeInfo']['RANK_SOLO']['battleInfo']['fragsInfo']['fragsByAtba'] }}</div>
+						</div>
+						<div class="frag-item">
+							<div class="frag-key">舰载机击沉</div>
+							<div class="frag-value">{{ data['battleTypeInfo']['PVP']['battleInfo']['fragsInfo']['fragsByPlanes'] + data['battleTypeInfo']['RANK_SOLO']['battleInfo']['fragsInfo']['fragsByPlanes'] }}</div>
+						</div>
+					</div>
+					<div class="frag-data-col">
+						<div class="frag-item">
+							<div class="frag-key">鱼雷击沉</div>
+							<div class="frag-value">{{ data['battleTypeInfo']['PVP']['battleInfo']['fragsInfo']['fragsByTpd'] + data['battleTypeInfo']['RANK_SOLO']['battleInfo']['fragsInfo']['fragsByTpd'] }}</div>
+						</div>
+						<div class="frag-item">
+							<div class="frag-key">撞击击沉</div>
+							<div class="frag-value">{{ data['battleTypeInfo']['PVP']['battleInfo']['fragsInfo']['fragsByRam'] + data['battleTypeInfo']['RANK_SOLO']['battleInfo']['fragsInfo']['fragsByRam'] }}</div>
+						</div>
+						<div class="frag-item">
+							<div class="frag-key">深弹击沉</div>
+							<div class="frag-value">{{ data['battleTypeInfo']['PVP']['battleInfo']['fragsInfo']['fragsByDbomb'] + data['battleTypeInfo']['RANK_SOLO']['battleInfo']['fragsInfo']['fragsByDbomb'] }}</div>
+						</div>
+					</div>
+				</div>
 				
 				<div class="footer">
 					<p>©西行寺雨季&nbsp;&nbsp;©本心</p>
