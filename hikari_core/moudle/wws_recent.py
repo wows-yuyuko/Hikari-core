@@ -33,6 +33,7 @@ async def get_RecentInfo(hikari: Hikari_Model) -> Hikari_Model:
                 'accountId': hikari.Input.AccountId,
                 'dateTime': hikari.Input.Recent_Date,
                 'day': hikari.Input.Recent_Day,
+                'shipId': 0,
             }
         else:
             params = {
@@ -40,6 +41,7 @@ async def get_RecentInfo(hikari: Hikari_Model) -> Hikari_Model:
                 'accountId': hikari.Input.PlatformId,
                 'dateTime': hikari.Input.Recent_Date,
                 'day': hikari.Input.Recent_Day,
+                'shipId': 0,
             }
         print(params)
         client_yuyuko = await get_client_yuyuko()
