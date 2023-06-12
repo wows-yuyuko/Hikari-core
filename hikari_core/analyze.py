@@ -59,7 +59,7 @@ async def extract_with_me_or_at(hikari: Hikari_Model) -> Hikari_Model:
             if match:
                 hikari.Input.Search_Type = 2
                 hikari.Input.Platform = hikari.UserInfo.Platform
-                hikari.Input.Platform = str(match.group(1))
+                hikari.Input.PlatformId = str(match.group(1))
                 hikari.Input.Command_List.remove(i)
                 break
         return hikari
