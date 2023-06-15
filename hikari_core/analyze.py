@@ -48,20 +48,24 @@ async def extract_with_special_name(hikari: Hikari_Model) -> Hikari_Model:
 
 async def extract_with_me_or_at(hikari: Hikari_Model) -> Hikari_Model:
     try:
-        for i in hikari.Input.Command_List:
-            if str(i).lower() == 'me':
-                hikari.Input.Search_Type = 1
-                hikari.Input.Platform = hikari.UserInfo.Platform
-                hikari.Input.PlatformId = hikari.UserInfo.PlatformId
-                hikari.Input.Command_List.remove(i)
-                break
-            match = re.search(r'CQ:at,qq=(\d+)', i)
-            if match:
-                hikari.Input.Search_Type = 2
-                hikari.Input.Platform = hikari.UserInfo.Platform
-                hikari.Input.PlatformId = str(match.group(1))
-                hikari.Input.Command_List.remove(i)
-                break
+        if hikari.UserInfo.Platform in ['QQ', 'QQ_CHANNEL']:
+            for i in hikari.Input.Command_List:
+                if str(i).lower() == 'me':
+                    hikari.Input.Search_Type = 1
+                    hikari.Input.Platform = hikari.UserInfo.Platform
+                    hikari.Input.PlatformId = hikari.UserInfo.PlatformId
+                    hikari.Input.Command_List.remove(i)
+                    break
+                if hikari.UserInfo.Platform == 'QQ':
+                    match = re.search(r'CQ:at,qq=(\d+)', i)
+                elif hikari.UserInfo.Platform == 'QQ_CHANNEL':
+                    match = re.search(r'<@!(\d+)', i)
+                if match:
+                    hikari.Input.Search_Type = 2
+                    hikari.Input.Platform = hikari.UserInfo.Platform
+                    hikari.Input.PlatformId = str(match.group(1))
+                    hikari.Input.Command_List.remove(i)
+                    break
         return hikari
     except Exception:
         logger.error(traceback.format_exc())
