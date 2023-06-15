@@ -9,6 +9,7 @@ from loguru import logger
 from .command_select import select_command
 from .data_source import servers
 from .model import Hikari_Model
+from .moudle.wws_bind import get_BindInfo, set_BindInfo, set_special_BindInfo
 from .moudle.wws_info import get_AccountInfo
 from .moudle.wws_recent import get_RecentInfo
 from .moudle.wws_ship_info import get_ShipInfo
@@ -72,7 +73,7 @@ async def extract_with_me_or_at(hikari: Hikari_Model) -> Hikari_Model:
         return hikari.error('解析指令时发生错误，请确认输入参数无误')
 
 
-async def extract_with_function(hikari: Hikari_Model) -> Hikari_Model:
+async def extract_with_function(hikari: Hikari_Model) -> Hikari_Model:  # noqa: PLR0915
     try:
         if hikari.Function in [get_AccountInfo, get_RecentInfo, get_ShipInfo, get_ShipRecent]:
             if datetime.now().hour < 7:
@@ -119,6 +120,29 @@ async def extract_with_function(hikari: Hikari_Model) -> Hikari_Model:
                     hikari.Input.ShipInfo.Ship_Name = str(hikari.Input.Command_List[0])
                 else:
                     return hikari.error('您似乎准备用me或@查询单船战绩，请检查参数是否缺少或溢出，以空格分隔，顺序不限')
+        elif hikari.Function in [get_BindInfo, set_BindInfo, set_special_BindInfo]:
+            if hikari.Function == get_BindInfo and hikari.Input.Search_Type not in [1, 2]:
+                return hikari.error('参数似乎出了问题呢，请使用me或@群友')
+            elif hikari.Function in [set_BindInfo, set_special_BindInfo]:
+                if hikari.Input.Search_Type != 3 and len(hikari.Input.Command_List) != 2:
+                    return hikari.error('参数似乎输错了呢，请确保后面跟随服务器+游戏昵称')
+                else:
+                    # 解析双参数内的AccountName和Server
+                    hikari.Input.Server, hikari.Input.Command_List = await match_keywords(hikari.Input.Command_List, servers)
+                    if hikari.Input.Server:
+                        # 普通绑定时剩余的参数为AccountName
+                        if hikari.Function == set_BindInfo:
+                            hikari.Input.AccountName = str(hikari.Input.Command_List[0])
+                        # 特殊绑定时剩余的参数为AccountId
+                        if hikari.Function == set_special_BindInfo and hikari.Input.Command_List[0].isdigit():
+                            hikari.Input.AccountId = int(hikari.Input.Command_List[0])
+                        else:
+                            return hikari.error('请在网页版复制正确的特殊绑定指令，地址：https://wows.mgaia.top')
+                        hikari.Input.Platform = hikari.UserInfo.Platform
+                        hikari.Input.PlatformId = hikari.UserInfo.PlatformId
+                    else:
+                        return hikari.error('服务器名输入错误')
+
         return hikari
     except Exception:
         logger.error(traceback.format_exc())
