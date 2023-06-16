@@ -9,7 +9,7 @@ from loguru import logger
 from .command_select import select_command
 from .data_source import servers
 from .model import Hikari_Model
-from .moudle.wws_bind import get_BindInfo, set_BindInfo, set_special_BindInfo
+from .moudle.wws_bind import change_BindInfo, delete_BindInfo, get_BindInfo, set_BindInfo, set_special_BindInfo
 from .moudle.wws_info import get_AccountInfo
 from .moudle.wws_recent import get_RecentInfo
 from .moudle.wws_ship_info import get_ShipInfo
@@ -120,7 +120,7 @@ async def extract_with_function(hikari: Hikari_Model) -> Hikari_Model:  # noqa: 
                     hikari.Input.ShipInfo.Ship_Name = str(hikari.Input.Command_List[0])
                 else:
                     return hikari.error('您似乎准备用me或@查询单船战绩，请检查参数是否缺少或溢出，以空格分隔，顺序不限')
-        elif hikari.Function in [get_BindInfo, set_BindInfo, set_special_BindInfo]:
+        elif hikari.Function in [get_BindInfo, set_BindInfo, set_special_BindInfo, change_BindInfo, delete_BindInfo]:
             if hikari.Function == get_BindInfo and hikari.Input.Search_Type not in [1, 2]:
                 return hikari.error('参数似乎出了问题呢，请使用me或@群友')
             elif hikari.Function in [set_BindInfo, set_special_BindInfo]:
@@ -138,10 +138,24 @@ async def extract_with_function(hikari: Hikari_Model) -> Hikari_Model:  # noqa: 
                             hikari.Input.AccountId = int(hikari.Input.Command_List[0])
                         else:
                             return hikari.error('请在网页版复制正确的特殊绑定指令，地址：https://wows.mgaia.top')
+                        # 绑定强制为当前平台账号
                         hikari.Input.Platform = hikari.UserInfo.Platform
                         hikari.Input.PlatformId = hikari.UserInfo.PlatformId
                     else:
                         return hikari.error('服务器名输入错误')
+            elif hikari.Function in [change_BindInfo, delete_BindInfo]:
+                if len(hikari.Input.Command_List) not in [0, 1]:
+                    return hikari.error('请检查是否仅输入了要切换的序号，也可为空进入选择列表')
+                # 检查是否带序号
+                for i in hikari.Input.Command_List:
+                    if str(i).isdigit() and len(i) <= 3:
+                        hikari.Input.Select_Index = int(i)
+                        delete_list.append(i)
+                for each in delete_list:
+                    hikari.Input.Command_List.remove(each)
+                # 切换删除绑定强制为当前平台账号
+                hikari.Input.Platform = hikari.UserInfo.Platform
+                hikari.Input.PlatformId = hikari.UserInfo.PlatformId
 
         return hikari
     except Exception:
