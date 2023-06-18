@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		body {
+			width: 900px;
+		}
+
+		.main-content {
+			margin: 20px 20px;
+			font-size: 30px;
+			background-color: #F2F2F2;
+			border-radius: 30px;
+			font-family: 'Microsoft YaHei';
+			font-weight: bold;
+		}
+
+		.current-bind-box {
+			padding-top: 20px;
+			display: flex;
+			height: 60px;
+			line-height: 60px;
+			text-align: center;
+		}
+
+		.current-bind-title {
+			margin: 0 40px;
+		}
+
+		.current-bind-username {
+			margin: 0 40px;
+		}
+
+		.current-bind-aid {
+			font-size: 22px;
+			color: #606266;
+			flex: 1;
+		}
+
+		.bind-list-title {
+			margin-left: 40px;
+			width: 240px;
+			height: 60px;
+			line-height: 60px;
+		}
+
+		.bind-box {
+			display: flex;
+			flex-direction: column;
+		}
+
+		.bind-item {
+			display: flex;
+			height: 60px;
+			line-height: 60px;
+			padding: 0 40px;
+		}
+
+		.bind-server {
+			margin: 0 40px;
+		}
+
+		.bind-username {
+			min-width: 300px;
+		}
+
+		.bind-aid {
+			font-size: 22px;
+			color: #606266;
+			margin-left: 30px;
+		}
+
+		.tip {
+			font-size: 25px;
+			text-align: center;
+			width: 100%;
+		}
+
+		.sec {
+			margin-right: 20px;
+			height: 50px;
+			width: 50px;
+			font-size: 20px;
+			text-align: center;
+			line-height: 50px;
+			border-radius: 30px;
+			border: #008272 3px solid;
+			font-weight: normal;
+		}
+	</style>
+
+	<body>
+
+		<div class="main-content">
+			{% for def in data %}
+			{% if def['accountId'] == def['defaultAccount'] %}
+			<div class="current-bind-box">
+				<div class="current-bind-title">当前绑定账号</div>
+				<div class="current-bind-server server">{{ def['server'] }}</div>
+				<div class="current-bind-username">{{ def['userName'] }}</div>
+				<div class="current-bind-aid">{{ def['accountId'] }}</div>
+<!-- 				<div class="sec">20s</div> -->
+			</div>
+			{% endif %}
+			{% endfor %}
+			<div class="bind-list-title">绑定账号列表</div>
+			<div class="bind-list-box">
+				<div class="bind-list">
+					{% for item in data %}
+					<div class="bind-item">
+						<div class="index">1</div>
+						<div class="bind-server server">{{ item['server'] }}</div>
+						<div class="bind-username">{{ item['userName'] }}</div>
+						<div class="bind-aid">{{ item['accountId'] }}</div>
+					</div>
+					{% endfor %}
+					<div class="bind-item" style="height: 75px; line-height: 75px;">
+						<div class="tip">
+							本人发送wws [切换/删除]绑定+序号 切换/删除对应账号
+						</div>
+<!-- 						<div class="tip">
+							请在20秒内选择对应的序号
+						</div> -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script>
+		let server_name = document.getElementsByClassName("server");
+		for (var i = 0; i < server_name.length; i++) {
+			if (server_name[i].innerText == "asia") {
+				server_name[i].style.color = "#92D050";
+				server_name[i].innerText = "亚服";
+			} else if (server_name[i].innerText == "cn") {
+				server_name[i].style.color = "#BF9000";
+				server_name[i].innerText = "国服";
+			} else if (server_name[i].innerText == "eu") {
+				server_name[i].style.color = "#009664";
+				server_name[i].innerText = "欧服";
+			} else if (server_name[i].innerText == "na") {
+				server_name[i].style.color = "#6872C4";
+				server_name[i].innerText = "美服";
+			} else if (server_name[i].innerText == "ru") {
+				server_name[i].style.color = "#FF0000";
+				server_name[i].innerText = "俄服";
+			}
+		}
+	</script>
+
+	<script>
+		let arr_username = document.getElementsByClassName('bind-username');
+		let max_width = 0;
+		for (let k = 0; k < arr_username.length; k++) {
+			if (arr_username[k].getBoundingClientRect().width > max_width) {
+				max_width = arr_username[k].getBoundingClientRect().width;
+			}
+			arr_username[k].style.width = max_width + "px";
+		}
+	</script>
+
+	<script>
+		let arr_information = document.getElementsByClassName('bind-item');
+		for (let i = 0; i < arr_information.length; i++) {
+			if (i % 2 != 0 && i == (arr_information.length - 1)) {
+				arr_information[i].style.backgroundColor = "#E4E4E4";
+				arr_information[i].style.borderBottomLeftRadius = "16px";
+				arr_information[i].style.borderBottomRightRadius = "16px";
+			} else if (i % 2 != 0) {
+				arr_information[i].style.backgroundColor = "#E4E4E4";
+			}
+		}
+	</script>
+</html>
