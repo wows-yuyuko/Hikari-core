@@ -24,11 +24,11 @@ async def get_BindInfo(hikari: Hikari_Model) -> Hikari_Model:
                 hikari = hikari.set_template_info('bind-list.html', 900, 440)
                 return hikari.success(result['data'])
             else:
-                return '该用户似乎还没绑定窝窝屎账号'
+                return hikari.failed('该用户似乎还没绑定窝窝屎账号')
         elif result['code'] == 500:
-            return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"
+            return hikari.failed(f"{result['message']}\n这是服务器问题，请联系雨季麻麻")
         else:
-            return f"{result['message']}"
+            return hikari.failed(f"{result['message']}")
     except (TimeoutError, ConnectTimeout):
         logger.warning(traceback.format_exc())
         return hikari.error('请求超时了，请过会儿再尝试哦~')
@@ -55,11 +55,11 @@ async def set_BindInfo(hikari: Hikari_Model) -> Hikari_Model:
         resp = await client_yuyuko.get(url, params=params, timeout=None)
         result = orjson.loads(resp.content)
         if result['code'] == 200 and result['message'] == 'success':
-            return '绑定成功'
+            return hikari.success('绑定成功')
         elif result['code'] == 500:
-            return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"
+            return hikari.failed(f"{result['message']}\n这是服务器问题，请联系雨季麻麻")
         else:
-            return f"{result['message']}"
+            return hikari.failed(f"{result['message']}")
     except (TimeoutError, ConnectTimeout):
         logger.warning(traceback.format_exc())
         return hikari.error('请求超时了，请过会儿再尝试哦~')
@@ -82,11 +82,11 @@ async def set_special_BindInfo(hikari: Hikari_Model) -> Hikari_Model:
         resp = await client_yuyuko.get(url, params=params, timeout=None)
         result = orjson.loads(resp.content)
         if result['code'] == 200 and result['message'] == 'success':
-            return '绑定成功'
+            return hikari.success('绑定成功')
         elif result['code'] == 500:
-            return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"
+            return hikari.failed(f"{result['message']}\n这是服务器问题，请联系雨季麻麻")
         else:
-            return f"{result['message']}"
+            return hikari.failed(f"{result['message']}")
     except (TimeoutError, ConnectTimeout):
         logger.warning(traceback.format_exc())
         return hikari.error('请求超时了，请过会儿再尝试哦~')

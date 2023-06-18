@@ -25,7 +25,7 @@ async def start():
                 with open('test.png', 'wb') as f:
                     f.write(hikari_data.Output.Data)
                     print(f'渲染完成,用时{time.time()-start_time}')
-    if hikari_data.Status in ['error', 'failed']:
+    elif hikari_data.Status in ['error', 'failed']:
         print(hikari_data.Output.Data)
 
 

@@ -84,7 +84,12 @@ async def output_hikari(hikari: Hikari_Model) -> Hikari_Model:
         Hikari_Model: 可通过Hikari.Status和Hikari.Output.Data内数据判断是否输出
     """
     try:
-        if hikari.Status in ['success', 'wait'] and hikari_config.auto_rendering and hikari.Output.Template:
+        if (
+            hikari.Status in ['success', 'wait']
+            and hikari_config.auto_rendering
+            and hikari.Output.Template
+            and hikari.Output.Data_Type in ["<class 'list'>","<class 'dict'>"]
+        ):
             template = env.get_template(hikari.Output.Template)
             template_data = await set_render_params(hikari.Output.Data)
             content = await template.render_async(template_data)
