@@ -160,48 +160,51 @@ async def change_BindInfo(hikari: Hikari_Model) -> Hikari_Model:
 
 
 async def delete_BindInfo(hikari: Hikari_Model) -> Hikari_Model:
-   try:
-       #if isinstance(info, List) and len(info) == 1 and str(info[0]).isdigit():
-       #    url = 'https://api.wows.shinoaki.com/public/wows/bind/account/platform/bind/list'
-       #    params = {
-       #        'platformType': server_type,
-       #        'platformId': ev.user_id,
-       #    }
-       #else:
-       #    return '参数似乎出了问题呢，请跟随要切换的序号'
-       #resp = await client_yuyuko.get(url, params=params, timeout=None)
-       #result = orjson.loads(resp.content)
-       #if result['code'] == 200 and result['message'] == 'success':
-       #    if result['data'] and len(result['data']) >= int(info[0]):
-       #        account_name = result['data'][int(info[0]) - 1]['userName']
-       #        param_server = result['data'][int(info[0]) - 1]['serverType']
-       #        param_accountid = result['data'][int(info[0]) - 1]['accountId']
-       #        url = 'https://api.wows.shinoaki.com/api/wows/bind/account/platform/bind/remove'
-       #        params = {
-       #            'platformType': server_type,
-       #            'platformId': str(ev.user_id),
-       #            'accountId': param_accountid,
-       #        }
-       #    else:
-       #        return '没有对应序号的绑定记录'
-       #elif result['code'] == 500:
-       #    return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"
-       #else:
-       #    return f"{result['message']}"
-       #resp = await client_yuyuko.get(url, params=params, timeout=None)
-       #result = orjson.loads(resp.content)
-       #if result['code'] == 200 and result['message'] == 'success':
-       #    return f'删除绑定成功,删除的账号为{param_server}：{account_name}'
-       #elif result['code'] == 500:
-       #    return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"
-       #else:
-       #    return f"{result['message']}"
-   except (TimeoutError, ConnectTimeout):
-       logger.warning(traceback.format_exc())
-       return '请求超时了，请过会儿再尝试哦~'
-   except Exception:
-       logger.error(traceback.format_exc())
-       return 'wuwuwu出了点问题，请联系麻麻解决'
+    try:
+        return
+        # if isinstance(info, List) and len(info) == 1 and str(info[0]).isdigit():
+        #    url = 'https://api.wows.shinoaki.com/public/wows/bind/account/platform/bind/list'
+        #    params = {
+        #        'platformType': server_type,
+        #        'platformId': ev.user_id,
+        #    }
+        # else:
+        #    return '参数似乎出了问题呢，请跟随要切换的序号'
+        # resp = await client_yuyuko.get(url, params=params, timeout=None)
+        # result = orjson.loads(resp.content)
+        # if result['code'] == 200 and result['message'] == 'success':
+        #    if result['data'] and len(result['data']) >= int(info[0]):
+        #        account_name = result['data'][int(info[0]) - 1]['userName']
+        #        param_server = result['data'][int(info[0]) - 1]['serverType']
+        #        param_accountid = result['data'][int(info[0]) - 1]['accountId']
+        #        url = 'https://api.wows.shinoaki.com/api/wows/bind/account/platform/bind/remove'
+        #        params = {
+        #            'platformType': server_type,
+        #            'platformId': str(ev.user_id),
+        #            'accountId': param_accountid,
+        #        }
+        #    else:
+        #        return '没有对应序号的绑定记录'
+        # elif result['code'] == 500:
+        #    return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"
+        # else:
+        #    return f"{result['message']}"
+        # resp = await client_yuyuko.get(url, params=params, timeout=None)
+        # result = orjson.loads(resp.content)
+        # if result['code'] == 200 and result['message'] == 'success':
+        #    return f'删除绑定成功,删除的账号为{param_server}：{account_name}'
+        # elif result['code'] == 500:
+        #    return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"
+        # else:
+        #    return f"{result['message']}"
+    except (TimeoutError, ConnectTimeout):
+        logger.warning(traceback.format_exc())
+        return '请求超时了，请过会儿再尝试哦~'
+    except Exception:
+        logger.error(traceback.format_exc())
+        return 'wuwuwu出了点问题，请联系麻麻解决'
+
+
 async def get_DefaultBindInfo(platformType, platformId):
     try:
         url = 'https://api.wows.shinoaki.com/public/wows/bind/account/platform/bind/list'

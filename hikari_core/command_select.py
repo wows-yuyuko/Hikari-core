@@ -7,8 +7,8 @@ from typing import List, Protocol, Tuple, runtime_checkable
 # from .game.roll import roll_ship
 # from .game.sx import get_sx_info
 # from .moudle.publicAPI import get_ship_name
-# from .moudle.wws_bind import (change_BindInfo, delete_BindInfo, get_BindInfo,
-#                              set_BindInfo, set_special_BindInfo)
+from .moudle.wws_bind import change_BindInfo, delete_BindInfo, get_BindInfo, set_BindInfo, set_special_BindInfo
+
 # from .moudle.wws_clan import get_ClanInfo
 from .moudle.wws_info import get_AccountInfo
 from .moudle.wws_recent import get_RecentInfo
@@ -34,12 +34,12 @@ class command:
 
 
 first_command_list = [  # 同指令中越长的匹配词越靠前
-    # command(("切换绑定", "更换绑定", "更改绑定"), change_BindInfo),
-    # command(("查询绑定", "绑定查询", "绑定列表", "查绑定"), get_BindInfo),
-    # command(("删除绑定",), delete_BindInfo),
-    # command(("特殊绑定",), set_special_BindInfo),
+    command(('切换绑定', '更换绑定', '更改绑定'), change_BindInfo),
+    command(('查询绑定', '绑定查询', '绑定列表', '查绑定'), get_BindInfo),
+    command(('删除绑定',), delete_BindInfo),
+    command(('特殊绑定',), set_special_BindInfo),
     # command(("ship.rank", "rank"), get_ShipRank),
-    # command(("bind", "绑定", "set"), set_BindInfo),
+    command(('bind', '绑定', 'set'), set_BindInfo),
     command(('recent', '近期'), None, get_RecentInfo),
     command(('ship', '单船'), None, get_ShipInfo),
     # command(("record", "历史记录"), None, get_record),
