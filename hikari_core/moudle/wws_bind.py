@@ -15,22 +15,14 @@ async def get_BindInfo(hikari: Hikari_Model) -> Hikari_Model:
         if hikari.Status != 'init':
             return hikari.error('当前请求状态错误')
         url = 'https://v3-api.wows.shinoaki.com/public/user/platform/bind/list'
-        params = {'server': hikari.Input.Platform, 'accountId': hikari.Input.PlatformId}
+        params = {'platformType': hikari.Input.Platform, 'platformId': hikari.Input.PlatformId}
         client_yuyuko = await get_client_yuyuko()
         resp = await client_yuyuko.get(url, params=params, timeout=None)
         result = orjson.loads(resp.content)
         if result['code'] == 200 and result['message'] == 'success':
             if result['data']:
-                msg1 = '当前绑定账号\n'
-                msg2 = '绑定账号列表\n'
-                flag = 1
-                for bindinfo in result['data']:
-                    msg2 += f"{flag}：{bindinfo['serverType']} {bindinfo['userName']}\n"
-                    flag += 1
-                    if bindinfo['defaultId']:
-                        msg1 += f"{bindinfo['serverType']} {bindinfo['userName']}\n"
-                msg = msg1 + msg2 + '本人发送wws [切换/删除]绑定+序号 切换/删除对应账号'
-                return msg
+                hikari = hikari.set_template_info('bind-list.html', 900, 440)
+                return hikari.success(result['data'])
             else:
                 return '该用户似乎还没绑定窝窝屎账号'
         elif result['code'] == 500:
