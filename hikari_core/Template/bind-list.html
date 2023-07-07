@@ -117,7 +117,7 @@
 				<div class="bind-list">
 					{% for item in data %}
 					<div class="bind-item">
-						<div class="index">1</div>
+						<div class="index">{{loop.index}}</div>
 						<div class="bind-server server">{{ item['server'] }}</div>
 						<div class="bind-username">{{ item['userName'] }}</div>
 						<div class="bind-aid">{{ item['accountId'] }}</div>

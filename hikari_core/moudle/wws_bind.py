@@ -43,7 +43,7 @@ async def get_BindInfo(hikari: Hikari_Model) -> Hikari_Model:
 async def set_BindInfo(hikari: Hikari_Model) -> Hikari_Model:
     try:
         if hikari.Status == 'init':
-            if hikari.Input.Search_Type == 3:
+            if hikari.Input.Search_Type == 3 and not hikari.Input.AccountId:
                 hikari.Input.AccountId = await get_AccountIdByName(hikari.Input.Server, hikari.Input.AccountName)
                 if not isinstance(hikari.Input.AccountId, int):
                     return hikari.error(f'{hikari.Input.AccountId}')
@@ -105,44 +105,28 @@ async def change_BindInfo(hikari: Hikari_Model) -> Hikari_Model:
         # 初次调用时无参数，返回输出选择列表
         if hikari.Status == 'init' and not hikari.Input.Select_Index:
             hikari = await get_BindInfo(hikari)
-
-        # if isinstance(info, List) and len(info) == 1 and str(info[0]).isdigit():
-        #    url = 'https://api.wows.shinoaki.com/public/wows/bind/account/platform/bind/list'
-        #    params = {
-        #        'platformType': server_type,
-        #        'platformId': ev.user_id,
-        #    }
-        # else:
-        #    return '参数似乎出了问题呢，请跟随要切换的序号'
-        # resp = await client_yuyuko.get(url, params=params, timeout=None)
-        # result = orjson.loads(resp.content)
-        # if result['code'] == 200 and result['message'] == 'success':
-        #    if result['data'] and len(result['data']) >= int(info[0]):
-        #        account_name = result['data'][int(info[0]) - 1]['userName']
-        #        param_server = result['data'][int(info[0]) - 1]['serverType']
-        #        param_accountid = result['data'][int(info[0]) - 1]['accountId']
-        #        url = 'https://api.wows.shinoaki.com/api/wows/bind/account/platform/bind/put'
-        #        params = {
-        #            'platformType': server_type,
-        #            'platformId': str(ev.user_id),
-        #            'accountId': param_accountid,
-        #        }
-        #    else:
-        #        return '没有对应序号的绑定记录'
-        # elif result['code'] == 500:
-        #    return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"
-        # else:
-        #    return f"{result['message']}"
-        # resp = await client_yuyuko.get(url, params=params, timeout=None)
-        # result = orjson.loads(resp.content)
-        # if result['code'] == 200 and result['message'] == 'success':
-        #    return f'切换绑定成功,当前绑定账号{param_server}：{account_name}'
-        # elif result['code'] == 403:
-        #    return f"{result['message']}\n请先绑定账号"
-        # elif result['code'] == 500:
-        #    return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"
-        # else:
-        #    return f"{result['message']}"
+            # 成功获取绑定列表时置为wait，否则按原状态返回
+            if hikari.Status == 'success':
+                hikari.Status = 'wait'
+            return hikari
+        # 初次调用时或回调时有参数
+        elif hikari.Input.Select_Index:
+            # 重新查询一次绑定信息
+            hikari.Status = 'init'
+            hikari = await get_BindInfo(hikari)
+            if not hikari.Status == 'success':
+                return hikari
+            if hikari.Input.Select_Index > len(hikari.Output.Data):
+                return hikari.error('请选择正确的序号')
+            hikari.Input.Select_Data = hikari.Output.Data
+            hikari.Input.AccountId = hikari.Input.Select_Data[hikari.Input.Select_Index - 1]['accountId']
+            hikari.Status = 'init'
+            # 切换绑定
+            hikari = await set_BindInfo(hikari)
+            if hikari.Status == 'success':
+                return hikari.success(
+                    f"切换绑定成功,当前绑定账号{hikari.Input.Select_Data[hikari.Input.Select_Index - 1]['server']}：{hikari.Input.Select_Data[hikari.Input.Select_Index - 1]['userName']}"
+                )
     except (TimeoutError, ConnectTimeout):
         logger.warning(traceback.format_exc())
         return '请求超时了，请过会儿再尝试哦~'
@@ -153,48 +137,49 @@ async def change_BindInfo(hikari: Hikari_Model) -> Hikari_Model:
 
 async def delete_BindInfo(hikari: Hikari_Model) -> Hikari_Model:
     try:
-        return
-        # if isinstance(info, List) and len(info) == 1 and str(info[0]).isdigit():
-        #    url = 'https://api.wows.shinoaki.com/public/wows/bind/account/platform/bind/list'
-        #    params = {
-        #        'platformType': server_type,
-        #        'platformId': ev.user_id,
-        #    }
-        # else:
-        #    return '参数似乎出了问题呢，请跟随要切换的序号'
-        # resp = await client_yuyuko.get(url, params=params, timeout=None)
-        # result = orjson.loads(resp.content)
-        # if result['code'] == 200 and result['message'] == 'success':
-        #    if result['data'] and len(result['data']) >= int(info[0]):
-        #        account_name = result['data'][int(info[0]) - 1]['userName']
-        #        param_server = result['data'][int(info[0]) - 1]['serverType']
-        #        param_accountid = result['data'][int(info[0]) - 1]['accountId']
-        #        url = 'https://api.wows.shinoaki.com/api/wows/bind/account/platform/bind/remove'
-        #        params = {
-        #            'platformType': server_type,
-        #            'platformId': str(ev.user_id),
-        #            'accountId': param_accountid,
-        #        }
-        #    else:
-        #        return '没有对应序号的绑定记录'
-        # elif result['code'] == 500:
-        #    return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"
-        # else:
-        #    return f"{result['message']}"
-        # resp = await client_yuyuko.get(url, params=params, timeout=None)
-        # result = orjson.loads(resp.content)
-        # if result['code'] == 200 and result['message'] == 'success':
-        #    return f'删除绑定成功,删除的账号为{param_server}：{account_name}'
-        # elif result['code'] == 500:
-        #    return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"
-        # else:
-        #    return f"{result['message']}"
+        if hikari.Status not in ['init', 'wait']:
+            return hikari.error('当前请求状态错误')
+        # 初次调用时无参数，返回输出选择列表
+        if hikari.Status == 'init' and not hikari.Input.Select_Index:
+            hikari = await get_BindInfo(hikari)
+            # 成功获取绑定列表时置为wait，否则按原状态返回
+            if hikari.Status == 'success':
+                hikari.Status = 'wait'
+            return hikari
+        # 初次调用时或回调时有参数
+        elif hikari.Input.Select_Index:
+            # 重新查询一次绑定信息
+            hikari.Status = 'init'
+            hikari = await get_BindInfo(hikari)
+            if not hikari.Status == 'success':
+                return hikari
+            if hikari.Input.Select_Index > len(hikari.Output.Data):
+                return hikari.error('请选择正确的序号')
+            hikari.Input.Select_Data = hikari.Output.Data
+            hikari.Input.AccountId = hikari.Input.Select_Data[hikari.Input.Select_Index - 1]['accountId']
+            url = 'https://api.wows.shinoaki.com/api/wows/bind/account/platform/bind/remove'
+            params = {'platformType': hikari.Input.Platform, 'platformId': hikari.Input.PlatformId, 'accountId': hikari.Input.AccountId}
+            client_yuyuko = await get_client_yuyuko()
+            resp = await client_yuyuko.get(url, params=params, timeout=None)
+            result = orjson.loads(resp.content)
+            if result['code'] == 200 and result['message'] == 'success':
+                return hikari.success(
+                    f"删除绑定成功，删除的账号为{hikari.Input.Select_Data[hikari.Input.Select_Index - 1]['server']}：{hikari.Input.Select_Data[hikari.Input.Select_Index - 1]['userName']}"
+                )
+            elif result['code'] == 500:
+                return hikari.failed(f"{result['message']}\n这是服务器问题，请联系雨季麻麻")
+            else:
+                return hikari.failed(f"{result['message']}")
+
     except (TimeoutError, ConnectTimeout):
         logger.warning(traceback.format_exc())
-        return '请求超时了，请过会儿再尝试哦~'
+        return hikari.error('请求超时了，请过会儿再尝试哦~')
+    except PoolTimeout:
+        await recreate_client_yuyuko()
+        return hikari.error('连接池异常，请尝试重新查询~')
     except Exception:
         logger.error(traceback.format_exc())
-        return 'wuwuwu出了点问题，请联系麻麻解决'
+        return hikari.error('wuwuwu出了点问题，请联系麻麻解决')
 
 
 async def get_DefaultBindInfo(platformType, platformId):

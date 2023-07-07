@@ -134,7 +134,7 @@ async def extract_with_function(hikari: Hikari_Model) -> Hikari_Model:  # noqa: 
                         if hikari.Function == set_BindInfo:
                             hikari.Input.AccountName = str(hikari.Input.Command_List[0])
                         # 特殊绑定时剩余的参数为AccountId
-                        if hikari.Function == set_special_BindInfo and hikari.Input.Command_List[0].isdigit():
+                        elif hikari.Function == set_special_BindInfo and hikari.Input.Command_List[0].isdigit():
                             hikari.Input.AccountId = int(hikari.Input.Command_List[0])
                         else:
                             return hikari.error('请在网页版复制正确的特殊绑定指令，地址：https://wows.mgaia.top')
@@ -147,12 +147,14 @@ async def extract_with_function(hikari: Hikari_Model) -> Hikari_Model:  # noqa: 
                 if len(hikari.Input.Command_List) not in [0, 1]:
                     return hikari.error('请检查是否仅输入了要切换的序号，也可为空进入选择列表')
                 # 检查是否带序号
-                for i in hikari.Input.Command_List:
-                    if str(i).isdigit() and len(i) <= 3:
-                        hikari.Input.Select_Index = int(i)
-                        delete_list.append(i)
-                for each in delete_list:
-                    hikari.Input.Command_List.remove(each)
+                delete_list = []
+                if len(hikari.Input.Command_List) == 1:
+                    for i in hikari.Input.Command_List:
+                        if str(i).isdigit() and len(i) <= 3:
+                            hikari.Input.Select_Index = int(i)
+                            delete_list.append(i)
+                    for each in delete_list:
+                        hikari.Input.Command_List.remove(each)
                 # 切换删除绑定强制为当前平台账号
                 hikari.Input.Platform = hikari.UserInfo.Platform
                 hikari.Input.PlatformId = hikari.UserInfo.PlatformId

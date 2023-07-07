@@ -88,12 +88,13 @@ async def output_hikari(hikari: Hikari_Model) -> Hikari_Model:
             hikari.Status in ['success', 'wait']
             and hikari_config.auto_rendering
             and hikari.Output.Template
-            and hikari.Output.Data_Type in ["<class 'list'>","<class 'dict'>"]
+            and (isinstance(hikari.Output.Data, dict) or isinstance(hikari.Output.Data, list))  # noqa: PLR1701
         ):
             template = env.get_template(hikari.Output.Template)
             template_data = await set_render_params(hikari.Output.Data)
             content = await template.render_async(template_data)
             hikari.Output.Data = content
+            hikari.Output.Data_Type = type(hikari.Output.Data)
 
             if hikari_config.auto_image:
                 hikari.Output.Data = await html_to_pic(
@@ -102,6 +103,7 @@ async def output_hikari(hikari: Hikari_Model) -> Hikari_Model:
                     viewport={'width': hikari.Output.Width, 'height': hikari.Output.Height},
                     use_browser=hikari_config.use_broswer,
                 )
+                hikari.Output.Data_Type = type(hikari.Output.Data)
         return hikari
     except Exception:
         logger.error(traceback.format_exc())
