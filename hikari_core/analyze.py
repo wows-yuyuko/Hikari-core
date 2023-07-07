@@ -26,6 +26,8 @@ async def analyze_command(hikari: Hikari_Model) -> Hikari_Model:
             hikari.Input.Command_Text = html.unescape(str(hikari.Input.Command_Text)).strip()
             hikari = await extract_with_special_name(hikari)
             hikari.Function, hikari.Input.Command_List = await select_command(hikari.Input.Command_List)
+            if hikari.Input.AccountName:
+                hikari.Input.Command_List.append(hikari.Input.AccountName)
             hikari = await extract_with_me_or_at(hikari)
             hikari = await extract_with_function(hikari)
         return hikari
