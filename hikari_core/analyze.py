@@ -9,6 +9,7 @@ from loguru import logger
 from .command_select import select_command
 from .data_source import servers
 from .game.ban_search import get_BanInfo
+from .game.box_check import check_christmas_box
 from .game.sx import get_sx_info
 from .model import Hikari_Model
 from .moudle.wws_bind import change_BindInfo, delete_BindInfo, get_BindInfo, set_BindInfo, set_special_BindInfo
@@ -161,7 +162,7 @@ async def extract_with_function(hikari: Hikari_Model) -> Hikari_Model:  # noqa: 
                 # 切换删除绑定强制为当前平台账号
                 hikari.Input.Platform = hikari.UserInfo.Platform
                 hikari.Input.PlatformId = hikari.UserInfo.PlatformId
-        elif hikari.Function in [get_BanInfo, get_sx_info]:
+        elif hikari.Function in [get_BanInfo, get_sx_info, check_christmas_box]:
             if hikari.Input.Search_Type == 3:
                 if len(hikari.Input.Command_List) == 2:
                     hikari.Input.Server, hikari.Input.Command_List = await match_keywords(hikari.Input.Command_List, servers)
