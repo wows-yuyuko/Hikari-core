@@ -52,15 +52,16 @@ async def get_ShipInfo(hikari: Hikari_Model) -> Hikari_Model:
         client_yuyuko = await get_client_yuyuko()
         resp = await client_yuyuko.get(url, params=params, timeout=None)
         result = orjson.loads(resp.content)
-        logger.success(f"本次请求总耗时{resp.elapsed.total_seconds()*1000}，服务器计算耗时:{result['queryTime']}")
+        logger.success(f'本次请求总耗时{resp.elapsed.total_seconds()*1000}')
         hikari.Output.Yuyuko_Code = result['code']
 
         if result['code'] == 200 and result['data']:
-            if not result['data']['shipInfo']['battles'] and not result['data']['rankSolo']['battles']:
+            if result['data']['typeInfo']['PVP']['battle'] or result['data']['typeInfo']['RANK_SOLO']['battle']:
+                hikari.set_template_info('wws-ship.html', 800, 100)
+                result['data']['shipRank'] = ranking
+                return hikari.success(result['data'])
+            else:
                 return hikari.failed('查询不到战绩数据')
-            hikari.set_template_info('wws-ship.html', 800, 100)
-            result['data']['shipRank'] = ranking
-            return hikari.success(result['data'])
         elif result['code'] == 403:
             return hikari.failed(f"{result['message']}\n请先绑定账号")
         elif result['code'] == 500:

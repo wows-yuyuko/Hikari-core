@@ -1,5 +1,6 @@
 import asyncio
 import gzip
+import re
 import traceback
 from asyncio.exceptions import TimeoutError
 from base64 import b64encode
@@ -82,12 +83,17 @@ async def get_ship_name(server_type, infolist: List, bot, ev):
 
 async def get_ship_byName(shipname: str) -> List:
     try:
+        shipname_select_index = None
+        match = re.search(r'^(.*?).(\d+?)$', shipname)
+        if match:
+            shipname = match.group(1)
+            shipname_select_index = int(match.group(2))
         url = 'https://api.wows.shinoaki.com/public/wows/encyclopedia/ship/search'
         params = {'county': '', 'level': '', 'shipName': shipname, 'shipType': ''}
         client_yuyuko = await get_client_yuyuko()
         resp = await client_yuyuko.get(url, params=params, timeout=None)
         result = orjson.loads(resp.content)
-        List = []
+        List, select_List = [], []
         if result['code'] == 200 and result['data']:
             for each in result['data']:
                 List.append(
@@ -100,7 +106,11 @@ async def get_ship_byName(shipname: str) -> List:
                         Ship_Id=each['id'],
                     )
                 )
-            return List
+            if shipname_select_index and shipname_select_index < len(List):
+                select_List.append(List[shipname_select_index - 1])
+                return select_List
+            else:
+                return List
         else:
             return None
     except (TimeoutError, ConnectTimeout):
