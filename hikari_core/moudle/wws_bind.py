@@ -108,17 +108,19 @@ async def change_BindInfo(hikari: Hikari_Model) -> Hikari_Model:
             # 成功获取绑定列表时置为wait，否则按原状态返回
             if hikari.Status == 'success':
                 hikari.Status = 'wait'
+                hikari.Input.Select_Data = hikari.Output.Data
             return hikari
         # 初次调用时或回调时有参数
         elif hikari.Input.Select_Index:
-            # 重新查询一次绑定信息
-            hikari.Status = 'init'
-            hikari = await get_BindInfo(hikari)
-            if not hikari.Status == 'success':
-                return hikari
-            if hikari.Input.Select_Index > len(hikari.Output.Data):
+            # 初次调用时有选择序号，查询一次绑定列表
+            if not hikari.Input.Select_Data:
+                hikari.Status = 'init'
+                hikari = await get_BindInfo(hikari)
+                if not hikari.Status == 'success':
+                    return hikari
+                hikari.Input.Select_Data = hikari.Output.Data
+            if hikari.Input.Select_Index > len(hikari.Input.Select_Data):
                 return hikari.error('请选择正确的序号')
-            hikari.Input.Select_Data = hikari.Output.Data
             hikari.Input.AccountId = hikari.Input.Select_Data[hikari.Input.Select_Index - 1]['accountId']
             hikari.Status = 'init'
             # 切换绑定
@@ -145,17 +147,19 @@ async def delete_BindInfo(hikari: Hikari_Model) -> Hikari_Model:
             # 成功获取绑定列表时置为wait，否则按原状态返回
             if hikari.Status == 'success':
                 hikari.Status = 'wait'
+                hikari.Input.Select_Data = hikari.Output.Data
             return hikari
         # 初次调用时或回调时有参数
         elif hikari.Input.Select_Index:
-            # 重新查询一次绑定信息
-            hikari.Status = 'init'
-            hikari = await get_BindInfo(hikari)
-            if not hikari.Status == 'success':
-                return hikari
-            if hikari.Input.Select_Index > len(hikari.Output.Data):
+            # 初次调用时有选择序号，查询一次绑定列表
+            if not hikari.Input.Select_Data:
+                hikari.Status = 'init'
+                hikari = await get_BindInfo(hikari)
+                if not hikari.Status == 'success':
+                    return hikari
+                hikari.Input.Select_Data = hikari.Output.Data
+            if hikari.Input.Select_Index > len(hikari.Input.Select_Data):
                 return hikari.error('请选择正确的序号')
-            hikari.Input.Select_Data = hikari.Output.Data
             hikari.Input.AccountId = hikari.Input.Select_Data[hikari.Input.Select_Index - 1]['accountId']
             url = 'https://api.wows.shinoaki.com/api/wows/bind/account/platform/bind/remove'
             params = {'platformType': hikari.Input.Platform, 'platformId': hikari.Input.PlatformId, 'accountId': hikari.Input.AccountId}

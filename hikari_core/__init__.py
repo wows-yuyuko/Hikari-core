@@ -91,7 +91,10 @@ async def output_hikari(hikari: Hikari_Model) -> Hikari_Model:
             and (isinstance(hikari.Output.Data, dict) or isinstance(hikari.Output.Data, list))  # noqa: PLR1701
         ):
             template = env.get_template(hikari.Output.Template)
-            template_data = await set_render_params(hikari.Output.Data)
+            if hikari.Status == 'success':
+                template_data = await set_render_params(hikari.Output.Data)
+            elif hikari.Status == 'wait':
+                template_data = await set_render_params(hikari.Input.Select_Data)
             content = await template.render_async(template_data)
             hikari.Output.Data = content
             hikari.Output.Data_Type = type(hikari.Output.Data)
