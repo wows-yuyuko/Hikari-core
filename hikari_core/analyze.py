@@ -7,11 +7,12 @@ from datetime import datetime
 from loguru import logger
 
 from .command_select import select_command
-from .data_source import servers
+from .data_source import levels, nations, servers, shiptypes
 from .game.ban_search import get_BanInfo
 from .game.box_check import check_christmas_box
 from .game.sx import get_sx_info
 from .model import Hikari_Model
+from .moudle.publicAPI import get_ship_name
 from .moudle.wws_bind import change_BindInfo, delete_BindInfo, get_BindInfo, set_BindInfo, set_special_BindInfo
 from .moudle.wws_info import get_AccountInfo
 from .moudle.wws_recent import get_RecentInfo
@@ -172,7 +173,18 @@ async def extract_with_function(hikari: Hikari_Model) -> Hikari_Model:  # noqa: 
                         return hikari.error('服务器名输入错误,目前仅支持国服查询')
                 else:
                     return hikari.error('您似乎准备用游戏昵称查询，请检查参数中是否包含服务器和游戏昵称，以空格分隔，顺序不限')
+        elif hikari.Function in [get_ship_name]:
+            hikari.Input.ShipInfo.Ship_Nation, hikari.Input.Command_List = await match_keywords(hikari.Input.Command_List, nations)
+            if not hikari.Input.ShipInfo.Ship_Nation:
+                return hikari.error('请检查国家名是否正确')
 
+            hikari.Input.ShipInfo.Ship_Type, hikari.Input.Command_List = await match_keywords(hikari.Input.Command_List, shiptypes)
+            if not hikari.Input.ShipInfo.Ship_Type:
+                return hikari.error('请检查船只类别是否正确')
+
+            hikari.Input.ShipInfo.Ship_Tier, hikari.Input.Command_List = await match_keywords(hikari.Input.Command_List, levels)
+            if not hikari.Input.ShipInfo.Ship_Tier:
+                return hikari.error('请检查船只等级是否正确')
         return hikari
     except Exception:
         logger.error(traceback.format_exc())

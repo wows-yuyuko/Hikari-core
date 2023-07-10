@@ -11,7 +11,7 @@ from bs4 import BeautifulSoup
 from httpx import ConnectTimeout, PoolTimeout
 from loguru import logger
 
-from ..data_source import levels, nations, number_url_homes, shiptypes
+from ..data_source import number_url_homes
 from ..HttpClient_Pool import (
     get_client_default,
     get_client_wg,
@@ -20,8 +20,7 @@ from ..HttpClient_Pool import (
     recreate_client_wg,
     recreate_client_yuyuko,
 )
-from ..model import Ship_Model
-from ..utils import match_keywords
+from ..model import Hikari_Model, Ship_Model
 
 
 async def get_nation_list():
@@ -41,25 +40,14 @@ async def get_nation_list():
         logger.error(traceback.format_exc())
 
 
-async def get_ship_name(server_type, infolist: List, bot, ev):
+async def get_ship_name(hikari: Hikari_Model):
     msg = ''
     try:
-        param_nation, infolist = await match_keywords(infolist, nations)
-        if not param_nation:
-            return '请检查国家名是否正确'
-
-        param_shiptype, infolist = await match_keywords(infolist, shiptypes)
-        if not param_shiptype:
-            return '请检查船只类别是否正确'
-
-        param_level, infolist = await match_keywords(infolist, levels)
-        if not param_level:
-            return '请检查船只等级是否正确'
         params = {
-            'county': param_nation,
-            'level': param_level,
+            'county': hikari.Input.ShipInfo.Ship_Nation,
+            'level': hikari.Input.ShipInfo.Ship_Tier,
             'shipName': '',
-            'shipType': param_shiptype,
+            'shipType': hikari.Input.ShipInfo.Ship_Type,
         }
         url = 'https://api.wows.shinoaki.com/public/wows/encyclopedia/ship/search'
         client_yuyuko = await get_client_yuyuko()
@@ -68,17 +56,18 @@ async def get_ship_name(server_type, infolist: List, bot, ev):
         if result['data']:
             for ship in result['data']:
                 msg += f"{ship['shipNameCn']}：{ship['shipNameNumbers']}\n"
+            return hikari.success(msg)
         else:
-            msg = '没有符合的船只'
-        return msg
+            return hikari.failed('没有符合的船只')
     except (TimeoutError, ConnectTimeout):
         logger.warning(traceback.format_exc())
+        return hikari.error('请求超时了，请过会儿再尝试哦~')
     except PoolTimeout:
         await recreate_client_yuyuko()
-        return
+        return hikari.error('连接池异常，请尝试重新查询~')
     except Exception:
         logger.error(traceback.format_exc())
-        return 'wuwuwu出了点问题，请联系麻麻解决'
+        return hikari.error('wuwuwu出了点问题，请联系麻麻解决')
 
 
 async def get_ship_byName(shipname: str) -> List:
