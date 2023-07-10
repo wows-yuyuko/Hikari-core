@@ -3,10 +3,10 @@ from typing import List, Protocol, Tuple, runtime_checkable
 
 from .game.ban_search import get_BanInfo
 from .game.box_check import check_christmas_box
-from .game.sx import get_sx_info
 
 # from .game.ocr import get_Random_Ocr_Pic
-# from .game.roll import roll_ship
+from .game.roll import roll_ship
+from .game.sx import get_sx_info
 from .moudle.publicAPI import get_ship_name
 from .moudle.wws_bind import change_BindInfo, delete_BindInfo, get_BindInfo, set_BindInfo, set_special_BindInfo
 
@@ -46,7 +46,7 @@ first_command_list = [  # 同指令中越长的匹配词越靠前
     # command(("record", "历史记录"), None, get_record),
     # command(("clan", "军团", "公会", "工会"), None, get_ClanInfo),
     # command(("随机表情包",), get_Random_Ocr_Pic),
-    # command(("roll", "随机"), roll_ship),
+    command(('roll', '随机'), roll_ship),
     command(('sx', '扫雪'), get_sx_info),
     command(('ban', '封号记录'), get_BanInfo),
     command(('box', 'sd', '圣诞船池'), check_christmas_box),
