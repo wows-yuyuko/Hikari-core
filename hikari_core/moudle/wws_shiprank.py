@@ -6,10 +6,10 @@ from bs4 import BeautifulSoup
 from httpx import ConnectTimeout, PoolTimeout
 from loguru import logger
 
-from ..data_source import set_ShipRank_Numbers
-from ..HttpClient_Pool import recreate_client_yuyuko
+from ..data_source import number_url_homes, set_ShipRank_Numbers
+from ..HttpClient_Pool import get_client_default, get_client_yuyuko, recreate_client_default, recreate_client_yuyuko
 from ..model import Hikari_Model
-from .publicAPI import get_AccountIdByName, get_ship_byName
+from .publicAPI import get_ship_byName
 
 
 async def get_ShipRank(hikari: Hikari_Model):
@@ -33,28 +33,17 @@ async def get_ShipRank(hikari: Hikari_Model):
         else:
             return hikari.error('当前请求状态错误')
 
-        if hikari.Input.Search_Type == 3:
-            hikari.Input.AccountId = await get_AccountIdByName(hikari.Input.Server, hikari.Input.AccountName)
-            if not isinstance(hikari.Input.AccountId, int):
-                return hikari.error(f'{hikari.Input.AccountId}')
-
-        if not hikari.Input.ShipInfo.Ship_Nation == 'cn':
-            content = await search_ShipRank_Yuyuko(hikari.Input.ShipInfo)
-            if content:  # 存在缓存，直接出图
-                return hikari
-            else:  # 无缓存，去Number爬
-                content, numbers_data = await search_ShipRank_Numbers(number_url, param_server, select_shipId, shipInfo)
-                if content:
+        if not hikari.Input.Server == 'cn':
+            hikari = await search_ShipRank_Yuyuko(hikari)
+            # 无缓存，去Number爬
+            if not hikari.Status == 'success':
+                hikari, numbers_data = await search_ShipRank_Numbers(hikari)
+                # 上报缓存
+                if hikari.Status == 'success':
                     await post_ShipRank(numbers_data)  # 上报Yuyuko
-                    return await html_to_pic(content, wait=0, viewport={'width': 1300, 'height': 100})
-                else:
-                    return 'wuwuu好像出了点问题，可能是网络问题，过一会儿还是不行的话请联系麻麻~'
+            return hikari
         else:
-            content = await search_cn_rank(select_shipId, param_server, 1, shipInfo)
-            if content:
-                return await html_to_pic(content, wait=0, viewport={'width': 1300, 'height': 100})
-            else:
-                return 'wuwuu好像出了点问题，可能是网络问题，过一会儿还是不行的话请联系麻麻~'
+            return await search_cn_rank(hikari)
     except (TimeoutError, ConnectTimeout):
         logger.warning(traceback.format_exc())
         return hikari.error('请求超时了，请过会儿再尝试哦~')
@@ -66,77 +55,89 @@ async def get_ShipRank(hikari: Hikari_Model):
         return hikari.error('wuwuwu出了点问题，请联系麻麻解决')
 
 
-async def search_ShipRank_Yuyuko(shipId, server, shipInfo):
+async def search_ShipRank_Yuyuko(hikari: Hikari_Model):
     try:
-        content = None
         url = 'https://api.wows.shinoaki.com/upload/numbers/data/v2/upload/ship/rank'
-        params = {'server': server, 'shipId': int(shipId)}
+        params = {'server': hikari.Input.Server, 'shipId': int(hikari.Input.ShipInfo.Ship_Id)}
+        client_yuyuko = await get_client_yuyuko()
         resp = await client_yuyuko.get(url, params=params, timeout=None)
         result = orjson.loads(resp.content)
         if result['code'] == 200 and result['data']:
             hikari.set_template_info('ship-rank.html', 1300, 100)
-            template = env.get_template('ship-rank.html')
-            result_data = {'data': result['data'], 'shipInfo': shipInfo}
-            content = await template.render_async(result_data)
-            return content
+            result_data = {'data': result['data'], 'shipInfo': hikari.Input.ShipInfo.dict()}
+            return hikari.success(result_data)
         else:
-            return None
+            return hikari
     except (TimeoutError, ConnectTimeout):
         logger.warning(traceback.format_exc())
-        return None
+        return hikari.error('请求超时了，请过会儿再尝试哦~')
+    except PoolTimeout:
+        await recreate_client_yuyuko()
+        return hikari.error('连接池异常，请尝试重新查询~')
     except Exception:
         logger.error(traceback.format_exc())
-        return None
+        return hikari.error('wuwuwu出了点问题，请联系麻麻解决')
 
 
-async def search_ShipRank_Numbers(url, server, shipId, shipInfo):
+async def search_ShipRank_Numbers(hikari: Hikari_Model):
     try:
-        content = None
-        resp = await client_default.get(url, timeout=None)
+        client_default = await get_client_default()
+        number_url = f'{number_url_homes[hikari.Input.Server]}/ship/{hikari.Input.ShipInfo.Ship_Id},{hikari.Input.ShipInfo.ship_Name_Numbers}'
+        resp = await client_default.get(number_url, timeout=None)
         soup = BeautifulSoup(resp.content, 'html.parser')
         data = soup.select('tr[class="cells-middle"]')
-        infoList = await set_ShipRank_Numbers(data, server, shipId)
+        infoList = await set_ShipRank_Numbers(data, hikari.Input.Server, hikari.Input.ShipInfo.Ship_Id)
         if infoList:
-            result_data = {'data': infoList, 'shipInfo': shipInfo}
-            template = env.get_template('ship-rank.html')
-            content = await template.render_async(result_data)
-            return content, infoList
+            hikari.set_template_info('ship-rank.html', 1300, 100)
+            result_data = {'data': infoList, 'shipInfo': hikari.Input.ShipInfo.dict()}
+            return hikari.success(result_data), infoList
         else:
-            return None, None
+            return hikari.error('wuwuu好像出了点问题，可能是网络问题，过一会儿还是不行的话请联系麻麻~'), None
+    except (TimeoutError, ConnectTimeout):
+        logger.warning(traceback.format_exc())
+        return hikari.error('请求超时了，请过会儿再尝试哦~'), None
+    except PoolTimeout:
+        await recreate_client_default()
+        return hikari.error('连接池异常，请尝试重新查询~'), None
     except Exception:
         logger.error(traceback.format_exc())
-        return None, None
+        return hikari.error('wuwuwu出了点问题，请联系麻麻解决'), None
 
 
 async def post_ShipRank(data):
     try:
         url = 'https://api.wows.shinoaki.com/upload/numbers/data/v2/upload/ship/rank'
+        client_yuyuko = await get_client_yuyuko()
         resp = await client_yuyuko.post(url, json=data, timeout=None)
         result = orjson.loads(resp.content)
         logger.success(result)
     except (TimeoutError, ConnectTimeout):
         logger.warning(traceback.format_exc())
+    except PoolTimeout:
+        await recreate_client_yuyuko()
     except Exception:
         logger.error(traceback.format_exc())
 
 
-async def search_cn_rank(shipId, server, page, shipInfo):
+async def search_cn_rank(hikari: Hikari_Model):
     try:
-        content = None  # 查询是否有缓存
         url = 'https://api.wows.shinoaki.com/wows/rank/ship/server'
-        params = {'server': server, 'shipId': int(shipId), 'page': int(page)}
+        params = {'server': hikari.Input.Server, 'shipId': int(hikari.Input.ShipInfo.Ship_Id), 'page': 1}
+        client_yuyuko = await get_client_yuyuko()
         resp = await client_yuyuko.get(url, params=params, timeout=None)
         result = orjson.loads(resp.content)
         if result['code'] == 200 and result['data']:
-            template = env.get_template('ship-rank.html')
-            result_data = {'data': result['data'], 'shipInfo': shipInfo}
-            content = await template.render_async(result_data)
-            return content
+            hikari.set_template_info('ship-rank.html', 1300, 100)
+            result_data = {'data': result['data'], 'shipInfo': hikari.Input.ShipInfo.dict()}
+            return hikari.success(result_data)
         else:
-            return None
+            return hikari.failed(f"{result['message']}")
     except (TimeoutError, ConnectTimeout):
         logger.warning(traceback.format_exc())
-        return None
+        return hikari.error('请求超时了，请过会儿再尝试哦~')
+    except PoolTimeout:
+        await recreate_client_yuyuko()
+        return hikari.error('连接池异常，请尝试重新查询~')
     except Exception:
         logger.error(traceback.format_exc())
-        return None
+        return hikari.error('wuwuwu出了点问题，请联系麻麻解决')

@@ -127,7 +127,7 @@ async def select_prvalue_and_color(pr):
 async def set_ShipRank_Numbers(data, server, shipId):
     try:
         info_list = []
-        for each in data[0:10]:
+        for each in data:
             index = int(each.select('td')[0].string)
             clan_name = each.select('td[style="text-align: left;  "] a')
             if len(clan_name) > 1:

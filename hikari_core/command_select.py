@@ -17,8 +17,7 @@ from .moudle.wws_recent import get_RecentInfo
 # from .moudle.wws_record import get_record
 from .moudle.wws_ship_info import get_ShipInfo
 from .moudle.wws_ship_recent import get_ShipRecent
-
-# from .moudle.wws_shiprank import get_ShipRank
+from .moudle.wws_shiprank import get_ShipRank
 
 
 @runtime_checkable
@@ -39,7 +38,7 @@ first_command_list = [  # 同指令中越长的匹配词越靠前
     command(('查询绑定', '绑定查询', '绑定列表', '查绑定'), get_BindInfo),
     command(('删除绑定',), delete_BindInfo),
     command(('特殊绑定',), set_special_BindInfo),
-    # command(("ship.rank", "rank"), get_ShipRank),
+    command(('ship.rank', 'rank'), get_ShipRank),
     command(('bind', '绑定', 'set'), set_BindInfo),
     command(('recent', '近期'), None, get_RecentInfo),
     command(('ship', '单船'), None, get_ShipInfo),

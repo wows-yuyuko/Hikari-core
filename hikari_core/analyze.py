@@ -19,6 +19,7 @@ from .moudle.wws_info import get_AccountInfo
 from .moudle.wws_recent import get_RecentInfo
 from .moudle.wws_ship_info import get_ShipInfo
 from .moudle.wws_ship_recent import get_ShipRecent
+from .moudle.wws_shiprank import get_ShipRank
 from .utils import match_keywords
 
 
@@ -186,6 +187,15 @@ async def extract_with_function(hikari: Hikari_Model) -> Hikari_Model:  # noqa: 
             hikari.Input.ShipInfo.Ship_Tier, hikari.Input.Command_List = await match_keywords(hikari.Input.Command_List, levels)
             if not hikari.Input.ShipInfo.Ship_Tier and hikari.Function == get_ship_name:
                 return hikari.error('请检查船只等级是否正确')
+        elif hikari.Function in [get_ShipRank]:
+            if len(hikari.Input.Command_List) == 2:
+                hikari.Input.Server, hikari.Input.Command_List = await match_keywords(hikari.Input.Command_List, servers)
+                if hikari.Input.Server:
+                    hikari.Input.ShipInfo.Ship_Name = str(hikari.Input.Command_List[0])
+                else:
+                    return hikari.error('服务器名输入错误')
+            else:
+                return hikari.error('请检查参数中是否包含服务器和船名，以空格分隔，顺序不限')
         return hikari
     except Exception:
         logger.error(traceback.format_exc())
