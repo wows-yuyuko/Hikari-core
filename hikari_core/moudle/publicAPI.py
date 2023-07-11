@@ -95,7 +95,7 @@ async def get_ship_byName(shipname: str) -> List:
                         Ship_Id=each['id'],
                     )
                 )
-            if shipname_select_index and shipname_select_index < len(List):
+            if shipname_select_index and shipname_select_index <= len(List):
                 select_List.append(List[shipname_select_index - 1])
                 return select_List
             else:

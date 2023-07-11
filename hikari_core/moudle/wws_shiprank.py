@@ -38,10 +38,10 @@ async def get_ShipRank(hikari: Hikari_Model):
             if not isinstance(hikari.Input.AccountId, int):
                 return hikari.error(f'{hikari.Input.AccountId}')
 
-        if not param_server == 'cn':
-            content = await search_ShipRank_Yuyuko(select_shipId, param_server, shipInfo)
+        if not hikari.Input.ShipInfo.Ship_Nation == 'cn':
+            content = await search_ShipRank_Yuyuko(hikari.Input.ShipInfo)
             if content:  # 存在缓存，直接出图
-                return await html_to_pic(content, wait=0, viewport={'width': 1300, 'height': 100})
+                return hikari
             else:  # 无缓存，去Number爬
                 content, numbers_data = await search_ShipRank_Numbers(number_url, param_server, select_shipId, shipInfo)
                 if content:
@@ -74,6 +74,7 @@ async def search_ShipRank_Yuyuko(shipId, server, shipInfo):
         resp = await client_yuyuko.get(url, params=params, timeout=None)
         result = orjson.loads(resp.content)
         if result['code'] == 200 and result['data']:
+            hikari.set_template_info('ship-rank.html', 1300, 100)
             template = env.get_template('ship-rank.html')
             result_data = {'data': result['data'], 'shipInfo': shipInfo}
             content = await template.render_async(result_data)
