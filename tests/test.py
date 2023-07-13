@@ -13,7 +13,7 @@ async def start():
     global start_time
     start_time = time.time()
     set_hikari_config(use_broswer='chromium', http2=False, proxy='http://localhost:7890', token='test:yuyuko_test')
-    hikari_data = await init_hikari('QQ', '1119809439', '检查更新')
+    hikari_data = await init_hikari('QQ', '1119809439', '更新样式')
     if hikari_data.Status == 'success':
         await output_with_check_type(hikari_data)
     elif hikari_data.Status == 'wait':

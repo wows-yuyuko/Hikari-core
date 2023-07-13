@@ -1,11 +1,12 @@
 import traceback
 from asyncio.exceptions import TimeoutError
 
+import httpx
 import orjson
 from httpx import ConnectTimeout, PoolTimeout
 from loguru import logger
 
-from ..data_source import __version__
+from ..data_source import __version__, template_path
 from ..HttpClient_Pool import get_client_default, recreate_client_default
 from ..model import Hikari_Model
 
@@ -59,3 +60,31 @@ async def check_version(hikari: Hikari_Model):
     except Exception:
         logger.error(traceback.format_exc())
         return hikari.error('wuwuwu出了点问题，请联系麻麻解决')
+
+
+async def update_template(hikari: Hikari_Model):
+    try:
+        # tasks = []
+        url = ''
+        async with httpx.AsyncClient() as client:
+            resp = await client.get(url, timeout=20)
+            result = orjson.loads(resp.content)
+            for each in result:
+                resp = await client.get(each['url'], timeout=5)
+                with open(template_path / each['name'], 'wb+') as file:
+                    file.write(resp.content)
+            # for each in result:
+            #    for name, url in each.items():
+            #        tasks.append(asyncio.ensure_future(download_template(url, name)))
+        # await asyncio.gather(*tasks)
+        return hikari.success('模板更新完成')
+    except Exception:
+        logger.error(traceback.format_exc())
+        return
+
+
+async def download_template(url, name):
+    async with httpx.AsyncClient() as client:
+        resp = resp = await client.get(url, timeout=20)
+        with open(template_path / name, 'wb+') as file:
+            file.write(resp.content)
