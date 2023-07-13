@@ -39,7 +39,10 @@ async def get_ShipRecent(hikari: Hikari_Model) -> Hikari_Model:
             if not isinstance(hikari.Input.AccountId, int):
                 return hikari.error(f'{hikari.Input.AccountId}')
 
-        is_cache = await check_yuyuko_cache(hikari.Input.Server, hikari.Input.AccountId)
+        if hikari.Input.Search_Type == 3:
+            is_cache = await check_yuyuko_cache(hikari.Input.Server, hikari.Input.AccountId)
+        else:
+            is_cache = await check_yuyuko_cache(hikari.Input.Platform, hikari.Input.PlatformId)
         if is_cache:
             logger.success('上报数据成功')
         else:

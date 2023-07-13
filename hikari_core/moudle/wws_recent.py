@@ -21,7 +21,10 @@ async def get_RecentInfo(hikari: Hikari_Model) -> Hikari_Model:
                     return hikari.error(f'{hikari.Input.AccountId}')
         else:
             return hikari.error('当前请求状态错误')
-        is_cache = await check_yuyuko_cache(hikari.Input.Server, hikari.Input.AccountId)
+        if hikari.Input.Search_Type == 3:
+            is_cache = await check_yuyuko_cache(hikari.Input.Server, hikari.Input.AccountId)
+        else:
+            is_cache = await check_yuyuko_cache(hikari.Input.Platform, hikari.Input.PlatformId)
         if is_cache:
             logger.success('上报数据成功')
         else:
