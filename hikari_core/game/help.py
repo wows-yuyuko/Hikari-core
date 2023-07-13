@@ -33,3 +33,29 @@ async def get_help(hikari: Hikari_Model):
     except Exception:
         logger.error(traceback.format_exc())
         return hikari.error('wuwuwu出了点问题，请联系麻麻解决')
+
+
+async def check_version(hikari: Hikari_Model):
+    try:
+        url = 'https://benx1n.oss-cn-beijing.aliyuncs.com/version.json'
+        client_default = await get_client_default()
+        resp = await client_default.get(url, timeout=10)
+        result = orjson.loads(resp.content)
+        match, msg = False, '发现新版本'
+        for each in result['data']:
+            if each['version'] > __version__:
+                match = True
+                msg += f"\n{each['date']} v{each['version']}\n"
+                for i in each['description']:
+                    msg += f'{i}\n'
+        if match:
+            return hikari.success(msg)
+    except (TimeoutError, ConnectTimeout):
+        logger.warning(traceback.format_exc())
+        return hikari.error('请求超时了，请过会儿再尝试哦~')
+    except PoolTimeout:
+        await recreate_client_default()
+        return hikari.error('连接池异常，请尝试重新查询~')
+    except Exception:
+        logger.error(traceback.format_exc())
+        return hikari.error('wuwuwu出了点问题，请联系麻麻解决')
