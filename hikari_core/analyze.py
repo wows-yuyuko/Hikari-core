@@ -118,13 +118,13 @@ async def extract_with_function(hikari: Hikari_Model) -> Hikari_Model:  # noqa: 
                         hikari.Input.Server, hikari.Input.Command_List = await match_keywords(hikari.Input.Command_List, servers)
                         if hikari.Input.Server:
                             hikari.Input.AccountName = str(hikari.Input.Command_List[0])
-                            hikari.Input.ShipInfo.Ship_Name = str(hikari.Input.Command_List[1])
+                            hikari.Input.ShipInfo.Ship_Name_Cn = str(hikari.Input.Command_List[1])
                         else:
                             return hikari.error('服务器参数输入错误')
                     else:
                         return hikari.error('您似乎准备用服务器+昵称查询单船战绩，请检查参数是否缺少或溢出，以空格分隔，顺序不限')
                 elif len(hikari.Input.Command_List) == 1:
-                    hikari.Input.ShipInfo.Ship_Name = str(hikari.Input.Command_List[0])
+                    hikari.Input.ShipInfo.Ship_Name_Cn = str(hikari.Input.Command_List[0])
                 else:
                     return hikari.error('您似乎准备用me或@查询单船战绩，请检查参数是否缺少或溢出，以空格分隔，顺序不限')
         elif hikari.Function in [get_BindInfo, set_BindInfo, set_special_BindInfo, change_BindInfo, delete_BindInfo]:
@@ -191,7 +191,7 @@ async def extract_with_function(hikari: Hikari_Model) -> Hikari_Model:  # noqa: 
             if len(hikari.Input.Command_List) == 2:
                 hikari.Input.Server, hikari.Input.Command_List = await match_keywords(hikari.Input.Command_List, servers)
                 if hikari.Input.Server:
-                    hikari.Input.ShipInfo.Ship_Name = str(hikari.Input.Command_List[0])
+                    hikari.Input.ShipInfo.Ship_Name_Cn = str(hikari.Input.Command_List[0])
                 else:
                     return hikari.error('服务器名输入错误')
             else:

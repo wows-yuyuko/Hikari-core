@@ -26,7 +26,7 @@ from ..model import Hikari_Model, Ship_Model
 async def get_nation_list():
     try:
         msg = ''
-        url = 'https://api.wows.shinoaki.com/public/wows/encyclopedia/nation/list'
+        url = 'https://v3-api.wows.shinoaki.com/public/wows/encyclopedia/nation/list'
         client_yuyuko = await get_client_yuyuko()
         resp = await client_yuyuko.get(url, timeout=None)
         result = orjson.loads(resp.content)
@@ -48,14 +48,15 @@ async def get_ship_name(hikari: Hikari_Model):
             'level': hikari.Input.ShipInfo.Ship_Tier,
             'shipName': '',
             'shipType': hikari.Input.ShipInfo.Ship_Type,
+            'groupType': 'default',
         }
-        url = 'https://api.wows.shinoaki.com/public/wows/encyclopedia/ship/search'
+        url = 'https://v3-api.wows.shinoaki.com/public/wows/encyclopedia/ship/search'
         client_yuyuko = await get_client_yuyuko()
         resp = await client_yuyuko.get(url, params=params, timeout=None)
         result = orjson.loads(resp.content)
         if result['data']:
             for ship in result['data']:
-                msg += f"{ship['shipNameCn']}：{ship['shipNameNumbers']}\n"
+                msg += f"{ship['nameCn']}：{ship['nameEnglish']}\n"
             return hikari.success(msg)
         else:
             return hikari.failed('没有符合的船只')
@@ -77,8 +78,8 @@ async def get_ship_byName(shipname: str) -> List:
         if match:
             shipname = match.group(1)
             shipname_select_index = int(match.group(2))
-        url = 'https://api.wows.shinoaki.com/public/wows/encyclopedia/ship/search'
-        params = {'county': '', 'level': '', 'shipName': shipname, 'shipType': ''}
+        url = 'https://v3-api.wows.shinoaki.com/public/wows/encyclopedia/ship/search'
+        params = {'county': '', 'level': '', 'shipName': shipname, 'shipType': '', 'groupType': 'default'}
         client_yuyuko = await get_client_yuyuko()
         resp = await client_yuyuko.get(url, params=params, timeout=None)
         result = orjson.loads(resp.content)
@@ -88,11 +89,12 @@ async def get_ship_byName(shipname: str) -> List:
                 List.append(
                     Ship_Model(
                         Ship_Nation=each['country'],
-                        Ship_Tier=each['tier'],
+                        Ship_Tier=each['level'],
                         Ship_Type=each['shipType'],
-                        Ship_Name=each['shipNameCn'],
-                        ship_Name_Numbers=each['shipNameNumbers'],
-                        Ship_Id=each['id'],
+                        Ship_Name_Cn=each['nameCn'],
+                        Ship_Name_English=each['nameEnglish'],
+                        ship_Name_Numbers=each['nameEnglish'],
+                        Ship_Id=each['shipId'],
                     )
                 )
             if shipname_select_index and shipname_select_index <= len(List):
@@ -114,8 +116,8 @@ async def get_ship_byName(shipname: str) -> List:
 
 async def get_all_shipList():
     try:
-        url = 'https://api.wows.shinoaki.com/public/wows/encyclopedia/ship/search'
-        params = {'county': '', 'level': '', 'shipName': '', 'shipType': ''}
+        url = 'https://v3-api.wows.shinoaki.com/public/wows/encyclopedia/ship/search'
+        params = {'county': '', 'level': '', 'shipName': '', 'shipType': '', 'groupType': 'default'}
         client_yuyuko = await get_client_yuyuko()
         resp = await client_yuyuko.get(url, params=params, timeout=None)
         result = orjson.loads(resp.content)

@@ -14,7 +14,7 @@ async def get_BindInfo(hikari: Hikari_Model) -> Hikari_Model:
     try:
         if hikari.Status != 'init':
             return hikari.error('当前请求状态错误')
-        url = 'https://v3-api.wows.shinoaki.com/public/user/platform/bind/list'
+        url = 'https://v3-api.wows.shinoaki.com/api/user/platform/bind/list'
         params = {'platformType': hikari.Input.Platform, 'platformId': hikari.Input.PlatformId}
         client_yuyuko = await get_client_yuyuko()
         resp = await client_yuyuko.get(url, params=params, timeout=None)

@@ -19,7 +19,8 @@ class Ship_Model(BaseModel):
     Ship_Nation: Optional[str]
     Ship_Tier: Optional[int]
     Ship_Type: Optional[str]
-    Ship_Name: Optional[str]
+    Ship_Name_Cn: Optional[str]
+    Ship_Name_English: Optional[str]
     ship_Name_Numbers: Optional[str]
     Ship_Id: Optional[int]
 

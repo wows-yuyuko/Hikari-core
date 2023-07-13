@@ -16,7 +16,7 @@ from .publicAPI import check_yuyuko_cache, get_AccountIdByName, get_ship_byName
 async def get_ShipRecent(hikari: Hikari_Model) -> Hikari_Model:
     try:
         if hikari.Status == 'init':
-            shipList = await get_ship_byName(hikari.Input.ShipInfo.Ship_Name)
+            shipList = await get_ship_byName(hikari.Input.ShipInfo.Ship_Name_Cn)
             if shipList:
                 if len(shipList) < 2:
                     hikari.Input.ShipInfo = shipList[0]

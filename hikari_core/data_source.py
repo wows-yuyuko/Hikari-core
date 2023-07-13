@@ -17,19 +17,19 @@ class matching:
 
 
 nations = [
-    matching(('commonwealth', '英联邦'), 'commonwealth'),
-    matching(('europe', '欧洲'), 'europe'),
-    matching(('france', '法国'), 'france'),
-    matching(('germany', '德国'), 'germany'),
-    matching(('italy', '意大利'), 'italy'),
-    matching(('japan', '日本'), 'japan'),
-    matching(('pan_america', '泛美'), 'pan_america'),
-    matching(('pan_asia', '泛亚'), 'pan_asia'),
+    matching(('commonwealth', '英联邦'), 'Commonwealth'),
+    matching(('europe', '欧洲'), 'Europe'),
+    matching(('france', '法国'), 'France'),
+    matching(('germany', '德国'), 'Germany'),
+    matching(('italy', '意大利'), 'Italy'),
+    matching(('japan', '日本'), 'Japan'),
+    matching(('pan_america', '泛美'), 'Pan_America'),
+    matching(('pan_asia', '泛亚'), 'Pan_Asia'),
     matching(('uk', '英国', 'United_Kingdom'), 'United_Kingdom'),
-    matching(('usa', '美国'), 'usa'),
+    matching(('usa', '美国'), 'USA'),
     matching(('ussr', '苏联'), 'Russia'),
-    matching(('netherlands', '荷兰'), 'netherlands'),
-    matching(('spain', '西班牙'), 'spain'),
+    matching(('netherlands', '荷兰'), 'Netherlands'),
+    matching(('spain', '西班牙'), 'Spain'),
 ]
 
 shiptypes = [
@@ -37,7 +37,7 @@ shiptypes = [
     matching(('Battleship', '战列舰', '战列', 'BB'), 'Battleship'),
     matching(('Destroyer', '驱逐舰', '驱逐', 'DD'), 'Destroyer'),
     matching(('Submarine', '潜艇', 'SS'), 'Submarine'),
-    matching(('Auxiliary', '辅助舰艇', 'DD'), 'Auxiliary'),
+    matching(('Auxiliary', '辅助航母', 'DD'), 'Auxiliary'),
     matching(('AirCarrier', '航空母舰', '航母', 'CV'), 'AirCarrier'),
 ]
 
