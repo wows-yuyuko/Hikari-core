@@ -44,7 +44,7 @@ async def get_ship_name(hikari: Hikari_Model):
     msg = ''
     try:
         params = {
-            'county': hikari.Input.ShipInfo.Ship_Nation,
+            'country': hikari.Input.ShipInfo.Ship_Nation,
             'level': hikari.Input.ShipInfo.Ship_Tier,
             'shipName': '',
             'shipType': hikari.Input.ShipInfo.Ship_Type,
@@ -79,7 +79,7 @@ async def get_ship_byName(shipname: str) -> List:
             shipname = match.group(1)
             shipname_select_index = int(match.group(2))
         url = 'https://v3-api.wows.shinoaki.com/public/wows/encyclopedia/ship/search'
-        params = {'county': '', 'level': '', 'shipName': shipname, 'shipType': '', 'groupType': 'default'}
+        params = {'country': '', 'level': '', 'shipName': shipname, 'shipType': '', 'groupType': 'default'}
         client_yuyuko = await get_client_yuyuko()
         resp = await client_yuyuko.get(url, params=params, timeout=None)
         result = orjson.loads(resp.content)
@@ -117,7 +117,7 @@ async def get_ship_byName(shipname: str) -> List:
 async def get_all_shipList():
     try:
         url = 'https://v3-api.wows.shinoaki.com/public/wows/encyclopedia/ship/search'
-        params = {'county': '', 'level': '', 'shipName': '', 'shipType': '', 'groupType': 'default'}
+        params = {'country': '', 'level': '', 'shipName': '', 'shipType': '', 'groupType': 'default'}
         client_yuyuko = await get_client_yuyuko()
         resp = await client_yuyuko.get(url, params=params, timeout=None)
         result = orjson.loads(resp.content)
