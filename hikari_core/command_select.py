@@ -3,6 +3,7 @@ from typing import List, Protocol, Tuple, runtime_checkable
 
 from .game.ban_search import get_BanInfo
 from .game.box_check import check_christmas_box
+from .game.help import get_help
 
 # from .game.ocr import get_Random_Ocr_Pic
 from .game.roll import roll_ship
@@ -50,6 +51,7 @@ first_command_list = [  # 同指令中越长的匹配词越靠前
     command(('ban', '封号记录'), get_BanInfo),
     command(('box', 'sd', '圣诞船池'), check_christmas_box),
     command(('搜船名', '查船名', '船名'), get_ship_name),
+    command(('help', '帮助'), get_help),
 ]
 
 second_command_list = [
