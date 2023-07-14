@@ -1,6 +1,5 @@
 import asyncio
 import gzip
-import re
 import traceback
 from asyncio.exceptions import TimeoutError
 from base64 import b64encode
@@ -74,10 +73,10 @@ async def get_ship_name(hikari: Hikari_Model):
 async def get_ship_byName(shipname: str) -> List:
     try:
         shipname_select_index = None
-        match = re.search(r'^(.*?).(\d+?)$', shipname)
-        if match:
-            shipname = match.group(1)
-            shipname_select_index = int(match.group(2))
+        result = shipname.split('.')
+        if len(result) == 2 and result[1].isdigit():
+            shipname = result[0]
+            shipname_select_index = int(result[1])
         url = 'https://v3-api.wows.shinoaki.com/public/wows/encyclopedia/ship/search'
         params = {'country': '', 'level': '', 'shipName': shipname, 'shipType': '', 'groupType': 'default'}
         client_yuyuko = await get_client_yuyuko()

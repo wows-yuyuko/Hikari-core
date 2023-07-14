@@ -2,12 +2,14 @@ import time
 import traceback
 
 import jinja2
+from apscheduler.schedulers.background import BackgroundScheduler
 from loguru import logger
 from pydantic import ValidationError
 
 from .analyze import analyze_command
 from .config import hikari_config, set_hikari_config  # noqa:F401
 from .data_source import set_render_params, template_path
+from .game.help import update_template
 from .Html_Render import html_to_pic
 from .model import Hikari_Model, Input_Model, UserInfo_Model
 
@@ -113,10 +115,10 @@ async def output_hikari(hikari: Hikari_Model) -> Hikari_Model:
         return Hikari_Model().error('Hikari-core顶层错误，请检查log')
 
 
-# startup()
-# scheduler = BackgroundScheduler(timezone="Asia/Shanghai")
-# scheduler.add_job(startup, 'cron', hour=4)
-# scheduler.start()
+update_template()
+scheduler = BackgroundScheduler(timezone='Asia/Shanghai')
+scheduler.add_job(update_template, 'cron', hour='4,12')
+scheduler.start()
 
 logger.add(
     'hikari-core-logs/error.log',

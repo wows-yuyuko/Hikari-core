@@ -62,29 +62,22 @@ async def check_version(hikari: Hikari_Model):
         return hikari.error('wuwuwu出了点问题，请联系麻麻解决')
 
 
-async def update_template(hikari: Hikari_Model):
+def update_template():
     try:
         # tasks = []
-        url = ''
-        async with httpx.AsyncClient() as client:
-            resp = await client.get(url, timeout=20)
+        url = 'https://hikari-resource.oss-cn-shanghai.aliyuncs.com/hikari_core_template/template.json'
+        with httpx.Client() as client:
+            resp = client.get(url, timeout=20)
             result = orjson.loads(resp.content)
             for each in result:
-                resp = await client.get(each['url'], timeout=5)
-                with open(template_path / each['name'], 'wb+') as file:
-                    file.write(resp.content)
+                for name, url in each.items():
+                    resp = client.get(url, timeout=5)
+                    with open(template_path / name, 'wb+') as file:
+                        file.write(resp.content)
+            logger.info('更新模板成功')
             # for each in result:
             #    for name, url in each.items():
             #        tasks.append(asyncio.ensure_future(download_template(url, name)))
         # await asyncio.gather(*tasks)
-        return hikari.success('模板更新完成')
     except Exception:
         logger.error(traceback.format_exc())
-        return
-
-
-async def download_template(url, name):
-    async with httpx.AsyncClient() as client:
-        resp = resp = await client.get(url, timeout=20)
-        with open(template_path / name, 'wb+') as file:
-            file.write(resp.content)
