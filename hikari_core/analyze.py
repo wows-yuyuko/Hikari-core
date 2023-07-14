@@ -1,4 +1,5 @@
 import html
+import random
 import re
 import time
 import traceback
@@ -28,6 +29,8 @@ async def analyze_command(hikari: Hikari_Model) -> Hikari_Model:
         if hikari.Status == 'init':  # 状态为init时才解析
             if not hikari.Input.Command_Text:
                 return hikari.error('请发送wws help查看帮助')
+            if random.randint(1, 1000) == 1:
+                return hikari.error('一天到晚惦记你那b水表，就nm离谱')
             hikari.Input.Command_Text = html.unescape(str(hikari.Input.Command_Text)).strip()
             hikari = await extract_with_special_name(hikari)
             hikari.Function, hikari.Input.Command_List = await select_command(hikari.Input.Command_List)

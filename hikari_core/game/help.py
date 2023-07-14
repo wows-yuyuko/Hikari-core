@@ -51,6 +51,8 @@ async def check_version(hikari: Hikari_Model):
                     msg += f'{i}\n'
         if match:
             return hikari.success(msg)
+        else:
+            return hikari.success('Hikari:当前已经是最新版本了')
     except (TimeoutError, ConnectTimeout):
         logger.warning(traceback.format_exc())
         return hikari.error('请求超时了，请过会儿再尝试哦~')
