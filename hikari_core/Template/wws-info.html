@@ -330,7 +330,7 @@
 					<div class="user">{{ data['userInfo']['userName'] }}</div>
 					<div class="server">
 						<div class="server-border">
-							{{ data['userInfo']['server'] }}
+							{{ data['userInfo']['serverCn'] }}
 						</div>
 					</div>
 				</div>
@@ -345,9 +345,7 @@
 				</div>
 
 				<div class="recnet-time">
-					<span>最后战斗时间：</span><span>{{ time.strftime('%Y-%m-%d
-						%H:%M:%S',time.localtime(abs(data['battleTypeInfo'][0]['shipInfo']['lastBattleTime'])))
-						}}</span>
+					<span>最后战斗时间：</span><span>{{ time.strftime('%Y-%m-%d%H:%M:%S',time.localtime(abs(data['lastBattleTime'])))}}</span>
 				</div>
 
 				<div class="overview-change">
@@ -355,32 +353,30 @@
 						<div class="left-item-top item-top">
 							<div class="overview-count-title item-top-top">场次</div>
 							<div class="overview-count item-top-bottom">{{
-								data['battleTypeInfo'][0]['shipInfo']['battleInfo']['battle'] }}</div>
+								data['battleTypeInfo']['PVP']['shipInfo']['battleInfo']['battle'] }}</div>
 						</div>
 						<div class="left-item-bottom item-bottom">
 							<div class="change-pr-title">
 								<div class="change-pr-title-left">PR</div>
 								<div class="change-pr-title-right">较上次</div>
 							</div>
-							<div class="change-pr">{{ '%+d' | format(data['dwpDataVO']['pr']) }}</div>
+							<div class="change-pr">{{ '%+d' | format(data['dwpData']['pr']) }}</div>
 						</div>
 					</div>
 					<div class="overview-change-item mid-item">
 						<div class="mid-item-top item-top">
 							<div class="overview-win-title item-top-top">胜率</div>
 							<div class="overview-win item-top-bottom"
-								style="color: {{ data['pvp']['winsData']['color'] }}">{{ data['pvp']['wins'] }}%</div>
+								style="color: {{ data['battleTypeInfo']['PVP']['shipInfo']['avgInfo']['winsData']['color'] }}">{{ data['battleTypeInfo']['PVP']['shipInfo']['avgInfo']['win'] }}%</div>
 						</div>
 						<div class="mid-item-bottom item-bottom">
 							<div class="change-avgdmg-box bottom-mini-item-left">
 								<div class="mini-item-top">场均</div>
-								<div class="mini-item-bottom change-avgdmg">{{ '%+d' |
-									format(data['dwpDataVO']['damage']) }}</div>
+								<div class="mini-item-bottom change-avgdmg">{{ '%+d' |format(data['dwpData']['damage']) }}</div>
 							</div>
 							<div class="change-win-box bottom-mini-item-right">
 								<div class="mini-item-top">胜率</div>
-								<div class="mini-item-bottom change-win">{{ '%+.2f' | format(data['dwpDataVO']['wins'])
-									}}%</div>
+								<div class="mini-item-bottom change-win">{{ '%+.2f' | format(data['dwpData']['wins'])}}%</div>
 							</div>
 						</div>
 					</div>
@@ -388,17 +384,17 @@
 						<div class="right-item-top item-top">
 							<div class="overview-avgdmg-title item-top-top">场均</div>
 							<div class="overview-avgdmg item-top-bottom"
-								style="color: {{ data['pvp']['damageData']['color'] }};">{{ data['pvp']['damage'] }}
+								style="color: {{ data['battleTypeInfo']['PVP']['shipInfo']['avgInfo']['damageData']['damage'] }};">{{ data['battleTypeInfo']['PVP']['shipInfo']['avgInfo']['damage'] }}
 							</div>
 						</div>
 						<div class="right-item-bottom item-bottom">
 							<div class="overview-kd-box bottom-mini-item-left">
 								<div class="mini-item-top">击杀</div>
-								<div class="mini-item-bottom">{{ '%.2f' | format(data['pvp']['frags']) }}</div>
+								<div class="mini-item-bottom">{{ '%.2f' | format(data['battleTypeInfo']['PVP']['shipInfo']['avgInfo']['frags']) }}</div>
 							</div>
 							<div class="overview-hit-box bottom-mini-item-right">
 								<div class="mini-item-top">命中</div>
-								<div class="mini-item-bottom">{{ '%.2f' | format(data['pvp']['hit']) }}%</div>
+								<div class="mini-item-bottom">{{ '%.2f' | format(data['battleTypeInfo']['PVP']['shipInfo']['hitRatioInfo']['ratioMain']) }}%</div>
 							</div>
 						</div>
 					</div>
@@ -416,84 +412,84 @@
 						<div class="ship-data-col-item">命中</div>
 					</div>
 
-					{% if data['type']['Battleship']['battles'] %}
+					{% if data['shipTypeInfo']['Battleship']['PVP']['battle'] %}
 					<div class="ship-data-col">
 						<div class="ship-data-col-item ship-data-type">战列舰</div>
-						<div class="ship-data-col-item">{{ data['type']['Battleship']['battles'] }}</div>
+						<div class="ship-data-col-item">{{ data['shipTypeInfo']['Battleship']['PVP']['shipInfo']['battleInfo']['battle'] }}</div>
 						<div class="ship-data-col-item"
-							style="color: {{ data['type']['Battleship']['winsData']['color'] }};">{{
-							data['type']['Battleship']['wins'] }}%</div>
-						<div class="ship-data-col-item" style="color: {{ data['type']['Battleship']['pr']['color'] }};">
-							{{ data['type']['Battleship']['pr']['value'] }}</div>
+							style="color: {{ data['shipTypeInfo']['Battleship']['PVP']['shipInfo']['avgInfo']['winsData']['color'] }};">{{
+							 data['shipTypeInfo']['Battleship']['PVP']['shipInfo']['avgInfo']['win'] }}%</div>
+						<div class="ship-data-col-item" style="color: {{ data['shipTypeInfo']['Battleship']['PVP']['prInfo']['color'] }};">
+							{{ data['shipTypeInfo']['Battleship']['PVP']['prInfo']['value'] }}</div>
 						<div class="ship-data-col-item"
-							style="color: {{ data['type']['Battleship']['damageData']['color'] }};">{{
-							data['type']['Battleship']['damage'] }}</div>
-						<div class="ship-data-col-item">{{ '%.2f' | format (data['type']['Battleship']['hit']) }}%</div>
+							style="color: {{ data['shipTypeInfo']['Battleship']['PVP']['shipInfo']['avgInfo']['damageData']['color'] }};">{{
+							data['shipTypeInfo']['Battleship']['PVP']['shipInfo']['avgInfo']['damage'] }}</div>
+						<div class="ship-data-col-item">{{ '%.2f' | format (data['shipTypeInfo']['Battleship']['PVP']['shipInfo']['hitRatioInfo']['ratioMain']) }}%</div>
 					</div>
 					{% endif %}
 
-					{% if data['type']['Cruiser']['battles'] %}
+					{% if data['shipTypeInfo']['Cruiser']['PVP']['battle'] %}
 					<div class="ship-data-col">
 						<div class="ship-data-col-item ship-data-type">巡洋舰</div>
-						<div class="ship-data-col-item">{{ data['type']['Cruiser']['battles'] }}</div>
+						<div class="ship-data-col-item">{{ data['shipTypeInfo']['Cruiser']['PVP']['shipInfo']['battleInfo']['battle'] }}</div>
 						<div class="ship-data-col-item"
-							style="color: {{ data['type']['Cruiser']['winsData']['color'] }};">{{
-							data['type']['Cruiser']['wins'] }}%</div>
-						<div class="ship-data-col-item" style="color: {{ data['type']['Cruiser']['pr']['color'] }};">{{
-							data['type']['Cruiser']['pr']['value'] }}</div>
+							style="color: {{ data['shipTypeInfo']['Cruiser']['PVP']['shipInfo']['avgInfo']['winsData']['color'] }};">{{
+							 data['shipTypeInfo']['Cruiser']['PVP']['shipInfo']['avgInfo']['win'] }}%</div>
+						<div class="ship-data-col-item" style="color: {{ data['shipTypeInfo']['Cruiser']['PVP']['prInfo']['color'] }};">
+							{{ data['shipTypeInfo']['Cruiser']['PVP']['prInfo']['value'] }}</div>
 						<div class="ship-data-col-item"
-							style="color: {{ data['type']['Cruiser']['damageData']['color'] }};">{{
-							data['type']['Cruiser']['damage'] }}</div>
-						<div class="ship-data-col-item">{{ '%.2f' | format (data['type']['Cruiser']['hit']) }}%</div>
+							style="color: {{ data['shipTypeInfo']['Cruiser']['PVP']['shipInfo']['avgInfo']['damageData']['color'] }};">{{
+							data['shipTypeInfo']['Cruiser']['PVP']['shipInfo']['avgInfo']['damage'] }}</div>
+						<div class="ship-data-col-item">{{ '%.2f' | format (data['shipTypeInfo']['Cruiser']['PVP']['shipInfo']['hitRatioInfo']['ratioMain']) }}%</div>
 					</div>
 					{% endif %}
 
 
-					{% if data['type']['Destroyer']['battles'] %}
+					{% if data['shipTypeInfo']['Destroyer']['PVP']['battle'] %}
 					<div class="ship-data-col">
 						<div class="ship-data-col-item ship-data-type">驱逐舰</div>
-						<div class="ship-data-col-item">{{ data['type']['Destroyer']['battles'] }}</div>
+						<div class="ship-data-col-item">{{ data['shipTypeInfo']['Destroyer']['PVP']['shipInfo']['battleInfo']['battle'] }}</div>
 						<div class="ship-data-col-item"
-							style="color: {{ data['type']['Destroyer']['winsData']['color'] }};">{{
-							data['type']['Destroyer']['wins'] }}%</div>
-						<div class="ship-data-col-item" style="color: {{ data['type']['Destroyer']['pr']['color'] }};">
-							{{ data['type']['Destroyer']['pr']['value'] }}</div>
+							style="color: {{ data['shipTypeInfo']['Destroyer']['PVP']['shipInfo']['avgInfo']['winsData']['color'] }};">{{
+							 data['shipTypeInfo']['Destroyer']['PVP']['shipInfo']['avgInfo']['win'] }}%</div>
+						<div class="ship-data-col-item" style="color: {{ data['shipTypeInfo']['Destroyer']['PVP']['prInfo']['color'] }};">
+							{{ data['shipTypeInfo']['Destroyer']['PVP']['prInfo']['value'] }}</div>
 						<div class="ship-data-col-item"
-							style="color: {{ data['type']['Destroyer']['damageData']['color'] }};">{{
-							data['type']['Destroyer']['damage'] }}</div>
-						<div class="ship-data-col-item">{{ '%.2f' | format (data['type']['Destroyer']['hit']) }}%</div>
+							style="color: {{ data['shipTypeInfo']['Destroyer']['PVP']['shipInfo']['avgInfo']['damageData']['color'] }};">{{
+							data['shipTypeInfo']['Destroyer']['PVP']['shipInfo']['avgInfo']['damage'] }}</div>
+						<div class="ship-data-col-item">{{ '%.2f' | format (data['shipTypeInfo']['Destroyer']['PVP']['shipInfo']['hitRatioInfo']['ratioMain']) }}%</div>
 					</div>
 					{% endif %}
 
-					{% if data['type']['AirCarrier']['battles'] %}
+					{% if data['shipTypeInfo']['AirCarrier']['PVP']['battle'] %}
 					<div class="ship-data-col">
-						<div class="ship-data-col-item ship-data-type">航空母舰</div>
-						<div class="ship-data-col-item">{{ data['type']['AirCarrier']['battles'] }}</div>
+						<div class="ship-data-col-item ship-data-type">航母</div>
+						<div class="ship-data-col-item">{{ data['shipTypeInfo']['AirCarrier']['PVP']['shipInfo']['battleInfo']['battle'] }}</div>
 						<div class="ship-data-col-item"
-							style="color: {{ data['type']['AirCarrier']['winsData']['color'] }};">{{
-							data['type']['AirCarrier']['wins'] }}%</div>
-						<div class="ship-data-col-item" style="color: {{ data['type']['AirCarrier']['pr']['color'] }};">
-							{{ data['type']['AirCarrier']['pr']['value'] }}</div>
+							style="color: {{ data['shipTypeInfo']['AirCarrier']['PVP']['shipInfo']['avgInfo']['winsData']['color'] }};">{{
+							 data['shipTypeInfo']['AirCarrier']['PVP']['shipInfo']['avgInfo']['win'] }}%</div>
+						<div class="ship-data-col-item" style="color: {{ data['shipTypeInfo']['AirCarrier']['PVP']['prInfo']['color'] }};">
+							{{ data['shipTypeInfo']['AirCarrier']['PVP']['prInfo']['value'] }}</div>
 						<div class="ship-data-col-item"
-							style="color: {{ data['type']['AirCarrier']['damageData']['color'] }};">{{
-							data['type']['AirCarrier']['damage'] }}</div>
-						<div class="ship-data-col-item">{{ '%.2f' | format (data['type']['AirCarrier']['hit']) }}%</div>
+							style="color: {{ data['shipTypeInfo']['AirCarrier']['PVP']['shipInfo']['avgInfo']['damageData']['color'] }};">{{
+							data['shipTypeInfo']['AirCarrier']['PVP']['shipInfo']['avgInfo']['damage'] }}</div>
+						<div class="ship-data-col-item">{{ '%.2f' | format (data['shipTypeInfo']['AirCarrier']['PVP']['shipInfo']['hitRatioInfo']['ratioMain']) }}%</div>
 					</div>
 					{% endif %}
 
-					{% if data['type']['Submarine']['battles'] %}
+					{% if data['shipTypeInfo']['Submarine']['PVP']['battle'] %}
 					<div class="ship-data-col">
 						<div class="ship-data-col-item ship-data-type">潜艇</div>
-						<div class="ship-data-col-item">{{ data['type']['Submarine']['battles'] }}</div>
+						<div class="ship-data-col-item">{{ data['shipTypeInfo']['Submarine']['PVP']['shipInfo']['battleInfo']['battle'] }}</div>
 						<div class="ship-data-col-item"
-							style="color: {{ data['type']['Submarine']['winsData']['color'] }};">{{
-							data['type']['Submarine']['wins'] }}%</div>
-						<div class="ship-data-col-item" style="color: {{ data['type']['Submarine']['pr']['color'] }};">
-							{{ data['type']['Submarine']['pr']['value'] }}</div>
+							style="color: {{ data['shipTypeInfo']['Submarine']['PVP']['shipInfo']['avgInfo']['winsData']['color'] }};">{{
+							 data['shipTypeInfo']['Submarine']['PVP']['shipInfo']['avgInfo']['win'] }}%</div>
+						<div class="ship-data-col-item" style="color: {{ data['shipTypeInfo']['Submarine']['PVP']['prInfo']['color'] }};">
+							{{ data['shipTypeInfo']['Submarine']['PVP']['prInfo']['value'] }}</div>
 						<div class="ship-data-col-item"
-							style="color: {{ data['type']['Submarine']['damageData']['color'] }};">{{
-							data['type']['Submarine']['damage'] }}</div>
-						<div class="ship-data-col-item">{{ '%.2f' | format (data['type']['Submarine']['hit']) }}%</div>
+							style="color: {{ data['shipTypeInfo']['Submarine']['PVP']['shipInfo']['avgInfo']['damageData']['color'] }};">{{
+							data['shipTypeInfo']['Submarine']['PVP']['shipInfo']['avgInfo']['damage'] }}</div>
+						<div class="ship-data-col-item">{{ '%.2f' | format (data['shipTypeInfo']['Submarine']['PVP']['shipInfo']['hitRatioInfo']['ratioMain']) }}%</div>
 					</div>
 					{% endif %}
 
@@ -511,59 +507,59 @@
 						<div class="information-col-item">击杀</div>
 					</div>
 
-					{% if data['pvpSolo']['battles'] %}
+					{% if data['battleTypeInfo']['PVP_SOLO']['battle'] %}
 					<div class="information-col">
 						<div class="information-col-item information-type">单野</div>
-						<div class="information-col-item">{{ data['pvpSolo']['battles'] }}</div>
-						<div class="information-col-item" style="color: {{ data['pvpSolo']['winsData']['color'] }};">{{
-							data['pvpSolo']['wins'] }}%</div>
-						<div class="information-col-item" style="color: {{ data['pvpSolo']['pr']['color'] }};">{{
-							data['pvpSolo']['pr']['value'] }}</div>
-						<div class="information-col-item" style="color: {{ data['pvpSolo']['damageData']['color'] }};">
-							{{ data['pvpSolo']['damage'] }}</div>
-						<div class="information-col-item">{{ '%.2f' | format(data['pvpSolo']['frags']) }}</div>
+						<div class="information-col-item">{{ data['battleTypeInfo']['PVP_SOLO']['shipInfo']['battleInfo']['battle'] }}</div>
+						<div class="information-col-item" style="color: {{ data['battleTypeInfo']['PVP_SOLO']['shipInfo']['avgInfo']['winsData']['color'] }};">{{
+							data['battleTypeInfo']['PVP_SOLO']['shipInfo']['avgInfo']['win'] }}%</div>
+						<div class="information-col-item" style="color: {{ data['battleTypeInfo']['PVP_SOLO']['prInfo']['color'] }};">{{
+							data['battleTypeInfo']['PVP_SOLO']['prInfo']['value'] }}</div>
+						<div class="information-col-item" style="color: {{ data['battleTypeInfo']['PVP_SOLO']['shipInfo']['avgInfo']['damageData']['color'] }};">
+							{{ data['battleTypeInfo']['PVP_SOLO']['shipInfo']['avgInfo']['damage'] }}</div>
+						<div class="information-col-item">{{ '%.2f' | format(data['battleTypeInfo']['PVP_SOLO']['shipInfo']['avgInfo']['frags']) }}</div>
 					</div>
 					{% endif %}
 
-					{% if data['pvpTwo']['battles'], %}
+					{% if data['battleTypeInfo']['PVP_DIV2']['battle'] %}
 					<div class="information-col">
 						<div class="information-col-item information-type">自行车</div>
-						<div class="information-col-item">{{ data['pvpTwo']['battles'] }}</div>
-						<div class="information-col-item" style="color: {{ data['pvpTwo']['winsData']['color'] }};">{{
-							data['pvpTwo']['wins'] }}%</div>
-						<div class="information-col-item" style="color: {{ data['pvpTwo']['pr']['color'] }};">{{
-							data['pvpTwo']['pr']['value'] }}</div>
-						<div class="information-col-item" style="color: {{ data['pvpTwo']['damageData']['color'] }};">{{
-							data['pvpTwo']['damage'] }}</div>
-						<div class="information-col-item">{{ '%.2f' | format(data['pvpTwo']['frags']) }}</div>
+						<div class="information-col-item">{{ data['battleTypeInfo']['PVP_DIV2']['shipInfo']['battleInfo']['battle'] }}</div>
+						<div class="information-col-item" style="color: {{ data['battleTypeInfo']['PVP_DIV2']['shipInfo']['avgInfo']['winsData']['color'] }};">{{
+							data['battleTypeInfo']['PVP_DIV2']['shipInfo']['avgInfo']['win'] }}%</div>
+						<div class="information-col-item" style="color: {{ data['battleTypeInfo']['PVP_DIV2']['prInfo']['color'] }};">{{
+							data['battleTypeInfo']['PVP_DIV2']['prInfo']['value'] }}</div>
+						<div class="information-col-item" style="color: {{ data['battleTypeInfo']['PVP_DIV2']['shipInfo']['avgInfo']['damageData']['color'] }};">
+							{{ data['battleTypeInfo']['PVP_DIV2']['shipInfo']['avgInfo']['damage'] }}</div>
+						<div class="information-col-item">{{ '%.2f' | format(data['battleTypeInfo']['PVP_DIV2']['shipInfo']['avgInfo']['frags']) }}</div>
 					</div>
 					{% endif %}
 
-					{% if data['pvpThree']['battles'] %}
+					{% if data['battleTypeInfo']['PVP_DIV3']['battle'] %}
 					<div class="information-col">
 						<div class="information-col-item information-type">三轮车</div>
-						<div class="information-col-item">{{ data['pvpThree']['battles'] }}</div>
-						<div class="information-col-item" style="color: {{ data['pvpThree']['winsData']['color'] }};">{{
-							data['pvpThree']['wins'] }}%</div>
-						<div class="information-col-item" style="color: {{ data['pvpThree']['pr']['color'] }};">{{
-							data['pvpThree']['pr']['value'] }}</div>
-						<div class="information-col-item" style="color: {{ data['pvpThree']['damageData']['color'] }};">
-							{{ data['pvpThree']['damage'] }}</div>
-						<div class="information-col-item">{{ '%.2f' | format(data['pvpThree']['frags']) }}</div>
+						<div class="information-col-item">{{ data['battleTypeInfo']['PVP_DIV3']['shipInfo']['battleInfo']['battle'] }}</div>
+						<div class="information-col-item" style="color: {{ data['battleTypeInfo']['PVP_DIV3']['shipInfo']['avgInfo']['winsData']['color'] }};">{{
+							data['battleTypeInfo']['PVP_DIV3']['shipInfo']['avgInfo']['win'] }}%</div>
+						<div class="information-col-item" style="color: {{ data['battleTypeInfo']['PVP_DIV3']['prInfo']['color'] }};">{{
+							data['battleTypeInfo']['PVP_DIV3']['prInfo']['value'] }}</div>
+						<div class="information-col-item" style="color: {{ data['battleTypeInfo']['PVP_DIV3']['shipInfo']['avgInfo']['damageData']['color'] }};">
+							{{ data['battleTypeInfo']['PVP_DIV3']['shipInfo']['avgInfo']['damage'] }}</div>
+						<div class="information-col-item">{{ '%.2f' | format(data['battleTypeInfo']['PVP_DIV3']['shipInfo']['avgInfo']['frags']) }}</div>
 					</div>
 					{% endif %}
 
-					{% if data['rankSolo']['battles'] %}
+					{% if data['battleTypeInfo']['RANK_SOLO']['battle'] %}
 					<div class="information-col">
 						<div class="information-col-item information-type">排位</div>
-						<div class="information-col-item">{{ data['rankSolo']['battles'] }}</div>
-						<div class="information-col-item" style="color: {{ data['rankSolo']['winsData']['color'] }};">{{
-							data['rankSolo']['wins'] }}%</div>
-						<div class="information-col-item" style="color: {{ data['rankSolo']['pr']['color'] }};">{{
-							data['rankSolo']['pr']['value'] }}</div>
-						<div class="information-col-item" style="color: {{ data['rankSolo']['damageData']['color'] }};">
-							{{ data['rankSolo']['damage'] }}</div>
-						<div class="information-col-item">{{ '%.2f' | format(data['rankSolo']['frags']) }}</div>
+						<div class="information-col-item">{{ data['battleTypeInfo']['RANK_SOLO']['shipInfo']['battleInfo']['battle'] }}</div>
+						<div class="information-col-item" style="color: {{ data['battleTypeInfo']['RANK_SOLO']['shipInfo']['avgInfo']['winsData']['color'] }};">{{
+							data['battleTypeInfo']['RANK_SOLO']['shipInfo']['avgInfo']['win'] }}%</div>
+						<div class="information-col-item" style="color: {{ data['battleTypeInfo']['RANK_SOLO']['prInfo']['color'] }};">{{
+							data['battleTypeInfo']['RANK_SOLO']['prInfo']['value'] }}</div>
+						<div class="information-col-item" style="color: {{ data['battleTypeInfo']['RANK_SOLO']['shipInfo']['avgInfo']['damageData']['color'] }};">
+							{{ data['battleTypeInfo']['RANK_SOLO']['shipInfo']['avgInfo']['damage'] }}</div>
+						<div class="information-col-item">{{ '%.2f' | format(data['battleTypeInfo']['RANK_SOLO']['shipInfo']['avgInfo']['frags']) }}</div>
 					</div>
 					{% endif %}
 
@@ -626,17 +622,16 @@
 				type: 'bar',
 				data: [
 					{{ data['battleCountAll']['1'] }},
-			{{ data['battleCountAll']['2'] }},
-			{{ data['battleCountAll']['3'] }}
-	},
-	{ { data['battleCountAll']['4'] } },
-	{ { data['battleCountAll']['5'] } },
-	{ { data['battleCountAll']['6'] } },
-	{ { data['battleCountAll']['7'] } },
-	{ { data['battleCountAll']['8'] } },
-	{ { data['battleCountAll']['9'] } },
-	{ { data['battleCountAll']['10'] } },
-	{ { data['battleCountAll']['11'] } },
+					{{ data['battleCountAll']['2'] }},
+					{{ data['battleCountAll']['3'] }},
+					{{ data['battleCountAll']['4'] }},
+					{{ data['battleCountAll']['5'] }},
+					{{ data['battleCountAll']['6'] }},
+					{{ data['battleCountAll']['7'] }},
+					{{ data['battleCountAll']['8'] }},
+					{{ data['battleCountAll']['9'] }},
+					{{ data['battleCountAll']['10'] }},
+					{{ data['battleCountAll']['11'] }},
 					],
 	itemStyle: {
 		color: '#D6ECFB40',
@@ -676,12 +671,11 @@
 						fontWeight: 'bold',
 					},
 					data: [
-						{ value: {{ data['type']['Battleship']['battles'] }}, name: 'BB' },
-			{ value: {{ data['type']['Cruiser']['battles'] }}
-	}, name: 'CA' },
-	{ value: { { data['type']['Destroyer']['battles'] } }, name: 'DD' },
-	{ value: { { data['type']['AirCarrier']['battles'] } }, name: 'CV' },
-	{ value: { { data['type']['Submarine']['battles'] } }, name: 'SS' }
+						{ value: {{ data['shipTypeInfo']['Battleship']['PVP']['shipInfo']['battleInfo']['battle'] }}, name: 'BB' },
+						{ value: {{ data['shipTypeInfo']['Cruiser']['PVP']['shipInfo']['battleInfo']['battle'] }}, name: 'CA' },
+						{ value: {{ data['shipTypeInfo']['Destroyer']['PVP']['shipInfo']['battleInfo']['battle'] }}, name: 'DD' },
+						{ value: {{ data['shipTypeInfo']['AirCarrier']['PVP']['shipInfo']['battleInfo']['battle'] }}, name: 'CV' },
+						{ value: {{ data['shipTypeInfo']['Submarine']['PVP']['shipInfo']['battleInfo']['battle'] }}, name: 'SS' }
 			        ]
 			    }],
 	graphic: {

@@ -115,32 +115,32 @@ async def output_hikari(hikari: Hikari_Model) -> Hikari_Model:
         return Hikari_Model().error('Hikari-core顶层错误，请检查log')
 
 
-update_template()
-scheduler = BackgroundScheduler(timezone='Asia/Shanghai')
-scheduler.add_job(update_template, 'cron', hour='4,12')
-scheduler.start()
+# update_template()
+# scheduler = BackgroundScheduler(timezone='Asia/Shanghai')
+# scheduler.add_job(update_template, 'cron', hour='4,12')
+# scheduler.start()
 
-logger.add(
-    'hikari-core-logs/error.log',
-    rotation='00:00',
-    retention='1 week',
-    diagnose=False,
-    level='ERROR',
-    encoding='utf-8',
-)
-logger.add(
-    'hikari-core-logs/info.log',
-    rotation='00:00',
-    retention='1 week',
-    diagnose=False,
-    level='INFO',
-    encoding='utf-8',
-)
-logger.add(
-    'hikari-core-logs/warning.log',
-    rotation='00:00',
-    retention='1 week',
-    diagnose=False,
-    level='WARNING',
-    encoding='utf-8',
-)
+# logger.add(
+#    'hikari-core-logs/error.log',
+#    rotation='00:00',
+#    retention='1 week',
+#    diagnose=False,
+#    level='ERROR',
+#    encoding='utf-8',
+# )
+# logger.add(
+#    'hikari-core-logs/info.log',
+#    rotation='00:00',
+#    retention='1 week',
+#    diagnose=False,
+#    level='INFO',
+#    encoding='utf-8',
+# )
+# logger.add(
+#    'hikari-core-logs/warning.log',
+#    rotation='00:00',
+#    retention='1 week',
+#    diagnose=False,
+#    level='WARNING',
+#    encoding='utf-8',
+# )
