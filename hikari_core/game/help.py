@@ -83,3 +83,25 @@ def update_template():
         # await asyncio.gather(*tasks)
     except Exception:
         logger.error(traceback.format_exc())
+
+
+async def async_update_template(hikari: Hikari_Model = Hikari_Model()):  # noqa: B008
+    try:
+        # tasks = []
+        url = 'https://hikari-resource.oss-cn-shanghai.aliyuncs.com/hikari_core_template/template.json'
+        with httpx.Client() as client:
+            resp = client.get(url, timeout=20)
+            result = orjson.loads(resp.content)
+            for each in result:
+                for name, url in each.items():
+                    resp = client.get(url, timeout=5)
+                    with open(template_path / name, 'wb+') as file:
+                        file.write(resp.content)
+            logger.info('更新模板成功')
+            return hikari.success('更新模板成功')
+            # for each in result:
+            #    for name, url in each.items():
+            #        tasks.append(asyncio.ensure_future(download_template(url, name)))
+        # await asyncio.gather(*tasks)
+    except Exception:
+        logger.error(traceback.format_exc())
