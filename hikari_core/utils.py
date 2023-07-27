@@ -131,7 +131,7 @@ class DailyNumberLimiter:
 
 async def download(url, path, proxy=None):
     async with httpx.AsyncClient(proxies=proxy) as client:
-        resp = await client.get(url, timeout=None)
+        resp = await client.get(url, timeout=10)
         content = resp.read()
         content = content.replace(b'\n', b'\r\n')
         with open(path, 'wb') as f:

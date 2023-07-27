@@ -31,7 +31,7 @@ async def get_BanInfo(hikari: Hikari_Model) -> Hikari_Model:
             return hikari.error('当前请求状态错误')
         url = 'https://api.wows.shinoaki.com/public/wows/ban/cn/user'
         client_yuyuko = await get_client_yuyuko()
-        resp = await client_yuyuko.post(url, json={'accountId': hikari.Input.AccountId}, timeout=None)
+        resp = await client_yuyuko.post(url, json={'accountId': hikari.Input.AccountId}, timeout=10)
         result = orjson.loads(resp.content)
         hikari.Output.Yuyuko_Code = result['code']
         if result['code'] == 200 and result['data']:

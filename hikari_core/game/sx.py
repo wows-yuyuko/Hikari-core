@@ -25,7 +25,7 @@ async def get_sx_info(hikari: Hikari_Model) -> Hikari_Model:
         else:
             params = {'server': hikari.Input.Platform, 'accountId': hikari.Input.PlatformId}
         client_yuyuko = await get_client_yuyuko()
-        resp = await client_yuyuko.get(url, params=params, timeout=None)
+        resp = await client_yuyuko.get(url, params=params, timeout=10)
         result = orjson.loads(resp.content)
         hikari.Output.Yuyuko_Code = result['code']
         if result['code'] == 200 and result['data']:

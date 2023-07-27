@@ -48,7 +48,7 @@ async def get_RecentInfo(hikari: Hikari_Model) -> Hikari_Model:
             }
         print(params)
         client_yuyuko = await get_client_yuyuko()
-        resp = await client_yuyuko.get(url, params=params, timeout=None)
+        resp = await client_yuyuko.get(url, params=params, timeout=10)
         result = orjson.loads(resp.content)
         hikari.Output.Yuyuko_Code = result['code']
         if result['code'] == 200:

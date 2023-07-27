@@ -27,7 +27,7 @@ async def get_nation_list():
         msg = ''
         url = 'https://v3-api.wows.shinoaki.com/public/wows/encyclopedia/nation/list'
         client_yuyuko = await get_client_yuyuko()
-        resp = await client_yuyuko.get(url, timeout=None)
+        resp = await client_yuyuko.get(url, timeout=10)
         result = orjson.loads(resp.content)
         for nation in result['data']:
             msg: str = msg + f"{nation['cn']}：{nation['nation']}\n"
@@ -51,7 +51,7 @@ async def get_ship_name(hikari: Hikari_Model):
         }
         url = 'https://v3-api.wows.shinoaki.com/public/wows/encyclopedia/ship/search'
         client_yuyuko = await get_client_yuyuko()
-        resp = await client_yuyuko.get(url, params=params, timeout=None)
+        resp = await client_yuyuko.get(url, params=params, timeout=10)
         result = orjson.loads(resp.content)
         if result['data']:
             for ship in result['data']:
@@ -80,7 +80,7 @@ async def get_ship_byName(shipname: str) -> List:
         url = 'https://v3-api.wows.shinoaki.com/public/wows/encyclopedia/ship/search'
         params = {'country': '', 'level': '', 'shipName': shipname, 'shipType': '', 'groupType': 'default'}
         client_yuyuko = await get_client_yuyuko()
-        resp = await client_yuyuko.get(url, params=params, timeout=None)
+        resp = await client_yuyuko.get(url, params=params, timeout=10)
         result = orjson.loads(resp.content)
         List, select_List = [], []
         if result['code'] == 200 and result['data']:
@@ -118,7 +118,7 @@ async def get_all_shipList():
         url = 'https://v3-api.wows.shinoaki.com/public/wows/encyclopedia/ship/search'
         params = {'country': '', 'level': '', 'shipName': '', 'shipType': '', 'groupType': 'default'}
         client_yuyuko = await get_client_yuyuko()
-        resp = await client_yuyuko.get(url, params=params, timeout=None)
+        resp = await client_yuyuko.get(url, params=params, timeout=10)
         result = orjson.loads(resp.content)
         if result['code'] == 200 and result['data']:
             return result['data']
@@ -136,7 +136,7 @@ async def get_AccountIdByName(server: str, name: str) -> str:
         url = 'https://api.wows.shinoaki.com/public/wows/account/search/user'
         params = {'server': server, 'userName': name}
         client_yuyuko = await get_client_yuyuko()
-        resp = await client_yuyuko.get(url, params=params, timeout=None)
+        resp = await client_yuyuko.get(url, params=params, timeout=10)
         result = orjson.loads(resp.content)
         if result['code'] == 200 and result['data']:
             return int(result['data']['accountId'])
@@ -158,7 +158,7 @@ async def get_ClanIdByName(server: str, tag: str):
         url = 'https://api.wows.shinoaki.com/public/wows/clan/search'
         params = {'server': server, 'tag': tag, 'type': 1}
         client_yuyuko = await get_client_yuyuko()
-        resp = await client_yuyuko.get(url, params=params, timeout=None)
+        resp = await client_yuyuko.get(url, params=params, timeout=10)
         result = orjson.loads(resp.content)
         if result['code'] == 200 and result['data']:
             # for each in result['data']:
@@ -230,7 +230,7 @@ async def get_MyShipRank_yuyuko(params) -> int:
     try:
         url = 'https://api.wows.shinoaki.com/upload/numbers/data/upload/user/ship/rank'
         client_yuyuko = await get_client_yuyuko()
-        resp = await client_yuyuko.get(url, params=params, timeout=None)
+        resp = await client_yuyuko.get(url, params=params, timeout=10)
         result = orjson.loads(resp.content)
         if result['code'] == 200 and result['data']:
             if result['data']['ranking']:
@@ -292,7 +292,7 @@ async def post_MyShipRank_yuyuko(accountId, ranking, serverId, shipId):
             'shipId': int(shipId),
         }
         client_yuyuko = await get_client_yuyuko()
-        await client_yuyuko.post(url, json=post_data, timeout=None)
+        await client_yuyuko.post(url, json=post_data, timeout=10)
         return
     except PoolTimeout:
         await recreate_client_yuyuko()

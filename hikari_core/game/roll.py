@@ -27,7 +27,7 @@ async def roll_ship(hikari: Hikari_Model):
         }
         url = 'https://api.wows.shinoaki.com/public/wows/roll/ship/roll'
         client_yuyuko = await get_client_yuyuko()
-        resp = await client_yuyuko.post(url, json=params, timeout=None)
+        resp = await client_yuyuko.post(url, json=params, timeout=10)
         result = orjson.loads(resp.content)
         if result['code'] == 200 and result['data']:
             return hikari.success(f"本次roll到了{result['data']['shipNameCn']}")
