@@ -18,6 +18,7 @@ from ..HttpClient_Pool import (
     recreate_client_yuyuko,
 )
 from ..model import Hikari_Model
+from .publicAPI import get_AccountIdByName
 
 api_list = {
     'asia': 'https://api.worldofwarships.asia/wows/ships/stats/',
@@ -92,6 +93,19 @@ def get_config():
             f.write(orjson.dumps({}).decode())
     with open(listen_config_path, 'rb') as f:
         config = orjson.loads(f.read())
+    return config
+
+
+def write_config(config):
+    listen_data_path = f'{hikari_config.game_path}/account_data'
+    if not os.path.exists(listen_data_path):
+        os.mkdir(listen_data_path)
+    listen_config_path = f'{hikari_config.game_path}/listen_config.json'
+    if not os.path.exists(listen_config_path):
+        with open(listen_config_path, 'w') as f:
+            f.write(orjson.dumps({}).decode())
+    with open(listen_config_path, 'w', encoding='utf-8') as f:
+        f.write(orjson.dumps(config).decode())
     return config
 
 
@@ -196,12 +210,61 @@ async def get_listen_list(hikari: Hikari_Model):
         config = get_config()
         group_id = hikari.UserInfo.GroupId
         msg = '本群监控列表\n'
+        flag = 1
         if str(group_id) in config:
             for each in config[str(group_id)]:
-                msg += f"账号:{each['account_id']},备注:{each['nick_name']}\n"
+                msg += f"{flag}：账号:{each['account_id']},备注:{each['nick_name']}\n"
+                flag += 1
         else:
             msg = '测试功能，请联系机器人搭建者添加监控'
         return hikari.success(msg)
+    except Exception:
+        logger.error(traceback.format_exc())
+        return hikari.error('wuwuwu出了点问题，请联系麻麻解决')
+
+
+async def add_listen_list(hikari: Hikari_Model):
+    try:
+        if hikari.Status == 'init':
+            if hikari.Input.Search_Type == 3:
+                hikari.Input.AccountId = await get_AccountIdByName(hikari.Input.Server, hikari.Input.AccountName)
+                if not isinstance(hikari.Input.AccountId, int):
+                    return hikari.error(f'{hikari.Input.AccountId}')
+        else:
+            return hikari.error('当前请求状态错误')
+        add_param = {'server': hikari.Input.Server, 'account_id': hikari.Input.AccountId, 'nick_name': hikari.Input.Command_List[1]}
+        config = get_config()
+        group_id = hikari.UserInfo.GroupId
+        if group_id in config:
+            group_list = config[group_id]
+        else:
+            group_list = []
+        group_list.append(add_param)
+        config[group_id] = group_list
+        write_config(config)
+        return hikari.success('添加成功')
+    except Exception:
+        logger.error(traceback.format_exc())
+        return hikari.error('wuwuwu出了点问题，请联系麻麻解决')
+
+
+async def delete_listen_list(hikari: Hikari_Model):
+    try:
+        config = get_config()
+        group_id = hikari.UserInfo.GroupId
+        if group_id in config:
+            group_list: list = config[group_id]
+        else:
+            return hikari.error('当前群没有监控列表')
+        if hikari.Input.Select_Index > len(group_list):
+            return hikari.error('请确认序号是否小于监控列表')
+
+        group_list.pop(hikari.Input.Select_Index - 1)
+        config[group_id] = group_list
+        if len(config[group_id]) == 0:
+            config.pop(group_id)
+        write_config(config)
+        return hikari.success('删除成功')
     except Exception:
         logger.error(traceback.format_exc())
         return hikari.error('wuwuwu出了点问题，请联系麻麻解决')

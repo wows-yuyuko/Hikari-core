@@ -165,3 +165,4 @@ echarts.js
 ocr_data.json
 hikari-core-logs
 test.png
+hikari_core/game/listen_config.json

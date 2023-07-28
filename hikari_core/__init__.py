@@ -34,6 +34,7 @@ async def init_hikari(
         platform (str): 平台类型
         PlatformId (str): 平台ID
         command_text (str): 传入指令，不带wws
+        GroupId (str): 群号,不配置无法使用部分分群功能
 
     Returns:
         Hikari_Model: 可通过Hikari.Status和Hikari.Output.Data内数据判断是否输出

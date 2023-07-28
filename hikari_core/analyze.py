@@ -17,6 +17,7 @@ from .model import Hikari_Model
 from .moudle.publicAPI import get_ship_name
 from .moudle.wws_bind import change_BindInfo, delete_BindInfo, get_BindInfo, set_BindInfo, set_special_BindInfo
 from .moudle.wws_info import get_AccountInfo
+from .moudle.wws_real_game import add_listen_list, delete_listen_list
 from .moudle.wws_recent import get_RecentInfo
 from .moudle.wws_ship_info import get_ShipInfo
 from .moudle.wws_ship_recent import get_ShipRecent
@@ -199,6 +200,23 @@ async def extract_with_function(hikari: Hikari_Model) -> Hikari_Model:  # noqa: 
                     return hikari.error('服务器名输入错误')
             else:
                 return hikari.error('请检查参数中是否包含服务器和船名，以空格分隔，顺序不限')
+        elif hikari.Function in [add_listen_list]:
+            if len(hikari.Input.Command_List) == 3:
+                hikari.Input.Server, hikari.Input.Command_List = await match_keywords(hikari.Input.Command_List, servers)
+                if hikari.Input.Server:
+                    hikari.Input.AccountName = str(hikari.Input.Command_List[0])
+                else:
+                    return hikari.error('服务器名输入错误')
+            else:
+                return hikari.error('请检查参数中是否包含服务器、用户名、设定昵称，以空格分隔，顺序不限')
+        elif hikari.Function in [delete_listen_list]:
+            if len(hikari.Input.Command_List) == 1:
+                if str(hikari.Input.Command_List[0]).isdigit() and len(hikari.Input.Command_List[0]) < 3:
+                    hikari.Input.Select_Index = int(hikari.Input.Command_List[0])
+                else:
+                    return hikari.error('请确认输入序号是否正确')
+            else:
+                return hikari.error('请检查是否仅输入了要删除的监控序号')
         return hikari
     except Exception:
         logger.error(traceback.format_exc())

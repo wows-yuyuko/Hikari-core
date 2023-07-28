@@ -37,7 +37,7 @@ def set_hikari_config(  # noqa: PLR0913
         auto_rendering (bool): 自动填充模板，默认启用
         auto_image (bool): 是否自动渲染，默认启用，若auto_rending未启用则该项配置无效
         use_broswer (str): chromium/firefox，默认chromium，性能大约为firefox三倍
-
+        game_path (str):缓存文件夹路径，推荐设置在bot目录下，不配置默认为core目录下game
     """
     global hikari_config  # noqa: PLW0602
     hikari_config.proxy = proxy
