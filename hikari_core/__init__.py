@@ -26,6 +26,7 @@ async def init_hikari(
     platform: str,
     PlatformId: str,
     command_text: str = None,
+    GroupId: str = None,
 ) -> Hikari_Model:
     """Hikari初始化
 
@@ -38,7 +39,7 @@ async def init_hikari(
         Hikari_Model: 可通过Hikari.Status和Hikari.Output.Data内数据判断是否输出
     """
     try:
-        userinfo = UserInfo_Model(Platform=platform, PlatformId=PlatformId)
+        userinfo = UserInfo_Model(Platform=platform, PlatformId=PlatformId, GroupId=GroupId)
         input = Input_Model(Command_Text=command_text)
         hikari = Hikari_Model(UserInfo=userinfo, Input=input)
         hikari = await analyze_command(hikari)

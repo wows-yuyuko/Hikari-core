@@ -3,6 +3,8 @@ from typing import Optional
 from loguru import logger
 from pydantic import BaseModel
 
+from .data_source import dir_path
+
 
 class Config_Model(BaseModel):
     proxy: Optional[str]
@@ -11,6 +13,7 @@ class Config_Model(BaseModel):
     auto_rendering: bool = True
     auto_image: bool = True
     use_broswer: Optional[str] = 'chromium'
+    game_path: Optional[str] = f'{dir_path}/game'
 
 
 hikari_config = Config_Model()
@@ -23,6 +26,7 @@ def set_hikari_config(  # noqa: PLR0913
     auto_rendering: bool = True,
     auto_image: bool = True,
     use_broswer: Optional[str] = 'chromium',
+    game_path: Optional[str] = f'{dir_path}/game',
 ):
     """配置Hikari-core
 
@@ -42,4 +46,5 @@ def set_hikari_config(  # noqa: PLR0913
     hikari_config.auto_rendering = auto_rendering
     hikari_config.auto_image = auto_image
     hikari_config.use_broswer = use_broswer
+    hikari_config.game_path = game_path
     logger.info(f'当前hikari-core配置\n{hikari_config}')

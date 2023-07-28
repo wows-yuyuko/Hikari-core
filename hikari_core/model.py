@@ -13,6 +13,7 @@ class Func(Protocol):
 class UserInfo_Model(BaseModel):
     Platform: str = 'QQ'
     PlatformId: str = '1119809439'
+    GroupId: str = None
 
 
 class Ship_Model(BaseModel):
