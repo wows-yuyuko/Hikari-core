@@ -15,6 +15,7 @@ from .moudle.wws_bind import change_BindInfo, delete_BindInfo, get_BindInfo, set
 from .moudle.wws_info import get_AccountInfo
 from .moudle.wws_real_game import add_listen_list, delete_listen_list, get_diff_ship, get_listen_list
 from .moudle.wws_recent import get_RecentInfo
+from .moudle.wws_recents import get_RecentsInfo
 
 # from .moudle.wws_record import get_record
 from .moudle.wws_ship_info import get_ShipInfo
@@ -42,6 +43,7 @@ first_command_list = [  # 同指令中越长的匹配词越靠前
     command(('特殊绑定',), set_special_BindInfo),
     command(('ship.rank', 'rank'), get_ShipRank),
     command(('bind', '绑定', 'set'), set_BindInfo),
+    command(('recents', '单场近期'), None, get_RecentsInfo),
     command(('recent', '近期'), None, get_RecentInfo),
     command(('ship', '单船'), None, get_ShipInfo),
     # command(("record", "历史记录"), None, get_record),
