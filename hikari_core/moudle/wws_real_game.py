@@ -5,7 +5,7 @@ from asyncio.exceptions import TimeoutError
 
 import json_tools
 import orjson
-from httpx import ConnectTimeout, PoolTimeout
+from httpx import ConnectTimeout, PoolTimeout, TimeoutException
 from loguru import logger
 
 from ..config import hikari_config
@@ -46,12 +46,12 @@ async def get_latest_info(server, account_id):
             resp = await client_default.get(url)
             result = orjson.loads(resp.content)
         return result
-    except (TimeoutError, ConnectTimeout):
-        logger.warning(traceback.format_exc())
-        return None
     except PoolTimeout:
         await recreate_client_default()
         await recreate_client_wg()
+        return None
+    except TimeoutException:
+        logger.error(f'获取{account_id}实时战绩超时，可能是网络原因')
         return None
     except Exception:
         logger.error(traceback.format_exc())
