@@ -49,6 +49,7 @@ async def check_version(hikari: Hikari_Model):
                 msg += f"\n{each['date']} v{each['version']}\n"
                 for i in each['description']:
                     msg += f'{i}\n'
+        msg += '实验性更新指令：wws 更新Hikari，请在能登录上服务器的情况下执行该命令'
         if match:
             return hikari.success(msg)
         else:

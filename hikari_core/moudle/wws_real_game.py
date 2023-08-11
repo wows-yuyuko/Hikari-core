@@ -48,11 +48,14 @@ async def get_latest_info(server, account_id):
         return result
     except (TimeoutError, ConnectTimeout):
         logger.warning(traceback.format_exc())
+        return None
     except PoolTimeout:
         await recreate_client_default()
         await recreate_client_wg()
+        return None
     except Exception:
         logger.error(traceback.format_exc())
+        return None
 
 
 def get_last_info(account_id):
@@ -131,7 +134,7 @@ async def get_diff_ship(hikari: Hikari_Model):  # noqa: PLR0915
                 continue
             # 存在历史记录，拉取最新战绩判断是否有差异
             latest_data = await get_latest_info(account['server'], account['account_id'])
-            if not latest_data['status'] == 'ok':
+            if not latest_data or not latest_data['status'] == 'ok':
                 continue
             last_data = get_last_info(account['account_id'])
             write_latest_info(account['account_id'], latest_data)
