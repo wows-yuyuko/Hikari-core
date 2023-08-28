@@ -45,7 +45,7 @@ async def get_ShipInfo(hikari: Hikari_Model) -> Hikari_Model:  # noqa: PLR0915
         else:
             logger.success('跳过上报数据，直接请求')
 
-        url = 'https://v3-api.wows.shinoaki.com/public/wows/account/ship/info'
+        url = 'https://v3-api.wows.shinoaki.com:8443/public/wows/account/ship/info'
         if hikari.Input.Search_Type == 3:
             params = {'server': hikari.Input.Server, 'accountId': hikari.Input.AccountId, 'shipId': hikari.Input.ShipInfo.Ship_Id}
         else:

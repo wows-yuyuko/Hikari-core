@@ -25,7 +25,7 @@ from ..model import Hikari_Model, Ship_Model
 async def get_nation_list():
     try:
         msg = ''
-        url = 'https://v3-api.wows.shinoaki.com/public/wows/encyclopedia/nation/list'
+        url = 'https://v3-api.wows.shinoaki.com:8443/public/wows/encyclopedia/nation/list'
         client_yuyuko = await get_client_yuyuko()
         resp = await client_yuyuko.get(url, timeout=10)
         result = orjson.loads(resp.content)
@@ -49,7 +49,7 @@ async def get_ship_name(hikari: Hikari_Model):
             'shipType': hikari.Input.ShipInfo.Ship_Type,
             'groupType': 'default',
         }
-        url = 'https://v3-api.wows.shinoaki.com/public/wows/encyclopedia/ship/search'
+        url = 'https://v3-api.wows.shinoaki.com:8443/public/wows/encyclopedia/ship/search'
         client_yuyuko = await get_client_yuyuko()
         resp = await client_yuyuko.get(url, params=params, timeout=10)
         result = orjson.loads(resp.content)
@@ -77,7 +77,7 @@ async def get_ship_byName(shipname: str) -> List:
         if len(result) == 2 and result[1].isdigit():
             shipname = result[0]
             shipname_select_index = int(result[1])
-        url = 'https://v3-api.wows.shinoaki.com/public/wows/encyclopedia/ship/search'
+        url = 'https://v3-api.wows.shinoaki.com:8443/public/wows/encyclopedia/ship/search'
         params = {'country': '', 'level': '', 'shipName': shipname, 'shipType': '', 'groupType': 'default'}
         client_yuyuko = await get_client_yuyuko()
         resp = await client_yuyuko.get(url, params=params, timeout=10)
@@ -115,7 +115,7 @@ async def get_ship_byName(shipname: str) -> List:
 
 async def get_all_shipList():
     try:
-        url = 'https://v3-api.wows.shinoaki.com/public/wows/encyclopedia/ship/search'
+        url = 'https://v3-api.wows.shinoaki.com:8443/public/wows/encyclopedia/ship/search'
         params = {'country': '', 'level': '', 'shipName': '', 'shipType': '', 'groupType': 'default'}
         client_yuyuko = await get_client_yuyuko()
         resp = await client_yuyuko.get(url, params=params, timeout=10)
