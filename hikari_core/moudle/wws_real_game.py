@@ -46,8 +46,11 @@ async def get_latest_info(server, account_id):
             url = f'{api_list[server]}{account_id}/ships/pvp/'
             resp = await client_default.get(url)
             result = orjson.loads(resp.content)
+        if not result:
+            raise Exception
         return result
     except PoolTimeout:
+        logger.error('连接池错误，尝试重新创建')
         await recreate_client_default()
         await recreate_client_wg()
         return None
@@ -129,7 +132,7 @@ async def get_diff_ship(hikari: Hikari_Model):  # noqa: PLR0915
             # 不存在记录本轮先创建
             if not os.path.exists(f"{listen_data_path}/{account['account_id']}.json"):
                 latest_data = await get_latest_info(account['server'], account['account_id'])
-                if not latest_data['status'] == 'ok':
+                if not latest_data or not latest_data['status'] == 'ok':
                     continue
                 write_latest_info(account['account_id'], latest_data)
                 continue
