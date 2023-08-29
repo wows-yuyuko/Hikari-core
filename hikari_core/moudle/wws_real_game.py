@@ -7,6 +7,7 @@ import json_tools
 import orjson
 from httpx import ConnectTimeout, PoolTimeout, TimeoutException
 from loguru import logger
+from orjson import JSONDecodeError
 
 from ..config import hikari_config
 from ..HttpClient_Pool import (
@@ -87,29 +88,37 @@ def jsonDiff(a, b):
 
 
 def get_config():
-    listen_data_path = f'{hikari_config.game_path}/account_data'
-    if not os.path.exists(listen_data_path):
-        os.mkdir(listen_data_path)
-    listen_config_path = f'{hikari_config.game_path}/listen_config.json'
-    if not os.path.exists(listen_config_path):
+    try:
+        listen_data_path = f'{hikari_config.game_path}/account_data'
+        if not os.path.exists(listen_data_path):
+            os.mkdir(listen_data_path)
+        listen_config_path = f'{hikari_config.game_path}/listen_config.json'
+        if not os.path.exists(listen_config_path):
+            with open(listen_config_path, 'w') as f:
+                f.write(orjson.dumps({}).decode())
+        with open(listen_config_path, 'rb') as f:
+            config = orjson.loads(f.read())
+        return config
+    except JSONDecodeError:
         with open(listen_config_path, 'w') as f:
             f.write(orjson.dumps({}).decode())
-    with open(listen_config_path, 'rb') as f:
-        config = orjson.loads(f.read())
-    return config
 
 
 def write_config(config):
-    listen_data_path = f'{hikari_config.game_path}/account_data'
-    if not os.path.exists(listen_data_path):
-        os.mkdir(listen_data_path)
-    listen_config_path = f'{hikari_config.game_path}/listen_config.json'
-    if not os.path.exists(listen_config_path):
+    try:
+        listen_data_path = f'{hikari_config.game_path}/account_data'
+        if not os.path.exists(listen_data_path):
+            os.mkdir(listen_data_path)
+        listen_config_path = f'{hikari_config.game_path}/listen_config.json'
+        if not os.path.exists(listen_config_path):
+            with open(listen_config_path, 'w') as f:
+                f.write(orjson.dumps({}).decode())
+        with open(listen_config_path, 'w', encoding='utf-8') as f:
+            f.write(orjson.dumps(config).decode())
+        return config
+    except JSONDecodeError:
         with open(listen_config_path, 'w') as f:
             f.write(orjson.dumps({}).decode())
-    with open(listen_config_path, 'w', encoding='utf-8') as f:
-        f.write(orjson.dumps(config).decode())
-    return config
 
 
 async def get_diff_ship(hikari: Hikari_Model):  # noqa: PLR0915
@@ -238,6 +247,8 @@ async def add_listen_list(hikari: Hikari_Model):
         add_param = {'server': hikari.Input.Server, 'account_id': hikari.Input.AccountId, 'nick_name': hikari.Input.Command_List[1]}
         config = get_config()
         group_id = hikari.UserInfo.GroupId
+        if not group_id:
+            return hikari.error('不支持私聊')
         if group_id in config:
             group_list = config[group_id]
         else:
