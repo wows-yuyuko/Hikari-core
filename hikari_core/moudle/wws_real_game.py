@@ -127,7 +127,7 @@ async def get_diff_ship(hikari: Hikari_Model):  # noqa: PLR0915
                 if each['account_id'] not in account_id_list:
                     account_id_list.append(each['account_id'])
                     account_list.append(each.copy())
-        print(account_list)
+        logger.info('开始获取监控信息')
         for account in account_list:
             # 不存在记录本轮先创建
             if not os.path.exists(f"{listen_data_path}/{account['account_id']}.json"):
