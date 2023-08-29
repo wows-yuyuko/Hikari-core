@@ -13,7 +13,7 @@ from .moudle.wws_bind import change_BindInfo, delete_BindInfo, get_BindInfo, set
 
 # from .moudle.wws_clan import get_ClanInfo
 from .moudle.wws_info import get_AccountInfo
-from .moudle.wws_real_game import add_listen_list, delete_listen_list, get_diff_ship, get_listen_list
+from .moudle.wws_real_game import add_listen_list, delete_listen_list, get_diff_ship, get_listen_list, reset_config
 from .moudle.wws_recent import get_RecentInfo
 from .moudle.wws_recents import get_RecentsInfo
 
@@ -61,6 +61,7 @@ first_command_list = [  # 同指令中越长的匹配词越靠前
     command(('测试监控',), get_diff_ship),
     command(('添加监控',), add_listen_list),
     command(('删除监控',), delete_listen_list),
+    command(('重置监控',), reset_config),
 ]
 
 second_command_list = [
