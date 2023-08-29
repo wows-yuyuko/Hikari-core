@@ -105,20 +105,16 @@ def get_config():
 
 
 def write_config(config):
-    try:
-        listen_data_path = f'{hikari_config.game_path}/account_data'
-        if not os.path.exists(listen_data_path):
-            os.mkdir(listen_data_path)
-        listen_config_path = f'{hikari_config.game_path}/listen_config.json'
-        if not os.path.exists(listen_config_path):
-            with open(listen_config_path, 'w') as f:
-                f.write(orjson.dumps({}).decode())
-        with open(listen_config_path, 'w', encoding='utf-8') as f:
-            f.write(orjson.dumps(config).decode())
-        return config
-    except JSONDecodeError:
+    listen_data_path = f'{hikari_config.game_path}/account_data'
+    if not os.path.exists(listen_data_path):
+        os.mkdir(listen_data_path)
+    listen_config_path = f'{hikari_config.game_path}/listen_config.json'
+    if not os.path.exists(listen_config_path):
         with open(listen_config_path, 'w') as f:
             f.write(orjson.dumps({}).decode())
+    with open(listen_config_path, 'w', encoding='utf-8') as f:
+        f.write(orjson.dumps(config).decode())
+    return config
 
 
 async def get_diff_ship(hikari: Hikari_Model):  # noqa: PLR0915
@@ -266,6 +262,8 @@ async def delete_listen_list(hikari: Hikari_Model):
     try:
         config = get_config()
         group_id = hikari.UserInfo.GroupId
+        if not group_id:
+            return hikari.error('不支持私聊')
         if group_id in config:
             group_list: list = config[group_id]
         else:
