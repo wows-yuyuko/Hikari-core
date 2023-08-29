@@ -1,5 +1,6 @@
 import os
 import re
+import shutil
 import traceback
 from asyncio.exceptions import TimeoutError
 
@@ -280,7 +281,7 @@ async def delete_listen_list(hikari: Hikari_Model):
 async def reset_config(hikari: Hikari_Model):
     try:
         listen_data_path = f'{hikari_config.game_path}/account_data'
-        os.removedirs(listen_data_path)
+        shutil.rmtree(listen_data_path, ignore_errors=True)
         os.mkdir(listen_data_path)
         listen_config_path = f'{hikari_config.game_path}/listen_config.json'
         os.remove(listen_config_path)
