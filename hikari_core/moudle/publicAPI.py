@@ -133,13 +133,13 @@ async def get_all_shipList():
 
 async def get_AccountIdByName(server: str, name: str) -> str:
     try:
-        url = 'https://api.wows.shinoaki.com/public/wows/account/search/user'
-        params = {'server': server, 'userName': name}
+        url = f'https://v3-api.wows.shinoaki.com:8443/public/wows/account/search/{server}/user'
+        params = {'userName': name, 'one': True}
         client_yuyuko = await get_client_yuyuko()
-        resp = await client_yuyuko.get(url, params=params, timeout=10)
+        resp = await client_yuyuko.post(url, json=params, timeout=10)
         result = orjson.loads(resp.content)
         if result['code'] == 200 and result['data']:
-            return int(result['data']['accountId'])
+            return int(result['data'][0]['accountId'])
         else:
             return result['message']
     except (TimeoutError, ConnectTimeout):
@@ -176,7 +176,7 @@ async def get_ClanIdByName(server: str, tag: str):
 
 async def check_yuyuko_cache(server, id):
     try:
-        yuyuko_cache_url = 'https://api.wows.shinoaki.com/api/wows/cache/check'
+        yuyuko_cache_url = 'https://v3-api.wows.shinoaki.com:8443/api/wows/cache/check'
         params = {'accountId': id, 'server': server}
         client_yuyuko = await get_client_yuyuko()
         resp = await client_yuyuko.post(yuyuko_cache_url, json=params, timeout=5)
@@ -185,7 +185,7 @@ async def check_yuyuko_cache(server, id):
         if result['code'] == 201:
             if 'DEV' in result['data']:
                 await get_wg_info(cache_data, 'DEV', result['data']['DEV'])
-            elif 'pvp' in result['data']:
+            elif 'PVP' in result['data']:
                 tasks = []
                 for key in result['data']:
                     tasks.append(asyncio.ensure_future(get_wg_info(cache_data, key, result['data'][key])))
@@ -204,7 +204,7 @@ async def check_yuyuko_cache(server, id):
         return False
     except PoolTimeout:
         await recreate_client_yuyuko()
-        return
+        return False
     except Exception:
         logger.error(traceback.format_exc())
         return False
