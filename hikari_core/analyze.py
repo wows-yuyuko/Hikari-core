@@ -208,7 +208,7 @@ async def extract_with_function(hikari: Hikari_Model) -> Hikari_Model:  # noqa: 
                 else:
                     return hikari.error('服务器名输入错误')
             else:
-                return hikari.error('请检查参数中是否包含服务器、用户名、设定昵称，以空格分隔，顺序不限')
+                return hikari.error('请检查参数中是否包含服务器、游戏昵称、备注昵称，以空格分隔，顺序不限')
         elif hikari.Function in [delete_listen_list]:
             if len(hikari.Input.Command_List) == 1:
                 if str(hikari.Input.Command_List[0]).isdigit() and len(hikari.Input.Command_List[0]) < 3:
