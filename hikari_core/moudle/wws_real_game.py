@@ -223,7 +223,7 @@ async def get_listen_list(hikari: Hikari_Model):
                 msg += f"{flag}：账号:{each['account_id']},备注:{each['nick_name']}\n"
                 flag += 1
         else:
-            msg = '测试功能，请联系机器人搭建者添加监控'
+            msg = '当前群监控列表为空，请联系机器人搭建者添加监控'
         return hikari.success(msg)
     except Exception:
         logger.error(traceback.format_exc())
