@@ -154,9 +154,9 @@ async def get_diff_ship(hikari: Hikari_Model):  # noqa: PLR0915
                         value = each['value']
                         info = {'path': each['add'], 'value': value}
                         compare_list.append(info.copy())
-                print(orjson.dumps(compare_list))
+                logger.info(orjson.dumps(compare_list))
 
-                battles, win, loss, damage, shipId = 0, 0, 0, 0, 0
+                battles, win, loss, damage, shipId, match_count = 0, 0, 0, 0, 0, 0
                 ship_name_cn = ''
                 for each in compare_list:
                     if '/pvp/wins' in each['path']:
@@ -170,6 +170,9 @@ async def get_diff_ship(hikari: Hikari_Model):  # noqa: PLR0915
                     else:
                         match = re.search(f"^/data/{account['account_id']}/statistics/(.*?)/pvp/battles_count$", each['path'])
                     if match:
+                        match_count += 1
+                        if match_count > 5:
+                            break
                         battles += each['value']
                         if account['server'] != 'cn':
                             index = int(match.group(1))
@@ -182,7 +185,8 @@ async def get_diff_ship(hikari: Hikari_Model):  # noqa: PLR0915
                         result = orjson.loads(resp.content)
                         if result['code'] == 200:
                             ship_name_cn = ship_name_cn + result['data']['nameCn'] + ','
-
+                if match_count > 5:
+                    break
                 # 构建消息
                 for _group_id, group_config in config.items():
                     for each in group_config:
