@@ -19,6 +19,7 @@ from .moudle.wws_bind import change_BindInfo, delete_BindInfo, get_BindInfo, set
 from .moudle.wws_info import get_AccountInfo
 from .moudle.wws_real_game import add_listen_list, delete_listen_list
 from .moudle.wws_recent import get_RecentInfo
+from .moudle.wws_recents import get_RecentsInfo
 from .moudle.wws_ship_info import get_ShipInfo
 from .moudle.wws_ship_recent import get_ShipRecent
 from .moudle.wws_shiprank import get_ShipRank
@@ -87,8 +88,8 @@ async def extract_with_me_or_at(hikari: Hikari_Model) -> Hikari_Model:
 
 async def extract_with_function(hikari: Hikari_Model) -> Hikari_Model:  # noqa: PLR0915
     try:
-        if hikari.Function in [get_AccountInfo, get_RecentInfo, get_ShipInfo, get_ShipRecent]:
-            if datetime.now().hour < 7:
+        if hikari.Function in [get_AccountInfo, get_RecentInfo, get_RecentsInfo, get_ShipInfo, get_ShipRecent]:
+            if hikari.Function == get_RecentInfo and datetime.now().hour < 7:
                 hikari.Input.Recent_Day = 1
             # 判断day,date
             delete_list = []
@@ -106,7 +107,7 @@ async def extract_with_function(hikari: Hikari_Model) -> Hikari_Model:  # noqa: 
             # 移除day,date
             for each in delete_list:
                 hikari.Input.Command_List.remove(each)
-            if hikari.Function in [get_AccountInfo, get_RecentInfo]:
+            if hikari.Function in [get_AccountInfo, get_RecentInfo, get_RecentsInfo]:
                 if hikari.Input.Search_Type == 3:
                     if len(hikari.Input.Command_List) == 2:
                         hikari.Input.Server, hikari.Input.Command_List = await match_keywords(hikari.Input.Command_List, servers)

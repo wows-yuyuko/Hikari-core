@@ -29,7 +29,7 @@ async def get_RecentsInfo(hikari: Hikari_Model) -> Hikari_Model:
             logger.success('上报数据成功')
         else:
             logger.success('跳过上报数据，直接请求')
-        url = 'https://recent.wows.shinoaki.com:8890/api/wows/recent/day/info'
+        url = 'https://recent.wows.shinoaki.com:8890/api/wows/recents/day/info'
         if hikari.Input.Search_Type == 3:
             params = {
                 'server': hikari.Input.Server,
