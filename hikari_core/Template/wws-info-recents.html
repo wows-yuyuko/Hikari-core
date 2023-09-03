@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<style>
+	* {
+		margin: 0;
+		padding: 0;
+	}
+
+	.main-content {
+		width: 1400px;
+		font-size: 30px;
+		font-family: 'Microsoft YaHei';
+		font-family: "Microsoft YaHei";
+		font-weight: bold;
+	}
+	
+	.page-box {
+		display: flex;
+		flex-direction: column;
+	}
+	
+	.page-header {
+		display: flex;
+		flex-direction: column;
+	}
+	
+	.clan-user-server {
+		height: 120px;
+		text-align: center;
+		font-size: 45px;
+		line-height: 120px;
+	}
+	
+	.clan {
+		display: inline-block;
+		padding-right: 10px;
+		height: 120px;
+	}
+	
+	.user {
+		display: inline-block;
+		height: 120px;
+	}
+	
+	.server {
+		display: inline-block;
+		padding-left: 10px;
+	}
+	
+	.server-border {
+		width: 200px;
+		height: 50px;
+		line-height: 50px;
+		background-color: #F2F2F2;
+		border-radius: 25px;
+		font-size: 35px;
+	}
+	
+	.pr {
+		display: flex;
+		height: 120px;
+		font-weight: bold;
+		line-height: 60px;
+		padding: 0 75px;
+	}
+	
+	.pr-bar-bg {
+		position: relative;
+		flex: 1;
+		line-height: 80px;
+		background-color: #A6A6A6;
+		height: 80px;
+		border-radius: 40px;
+		margin-top: 10px;
+		text-align: center;
+		color: #FFFFFF;
+	}
+	
+	.pr-bar {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 80px;
+		z-index: 1;
+		border-radius: 40px;
+	}
+	
+	.pr-number {
+		z-index: 99;
+		position: absolute;
+		left: 0px;
+		right: 0px;
+		font-size: 35px;
+		font-weight: bold;
+	}
+	
+	.main-information {
+		margin: 0 60px;
+	}
+	
+	.main-row {
+		display: flex;
+	}
+	
+	.main-row .item {
+		background-color: #F2F2F2;
+		border-radius: 16px;
+		height: 200px;
+		flex: 1;
+		margin: 0 15px;
+		display: flex;
+		flex-direction: column;
+	}
+	
+	.main-row .item .top {
+		flex: 1;
+		color: #767171;
+		font-weight: normal;
+		text-align: center;
+		font-size: 60px;
+		line-height: 120px;
+	}
+	
+	.main-row .item .bottom {
+		flex: 1;
+		text-align: center;
+		font-size: 60px;
+		line-height: 40px;
+	}
+	
+	.sub-row {
+		display: flex;
+		height: 150px;
+		margin-top: 30px;
+	}
+	
+	.sub-row .left {
+		margin: 0 15px;
+		display: flex;
+		flex-direction: column;
+		flex: 3;
+		background-color: #F2F2F2;
+		border-radius: 16px;
+		padding-left: 140px;
+	}
+	
+	.sub-row .left .top {
+		font-size: 40px;
+		font-weight: normal;
+		color: #767171;
+		flex: 1;
+		line-height: 85px;
+	}
+	
+	.sub-row .left .bottom {
+		font-size: 40px;
+		flex: 1;
+		line-height: 45px;
+	}
+	
+	.sub-row .right {
+		display: flex;
+		flex: 4;
+	}
+	
+	.sub-row .right .item {
+		margin: 0 15px;
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+		background-color: #F2F2F2;
+		border-radius: 16px;
+		text-align: center;
+	}
+	
+	.sub-row .right .item .top {
+		font-size: 40px;
+		font-weight: normal;
+		flex: 1;
+		color: #767171;
+		line-height: 85px;
+	}
+	
+	.sub-row .right .item .bottom {
+		font-size: 40px;
+		flex: 1;
+		line-height: 45px;
+	}
+	
+	.title {
+		margin: 30px 450px;
+		background-color: #A6A6A6;
+		height: 60px;
+		font-size: 40px;
+		line-height: 60px;
+		text-align: center;
+		border-radius: 30px;
+	}
+	
+	.total-information {
+		background-color: #F2F2F2;
+		border-radius: 16px;
+		margin: 0 75px;
+		color: #303133;
+	}
+	
+	.total-item {
+		height: 60px;
+		text-align: center;
+		display: flex;
+		line-height: 60px;
+	}
+	
+	.random-information {
+		margin: 0 75px;
+		background-color: #F2F2F2;
+		border-radius: 16px;
+		color: #303133;
+	}
+	
+	.random-item {
+		display: flex;
+		text-align: center;
+		height: 100px;
+		line-height: 100px;
+	}
+	
+	.win {
+		background: linear-gradient(to right bottom, #95E66CFF, #F2F2F2FF);
+	}
+	
+	.loss {
+		background: linear-gradient(to right bottom, #DD3B2FFF, #F2F2F2FF);
+	}
+	
+	.tie {
+		background: linear-gradient(to right bottom, #FFE699FF, #F2F2F2FF);
+	}
+	
+	.footer {
+		margin-top: 30px;
+		text-align: center;
+		font-weight: bold;
+		font-size: 24px;
+		color: #909399;
+		margin-bottom: 20px;
+	}
+	</style>
+	<body>
+		<div class="main-content">
+			<div class="page-box">
+				<div class="page-header">
+					<div class="clan-user-server">
+						{% if data['userInfo']['clanInfo']['tag'] %}
+						<div class="clan" style="color: {{ data['userInfo']['clanInfo']['color'] }};">[{{ data['userInfo']['clanInfo']['tag'] }}]</div>
+						{% endif %}
+						<div class="user">{{ data['userInfo']['userName'] }}</div>
+						<div class="server">
+							<div class="server-border">
+								{{ data['userInfo']['serverCn'] }}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="pr">
+				<!-- 动态设置长度及颜色，填写PR即可 -->
+				<div class="pr-bar-bg">
+					<span class="pr-number">0&nbsp;&nbsp;<span class="pr-text"></span></span>
+					<div class="pr-bar"></div>
+				</div>
+			</div>
+			
+			<div class="main-information">
+				<div class="main-row">
+					<div class="item">
+						<div class="top">场次</div>
+						<div class="bottom">测试</div>
+					</div>
+					<div class="item">
+						<div class="top">胜率</div>
+						<div class="bottom" style="color: #9C27B0;">测试%</div>
+					</div>
+					<div class="item">
+						<div class="top">场均</div>
+						<div class="bottom" style="color: #9C27B0;">测试</div>
+					</div>
+				</div>
+				<div class="sub-row">
+					<div class="left">
+						<div class="top">查询时间</div>
+						<div class="bottom">{{ time.strftime('%Y-%m-%d',time.localtime(int(abs(data['startRecordTime']/1000)))) }}</div>
+					</div>
+					<div class="right">
+						<div class="item">
+							<div class="top">击杀</div>
+							<div class="bottom">测试</div>
+						</div>
+						<div class="item">
+							<div class="top">命中</div>
+							<div class="bottom">测试%</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="title">总体战绩</div>
+			
+			<div class="total-information">
+				<div class="total-item" style="height: 75px;line-height: 75px; color: #606266;">
+					<div style="flex: 3;">类型</div>
+					<div style="flex: 2;">场次</div>
+					<div style="flex: 2;">胜率</div>
+					<div style="flex: 2;">PR</div>
+					<div style="flex: 3;">场均</div>
+					<div style="flex: 2;">击杀</div>
+					<div style="flex: 3;">命中</div>
+				</div>
+				{% if data['battleTypeInfo']['PVP_SOLO']['battle'] %}
+				<div class="total-item">
+					<div style="flex: 3;">单野</div>
+					<div style="flex: 2;">{{ data['battleTypeInfo']['PVP_SOLO']['battleInfo']['battleInfo']['battle'] }}</div>
+					<div style="flex: 2; color: {{ data['battleTypeInfo']['PVP_SOLO']['battleInfo']['avgInfo']['winsData']['color'] }};">{{ data['battleTypeInfo']['PVP_SOLO']['battleInfo']['avgInfo']['win'] }}%</div>
+					<div style="flex: 2; color: {{ data['battleTypeInfo']['PVP_SOLO']['prInfo']['color'] }};">{{ data['battleTypeInfo']['PVP_SOLO']['prInfo']['value'] }}</div>
+					<div style="flex: 3; color: {{ data['battleTypeInfo']['PVP_SOLO']['battleInfo']['avgInfo']['damageData']['color'] }};">{{ data['battleTypeInfo']['PVP_SOLO']['battleInfo']['avgInfo']['damage'] }}</div>
+					<div style="flex: 2;">{{ '%.2f' | format(data['battleTypeInfo']['PVP_SOLO']['battleInfo']['avgInfo']['frags']) }}</div>
+					<div style="flex: 3;">{{ '%.2f' | format(data['battleTypeInfo']['PVP_SOLO']['battleInfo']['hitRatioInfo']['ratioMain']) }}%</div>
+				</div>
+				{% endif %}
+				{% if data['battleTypeInfo']['PVP_DIV2']['battle'] %}
+				<div class="total-item">
+					<div style="flex: 3;">自行车</div>
+					<div style="flex: 2;">{{ data['battleTypeInfo']['PVP_DIV2']['battleInfo']['battleInfo']['battle'] }}</div>
+					<div style="flex: 2; color: {{ data['battleTypeInfo']['PVP_DIV2']['battleInfo']['avgInfo']['winsData']['color'] }};">{{ data['battleTypeInfo']['PVP_DIV2']['battleInfo']['avgInfo']['win'] }}%</div>
+					<div style="flex: 2; color: {{ data['battleTypeInfo']['PVP_DIV2']['prInfo']['color'] }};">{{ data['battleTypeInfo']['PVP_DIV2']['prInfo']['value'] }}</div>
+					<div style="flex: 3; color: {{ data['battleTypeInfo']['PVP_DIV2']['battleInfo']['avgInfo']['damageData']['color'] }};">{{ data['battleTypeInfo']['PVP_DIV2']['battleInfo']['avgInfo']['damage'] }}</div>
+					<div style="flex: 2;">{{ '%.2f' | format(data['battleTypeInfo']['PVP_DIV2']['battleInfo']['avgInfo']['frags']) }}</div>
+					<div style="flex: 3;">{{ '%.2f' | format(data['battleTypeInfo']['PVP_DIV2']['battleInfo']['hitRatioInfo']['ratioMain']) }}%</div>
+				</div>
+				{% endif %}
+				{% if data['battleTypeInfo']['PVP_DIV3']['battle'] %}
+				<div class="total-item">
+					<div style="flex: 3;">三轮车</div>
+					<div style="flex: 2;">{{ data['battleTypeInfo']['PVP_DIV3']['battleInfo']['battleInfo']['battle'] }}</div>
+					<div style="flex: 2; color: {{ data['battleTypeInfo']['PVP_DIV3']['battleInfo']['avgInfo']['winsData']['color'] }};">{{ data['battleTypeInfo']['PVP_DIV3']['battleInfo']['avgInfo']['win'] }}%</div>
+					<div style="flex: 2; color: {{ data['battleTypeInfo']['PVP_DIV3']['prInfo']['color'] }};">{{ data['battleTypeInfo']['PVP_DIV3']['prInfo']['value'] }}</div>
+					<div style="flex: 3; color: {{ data['battleTypeInfo']['PVP_DIV3']['battleInfo']['avgInfo']['damageData']['color'] }};">{{ data['battleTypeInfo']['PVP_DIV3']['battleInfo']['avgInfo']['damage'] }}</div>
+					<div style="flex: 2;">{{ '%.2f' | format(data['battleTypeInfo']['PVP_DIV3']['battleInfo']['avgInfo']['frags']) }}</div>
+					<div style="flex: 3;">{{ '%.2f' | format(data['battleTypeInfo']['PVP_DIV3']['battleInfo']['hitRatioInfo']['ratioMain']) }}%</div>
+				</div>
+				{% endif %}
+				{% if data['battleTypeInfo']['RANK_SOLO']['battle'] %}
+				<div class="total-item">
+					<div style="flex: 3;">排位</div>
+					<div style="flex: 2;">{{ data['battleTypeInfo']['RANK_SOLO']['battleInfo']['battleInfo']['battle'] }}</div>
+					<div style="flex: 2; color: {{ data['battleTypeInfo']['RANK_SOLO']['battleInfo']['avgInfo']['winsData']['color'] }};">{{ data['battleTypeInfo']['RANK_SOLO']['battleInfo']['avgInfo']['win'] }}%</div>
+					<div style="flex: 2; color: {{ data['battleTypeInfo']['RANK_SOLO']['prInfo']['color'] }};">{{ data['battleTypeInfo']['RANK_SOLO']['prInfo']['value'] }}</div>
+					<div style="flex: 3; color: {{ data['battleTypeInfo']['RANK_SOLO']['battleInfo']['avgInfo']['damageData']['color'] }};">{{ data['battleTypeInfo']['RANK_SOLO']['battleInfo']['avgInfo']['damage'] }}</div>
+					<div style="flex: 2;">{{ '%.2f' | format(data['battleTypeInfo']['RANK_SOLO']['battleInfo']['avgInfo']['frags']) }}</div>
+					<div style="flex: 3;">{{ '%.2f' | format(data['battleTypeInfo']['RANK_SOLO']['battleInfo']['hitRatioInfo']['ratioMain']) }}%</div>
+				</div>
+				{% endif %}
+			</div>
+			
+			<div class="title">随机战数据</div>
+			<div class="random-information">
+				<div class="random-item" style="height: 75px;line-height: 75px; color: #606266;">
+					<div style="flex: 3;">时间</div>
+					<div style="flex: 3;">类型</div>
+					<div style="flex: 3;">等级</div>
+					<div style="flex: 10;">战舰</div>
+					<div style="flex: 3;">PR</div>
+					<div style="flex: 3;">场均</div>
+					<div style="flex: 3;">击杀</div>
+					<div style="flex: 3;">命中</div>
+				</div>
+				{% for ship in data['shipInfos'] %}
+					{% if ship['code'] == 0 %}
+						<div class="random-item win">
+					{% elif ship['code'] == 1 %}
+						<div class="random-item loss">
+					{% else %}
+						<div class="random-item tie">
+					{% endif %}
+						<div style="flex: 3;">{{ time.strftime('%H:%M',time.localtime(int(abs(ship['recordTime']/1000)))) }}</div>
+						{% if ship['type'] == 'PVP_SOLO'%}
+							<div style="flex: 3;">单野</div>
+						{% elif ship['type'] == 'PVP_DIV2' %}
+							<div style="flex: 3;">自行车</div>
+						{% elif ship['type'] == 'PVP_DIV3' %}
+							<div style="flex: 3;">三轮车</div>
+						{% elif ship['type'] == 'RANK_SOLO' %}
+							<div style="flex: 3;">排位</div>
+						{% endif %}
+						<div class="ship-level" style="flex: 3;">{{ ship['shipInfo']['level'] }}</div>
+						<div style="flex: 10;">{{ ship['shipInfo']['nameCn'] }}</div>
+						<div style="flex: 3; color: {{ ship['prInfo']['color'] }};">{{ ship['prInfo']['value'] }}</div>
+						<div style="flex: 3; color: {{ ship['battleInfo']['avgInfo']['damageData']['color'] }};">{{ ship['battleInfo']['avgInfo']['damage'] }}</div>
+						<div style="flex: 3;">{{ '%.2f' | format(ship['battleInfo']['avgInfo']['frags']) }}</div>
+						<div style="flex: 3;">{{ '%.2f' | format(ship['battleInfo']['hitRatioInfo']['ratioMain']) }}%</div>
+					</div>
+				{% endfor %}
+			</div>
+			
+			<div class="footer">
+				<p>©西行寺雨季&nbsp;&nbsp;©本心</p>
+				<p>https://github.com/benx1n/HikariBot</p>
+				<p>QQ频道搜索”yuyuko”即可使用稳定的腾讯官方机器人~</p>
+				<p>Design By 冷眠 H5 Converted By C1ystal</p>
+			</div>
+	</body>
+	<script>
+		// 服务器字体颜色自动填充
+		let server_name = document.querySelector(".server").innerText;
+		if (server_name == "亚服") {
+			document.querySelector(".server").style.color = "#92D050";
+		} else if (server_name == "国服") {
+			document.querySelector(".server").style.color = "#BF9000";
+		} else if (server_name == "欧服") {
+			document.querySelector(".server").style.color = "#009664";
+		} else if (server_name == "美服") {
+			document.querySelector(".server").style.color = "#6872C4";
+		} else if (server_name == "俄服") {
+			document.querySelector(".server").style.color = "#FF0000";
+		}
+	</script>
+	<script>
+		// PR条颜色动态变化
+		let bar_bg_width = document.querySelector('.pr-bar-bg').clientWidth;
+		let pr_number = document.querySelector('.pr-number').innerText;
+		pr_number = parseInt(pr_number);
+		if (pr_number == 0) {
+			document.querySelector(".pr-bar").style.backgroundColor = "#828282";
+			document.querySelector(".pr-text").innerText = "暂无数据";
+		} else if (pr_number < 750) {
+			document.querySelector(".pr-bar").style.backgroundColor = "#F44336";
+			document.querySelector(".pr-text").innerText = "还需努力";
+		} else if (pr_number < 1100) {
+			document.querySelector(".pr-bar").style.backgroundColor = "#FF9800";
+			document.querySelector(".pr-text").innerText = "低于平均";
+		} else if (pr_number < 1350) {
+			document.querySelector(".pr-bar").style.backgroundColor = "#FFC107";
+			document.querySelector(".pr-text").innerText = "平均水平";
+			document.querySelector(".pr-number").style.color = "#303133";
+		} else if (pr_number < 1550) {
+			document.querySelector(".pr-bar").style.backgroundColor = "#8BC34A";
+			document.querySelector(".pr-text").innerText = "好";
+		} else if (pr_number < 1750) {
+			document.querySelector(".pr-bar").style.backgroundColor = "#4CAF50";
+			document.querySelector(".pr-text").innerText = "很好";
+		} else if (pr_number < 2100) {
+			document.querySelector(".pr-bar").style.backgroundColor = "#00BCD4";
+			document.querySelector(".pr-text").innerText = "非常好";
+		} else if (pr_number < 2450) {
+			document.querySelector(".pr-bar").style.backgroundColor = "#9C27B0";
+			document.querySelector(".pr-text").innerText = "大佬水平";
+		} else {
+			document.querySelector(".pr-bar").style.backgroundColor = "#673AB7";
+			document.querySelector(".pr-text").innerText = "神佬水平";
+			pr_number = 2450; //防止pr条溢出
+		}
+
+		if (pr_number < 220 && pr_number > 0) {
+			pr_number = 220; //防止pr过低导致圆角异常
+		}
+		// PR条动态长度
+		let width = bar_bg_width * (pr_number / 2450);
+		document.querySelector('.pr-bar').style.width = width + "px";
+	</script>
+	
+	<script>
+		let arr_information = document.getElementsByClassName('total-item');
+		for(let i=0;i<arr_information.length;i++) {
+			if(i%2 != 0 && i == (arr_information.length-1)) {
+				arr_information[i].style.backgroundColor = "#E4E4E4";
+				arr_information[i].style.borderBottomLeftRadius = "16px";
+				arr_information[i].style.borderBottomRightRadius = "16px";
+			} else if (i%2 != 0) {
+				arr_information[i].style.backgroundColor = "#E4E4E4";
+			}
+		}
+	</script>
+	<script>
+		let random_item = document.getElementsByClassName('random-item');
+		for(let i=0;i<random_item.length;i++) {
+			if(i == (random_item.length-1)) {
+				random_item[i].style.borderBottomLeftRadius = "16px";
+				random_item[i].style.borderBottomRightRadius = "16px";
+			}
+		}
+	</script>
+	<script>
+		let ship_level_doc = document.getElementsByClassName('ship-level');
+		let level_number = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"];
+		let level_roma = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "★"];
+		for(let k=0;k<ship_level_doc.length;k++) {
+			ship_level_doc[k].innerText = level_roma[level_number.indexOf(ship_level_doc[k].innerText)];
+		}
+	</script>
+</html>

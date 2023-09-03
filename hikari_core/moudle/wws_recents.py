@@ -44,11 +44,8 @@ async def get_RecentsInfo(hikari: Hikari_Model) -> Hikari_Model:
         result = orjson.loads(resp.content)
         hikari.Output.Yuyuko_Code = result['code']
         if result['code'] == 200:
-            if result['data']['battleTypeInfo']['PVP']['battle'] or result['data']['battleTypeInfo']['RANK_SOLO']['battle']:
-                hikari = hikari.set_template_info('wws-info-recent.html', 1200, 100)
-                return hikari.success(result['data'])
-            else:
-                return hikari.failed('该日期数据记录不存在')
+            hikari = hikari.set_template_info('wws-info-recents.html', 1200, 100)
+            return hikari.success(result['data'])
         elif result['code'] == 403:
             return hikari.failed(f"{result['message']}\n请先绑定账号")
         elif result['code'] == 404 or result['code'] == 405:
