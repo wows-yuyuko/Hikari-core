@@ -206,7 +206,7 @@ async def check_yuyuko_cache(server, id):
         await recreate_client_yuyuko()
         return False
     except Exception:
-        logger.error(traceback.format_exc())
+        logger.error('缓存上报失败')
         return False
 
 
@@ -221,8 +221,7 @@ async def get_wg_info(params, key, url):
         await recreate_client_wg()
         return
     except Exception:
-        logger.error(traceback.format_exc())
-        logger.error(f'上报url：{url}')
+        logger.error(f'wg请求异常,请配置代理后尝试,上报url：{url}')
         return
 
 
