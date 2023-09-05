@@ -89,6 +89,7 @@ async def extract_with_me_or_at(hikari: Hikari_Model) -> Hikari_Model:
 async def extract_with_function(hikari: Hikari_Model) -> Hikari_Model:  # noqa: PLR0915
     try:
         if hikari.Function in [get_AccountInfo, get_RecentInfo, get_RecentsInfo, get_ShipInfo, get_ShipRecent]:
+            hikari.Input.Recent_Date = time.strftime('%Y-%m-%d', time.localtime())
             if hikari.Function == get_RecentInfo and datetime.now().hour < 7:
                 hikari.Input.Recent_Day = 1
             # 判断day,date
