@@ -254,7 +254,7 @@
 		    position: absolute;
 		    height: 55px;
 		    width: 10px;
-		    background-color: #92d050;
+		    background-color: #8BC34A;
 		    margin-top: 10px;
 		    margin-left: 0px;
 		    border-radius: 2px;
@@ -347,7 +347,7 @@
 				<div class="sub-row">
 					<div class="right">
 						<div class="item">
-							<div class="top">查询时间</div>
+							<div class="top">记录日期</div>
 						<div class="bottom">{{ time.strftime('%Y-%m-%d',time.localtime(int(abs(data['startRecordTime']/1000)))) }}</div>
 						</div>
 						<div class="item">
@@ -380,9 +380,9 @@
 					<div style="flex: 2;">PR</div>
 					<div style="flex: 3;">场均</div>
 					<div style="flex: 2;">击杀</div>
-					<div style="flex: 3;">命中</div>
-					<div style="flex: 3;">侦察</div>
-					<div style="flex: 3;">潜在</div>
+					<div style="flex: 2;">命中</div>
+					<div style="flex: 2;">侦察</div>
+					<div style="flex: 2;">潜在</div>
 				</div>
 				{% if data['battleTypeInfo']['PVP_SOLO']['battle'] %}
 				<div class="total-item">
@@ -392,9 +392,9 @@
 					<div style="flex: 2; color: {{ data['battleTypeInfo']['PVP_SOLO']['prInfo']['color'] }};">{{ data['battleTypeInfo']['PVP_SOLO']['prInfo']['value'] }}</div>
 					<div style="flex: 3; color: {{ data['battleTypeInfo']['PVP_SOLO']['battleInfo']['avgInfo']['damageData']['color'] }};">{{ data['battleTypeInfo']['PVP_SOLO']['battleInfo']['avgInfo']['damage'] }}</div>
 					<div style="flex: 2;">{{ '%.2f' | format(data['battleTypeInfo']['PVP_SOLO']['battleInfo']['avgInfo']['frags']) }}</div>
-					<div style="flex: 3;">{{ '%.2f' | format(data['battleTypeInfo']['PVP_SOLO']['battleInfo']['hitRatioInfo']['ratioMain']) }}%</div>
-					<div style="flex: 3;">{{ data['battleTypeInfo']['PVP_SOLO']['battleInfo']['avgInfo']['scoutingDamage'] }}</div>
-					<div style="flex: 3;">{{ data['battleTypeInfo']['PVP_SOLO']['battleInfo']['avgInfo']['artAgro'] + data['battleTypeInfo']['PVP_SOLO']['battleInfo']['avgInfo']['tpdAgro'] }}</div>
+					<div style="flex: 2;">{{ '%.2f' | format(data['battleTypeInfo']['PVP_SOLO']['battleInfo']['hitRatioInfo']['ratioMain']) }}%</div>
+					<div style="flex: 2;">{{ data['battleTypeInfo']['PVP_SOLO']['battleInfo']['avgInfo']['scoutingDamage'] }}</div>
+					<div style="flex: 2;">{{ data['battleTypeInfo']['PVP_SOLO']['battleInfo']['avgInfo']['artAgro'] + data['battleTypeInfo']['PVP_SOLO']['battleInfo']['avgInfo']['tpdAgro'] }}</div>
 				</div>
 				{% endif %}
 				{% if data['battleTypeInfo']['PVP_DIV2']['battle'] %}
@@ -405,9 +405,9 @@
 					<div style="flex: 2; color: {{ data['battleTypeInfo']['PVP_DIV2']['prInfo']['color'] }};">{{ data['battleTypeInfo']['PVP_DIV2']['prInfo']['value'] }}</div>
 					<div style="flex: 3; color: {{ data['battleTypeInfo']['PVP_DIV2']['battleInfo']['avgInfo']['damageData']['color'] }};">{{ data['battleTypeInfo']['PVP_DIV2']['battleInfo']['avgInfo']['damage'] }}</div>
 					<div style="flex: 2;">{{ '%.2f' | format(data['battleTypeInfo']['PVP_DIV2']['battleInfo']['avgInfo']['frags']) }}</div>
-					<div style="flex: 3;">{{ '%.2f' | format(data['battleTypeInfo']['PVP_DIV2']['battleInfo']['hitRatioInfo']['ratioMain']) }}%</div>
-					<div style="flex: 3;">{{ data['battleTypeInfo']['PVP_DIV2']['battleInfo']['avgInfo']['scoutingDamage'] }}</div>
-					<div style="flex: 3;">{{ data['battleTypeInfo']['PVP_DIV2']['battleInfo']['avgInfo']['artAgro'] + data['battleTypeInfo']['PVP_DIV2']['battleInfo']['avgInfo']['tpdAgro'] }}</div>
+					<div style="flex: 2;">{{ '%.2f' | format(data['battleTypeInfo']['PVP_DIV2']['battleInfo']['hitRatioInfo']['ratioMain']) }}%</div>
+					<div style="flex: 2;">{{ data['battleTypeInfo']['PVP_DIV2']['battleInfo']['avgInfo']['scoutingDamage'] }}</div>
+					<div style="flex: 2;">{{ data['battleTypeInfo']['PVP_DIV2']['battleInfo']['avgInfo']['artAgro'] + data['battleTypeInfo']['PVP_DIV2']['battleInfo']['avgInfo']['tpdAgro'] }}</div>
 				</div>
 				{% endif %}
 				{% if data['battleTypeInfo']['PVP_DIV3']['battle'] %}
@@ -418,9 +418,9 @@
 					<div style="flex: 2; color: {{ data['battleTypeInfo']['PVP_DIV3']['prInfo']['color'] }};">{{ data['battleTypeInfo']['PVP_DIV3']['prInfo']['value'] }}</div>
 					<div style="flex: 3; color: {{ data['battleTypeInfo']['PVP_DIV3']['battleInfo']['avgInfo']['damageData']['color'] }};">{{ data['battleTypeInfo']['PVP_DIV3']['battleInfo']['avgInfo']['damage'] }}</div>
 					<div style="flex: 2;">{{ '%.2f' | format(data['battleTypeInfo']['PVP_DIV3']['battleInfo']['avgInfo']['frags']) }}</div>
-					<div style="flex: 3;">{{ '%.2f' | format(data['battleTypeInfo']['PVP_DIV3']['battleInfo']['hitRatioInfo']['ratioMain']) }}%</div>
-					<div style="flex: 3;">{{ data['battleTypeInfo']['PVP_DIV3']['battleInfo']['avgInfo']['scoutingDamage'] }}</div>
-					<div style="flex: 3;">{{ data['battleTypeInfo']['PVP_DIV3']['battleInfo']['avgInfo']['artAgro'] + data['battleTypeInfo']['PVP_DIV3']['battleInfo']['avgInfo']['tpdAgro'] }}</div>
+					<div style="flex: 2;">{{ '%.2f' | format(data['battleTypeInfo']['PVP_DIV3']['battleInfo']['hitRatioInfo']['ratioMain']) }}%</div>
+					<div style="flex: 2;">{{ data['battleTypeInfo']['PVP_DIV3']['battleInfo']['avgInfo']['scoutingDamage'] }}</div>
+					<div style="flex: 2;">{{ data['battleTypeInfo']['PVP_DIV3']['battleInfo']['avgInfo']['artAgro'] + data['battleTypeInfo']['PVP_DIV3']['battleInfo']['avgInfo']['tpdAgro'] }}</div>
 				</div>
 				{% endif %}
 				{% if data['battleTypeInfo']['RANK_SOLO']['battle'] %}
@@ -431,9 +431,9 @@
 					<div style="flex: 2; color: {{ data['battleTypeInfo']['RANK_SOLO']['prInfo']['color'] }};">{{ data['battleTypeInfo']['RANK_SOLO']['prInfo']['value'] }}</div>
 					<div style="flex: 3; color: {{ data['battleTypeInfo']['RANK_SOLO']['battleInfo']['avgInfo']['damageData']['color'] }};">{{ data['battleTypeInfo']['RANK_SOLO']['battleInfo']['avgInfo']['damage'] }}</div>
 					<div style="flex: 2;">{{ '%.2f' | format(data['battleTypeInfo']['RANK_SOLO']['battleInfo']['avgInfo']['frags']) }}</div>
-					<div style="flex: 3;">{{ '%.2f' | format(data['battleTypeInfo']['RANK_SOLO']['battleInfo']['hitRatioInfo']['ratioMain']) }}%</div>
-					<div style="flex: 3;">{{ data['battleTypeInfo']['RANK_SOLO']['battleInfo']['avgInfo']['scoutingDamage'] }}</div>
-					<div style="flex: 3;">{{ data['battleTypeInfo']['RANK_SOLO']['battleInfo']['avgInfo']['artAgro'] + data['battleTypeInfo']['RANK_SOLO']['battleInfo']['avgInfo']['tpdAgro'] }}</div>
+					<div style="flex: 2;">{{ '%.2f' | format(data['battleTypeInfo']['RANK_SOLO']['battleInfo']['hitRatioInfo']['ratioMain']) }}%</div>
+					<div style="flex: 2;">{{ data['battleTypeInfo']['RANK_SOLO']['battleInfo']['avgInfo']['scoutingDamage'] }}</div>
+					<div style="flex: 2;">{{ data['battleTypeInfo']['RANK_SOLO']['battleInfo']['avgInfo']['artAgro'] + data['battleTypeInfo']['RANK_SOLO']['battleInfo']['avgInfo']['tpdAgro'] }}</div>
 				</div>
 				{% endif %}
 			</div>
@@ -474,7 +474,7 @@
 					<div style="flex: 3;">时间</div>
 					<div style="flex: 3;">类型</div>
 					<div style="flex: 3;">等级</div>
-					<div style="flex: 10;">战舰</div>
+					<div style="flex: 8;">战舰</div>
 					<div style="flex: 3;">PR</div>
 					<div style="flex: 3;">场均</div>
 					<div style="flex: 3;">击杀</div>
@@ -485,12 +485,14 @@
 				{% for ship in data['shipInfos'] %}
 					{% if ship['code'] == 0 %}
 						<div class="random-item win">
+							<div style="flex: 3; color: #8BC34A;">{{ time.strftime('%H:%M',time.localtime(int(abs(ship['recordTime']/1000)))) }}</div>
 					{% elif ship['code'] == 1 %}
 						<div class="random-item loss">
+						<div style="flex: 3; color: #DD3B2FFF;">{{ time.strftime('%H:%M',time.localtime(int(abs(ship['recordTime']/1000)))) }}</div>
 					{% else %}
 						<div class="random-item tie">
+						<div style="flex: 3; color: #ffcc29;">{{ time.strftime('%H:%M',time.localtime(int(abs(ship['recordTime']/1000)))) }}</div>
 					{% endif %}
-						<div style="flex: 3;">{{ time.strftime('%H:%M',time.localtime(int(abs(ship['recordTime']/1000)))) }}</div>
 						{% if ship['type'] == 'PVP_SOLO'%}
 							<div style="flex: 3;">单野</div>
 						{% elif ship['type'] == 'PVP_DIV2' %}
@@ -501,7 +503,7 @@
 							<div style="flex: 3;">排位</div>
 						{% endif %}
 						<div class="ship-level" style="flex: 3;">{{ ship['shipInfo']['level'] }}</div>
-						<div style="flex: 10;">{{ ship['shipInfo']['nameCn'] }}</div>
+						<div style="flex: 8;">{{ ship['shipInfo']['nameCn'] }}</div>
 						<div style="flex: 3; color: {{ ship['prInfo']['color'] }};">{{ ship['prInfo']['value'] }}</div>
 						<div style="flex: 3; color: {{ ship['battleInfo']['avgInfo']['damageData']['color'] }};">{{ ship['battleInfo']['avgInfo']['damage'] }}</div>
 						<div style="flex: 3;">{{ '%.2f' | format(ship['battleInfo']['avgInfo']['frags']) }}</div>
