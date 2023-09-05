@@ -5,250 +5,300 @@
 		<title></title>
 	</head>
 	<style>
-	* {
-		margin: 0;
-		padding: 0;
-	}
+		* {
+			margin: 0;
+			padding: 0;
+		}
 
-	.main-content {
-		width: 1400px;
-		font-size: 30px;
-		font-family: 'Microsoft YaHei';
-		font-family: "Microsoft YaHei";
-		font-weight: bold;
-	}
-	
-	.page-box {
-		display: flex;
-		flex-direction: column;
-	}
-	
-	.page-header {
-		display: flex;
-		flex-direction: column;
-	}
-	
-	.clan-user-server {
-		height: 120px;
-		text-align: center;
-		font-size: 45px;
-		line-height: 120px;
-	}
-	
-	.clan {
-		display: inline-block;
-		padding-right: 10px;
-		height: 120px;
-	}
-	
-	.user {
-		display: inline-block;
-		height: 120px;
-	}
-	
-	.server {
-		display: inline-block;
-		padding-left: 10px;
-	}
-	
-	.server-border {
-		width: 200px;
-		height: 50px;
-		line-height: 50px;
-		background-color: #F2F2F2;
-		border-radius: 25px;
-		font-size: 35px;
-	}
-	
-	.pr {
-		display: flex;
-		height: 120px;
-		font-weight: bold;
-		line-height: 60px;
-		padding: 0 75px;
-	}
-	
-	.pr-bar-bg {
-		position: relative;
-		flex: 1;
-		line-height: 80px;
-		background-color: #A6A6A6;
-		height: 80px;
-		border-radius: 40px;
-		margin-top: 10px;
-		text-align: center;
-		color: #FFFFFF;
-	}
-	
-	.pr-bar {
-		position: absolute;
-		top: 0;
-		left: 0;
-		height: 80px;
-		z-index: 1;
-		border-radius: 40px;
-	}
-	
-	.pr-number {
-		z-index: 99;
-		position: absolute;
-		left: 0px;
-		right: 0px;
-		font-size: 35px;
-		font-weight: bold;
-	}
-	
-	.main-information {
-		margin: 0 60px;
-	}
-	
-	.main-row {
-		display: flex;
-	}
-	
-	.main-row .item {
-		background-color: #F2F2F2;
-		border-radius: 16px;
-		height: 200px;
-		flex: 1;
-		margin: 0 15px;
-		display: flex;
-		flex-direction: column;
-	}
-	
-	.main-row .item .top {
-		flex: 1;
-		color: #767171;
-		font-weight: normal;
-		text-align: center;
-		font-size: 60px;
-		line-height: 120px;
-	}
-	
-	.main-row .item .bottom {
-		flex: 1;
-		text-align: center;
-		font-size: 60px;
-		line-height: 40px;
-	}
-	
-	.sub-row {
-		display: flex;
-		height: 150px;
-		margin-top: 30px;
-	}
-	
-	.sub-row .left {
-		margin: 0 15px;
-		display: flex;
-		flex-direction: column;
-		flex: 3;
-		background-color: #F2F2F2;
-		border-radius: 16px;
-		padding-left: 140px;
-	}
-	
-	.sub-row .left .top {
-		font-size: 40px;
-		font-weight: normal;
-		color: #767171;
-		flex: 1;
-		line-height: 85px;
-	}
-	
-	.sub-row .left .bottom {
-		font-size: 40px;
-		flex: 1;
-		line-height: 45px;
-	}
-	
-	.sub-row .right {
-		display: flex;
-		flex: 4;
-	}
-	
-	.sub-row .right .item {
-		margin: 0 15px;
-		display: flex;
-		flex-direction: column;
-		flex: 1;
-		background-color: #F2F2F2;
-		border-radius: 16px;
-		text-align: center;
-	}
-	
-	.sub-row .right .item .top {
-		font-size: 40px;
-		font-weight: normal;
-		flex: 1;
-		color: #767171;
-		line-height: 85px;
-	}
-	
-	.sub-row .right .item .bottom {
-		font-size: 40px;
-		flex: 1;
-		line-height: 45px;
-	}
-	
-	.title {
-		margin: 30px 450px;
-		background-color: #A6A6A6;
-		height: 60px;
-		font-size: 40px;
-		line-height: 60px;
-		text-align: center;
-		border-radius: 30px;
-	}
-	
-	.total-information {
-		background-color: #F2F2F2;
-		border-radius: 16px;
-		margin: 0 75px;
-		color: #303133;
-	}
-	
-	.total-item {
-		height: 60px;
-		text-align: center;
-		display: flex;
-		line-height: 60px;
-	}
-	
-	.random-information {
-		margin: 0 75px;
-		background-color: #F2F2F2;
-		border-radius: 16px;
-		color: #303133;
-	}
-	
-	.random-item {
-		display: flex;
-		text-align: center;
-		height: 100px;
-		line-height: 100px;
-	}
-	
-	.win {
-		background: linear-gradient(to right bottom, #95E66CFF, #F2F2F2FF);
-	}
-	
-	.loss {
-		background: linear-gradient(to right bottom, #DD3B2FFF, #F2F2F2FF);
-	}
-	
-	.tie {
-		background: linear-gradient(to right bottom, #FFE699FF, #F2F2F2FF);
-	}
-	
-	.footer {
-		margin-top: 30px;
-		text-align: center;
-		font-weight: bold;
-		font-size: 24px;
-		color: #909399;
-		margin-bottom: 20px;
-	}
+		.main-content {
+			width: 1400px;
+			font-size: 30px;
+			font-family: 'Microsoft YaHei';
+			font-family: "Microsoft YaHei";
+			font-weight: bold;
+		}
+
+		.page-box {
+			display: flex;
+			flex-direction: column;
+		}
+
+		.page-header {
+			display: flex;
+			flex-direction: column;
+		}
+
+		.clan-user-server {
+			height: 120px;
+			text-align: center;
+			font-size: 45px;
+			line-height: 120px;
+		}
+
+		.clan {
+			display: inline-block;
+			padding-right: 10px;
+			height: 120px;
+		}
+
+		.user {
+			display: inline-block;
+			height: 120px;
+		}
+
+		.server {
+			display: inline-block;
+			padding-left: 10px;
+		}
+
+		.server-border {
+			width: 200px;
+			height: 50px;
+			line-height: 50px;
+			background-color: #F2F2F2;
+			border-radius: 25px;
+			font-size: 35px;
+		}
+
+		.pr {
+			display: flex;
+			height: 120px;
+			font-weight: bold;
+			line-height: 60px;
+			padding: 0 75px;
+		}
+
+		.pr-bar-bg {
+			position: relative;
+			flex: 1;
+			line-height: 80px;
+			background-color: #A6A6A6;
+			height: 80px;
+			border-radius: 40px;
+			margin-top: 10px;
+			text-align: center;
+			color: #FFFFFF;
+		}
+
+		.pr-bar {
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 80px;
+			z-index: 1;
+			border-radius: 40px;
+		}
+
+		.pr-number {
+			z-index: 99;
+			position: absolute;
+			left: 0px;
+			right: 0px;
+			font-size: 35px;
+			font-weight: bold;
+		}
+
+		.main-information {
+			margin: 0 60px;
+		}
+
+		.main-row {
+			display: flex;
+		}
+
+		.main-row .item {
+			background-color: #F2F2F2;
+			border-radius: 16px;
+			height: 200px;
+			flex: 1;
+			margin: 0 15px;
+			display: flex;
+			flex-direction: column;
+		}
+
+		.main-row .item .top {
+			flex: 1;
+			color: #767171;
+			font-weight: normal;
+			text-align: center;
+			font-size: 60px;
+			line-height: 120px;
+		}
+
+		.main-row .item .bottom {
+			flex: 1;
+			text-align: center;
+			font-size: 60px;
+			line-height: 40px;
+		}
+
+		.sub-row {
+			display: flex;
+			height: 150px;
+			margin-top: 30px;
+		}
+
+		.sub-row .left {
+			margin: 0 15px;
+			display: flex;
+			flex-direction: column;
+			flex: 3;
+			background-color: #F2F2F2;
+			border-radius: 16px;
+			padding-left: 140px;
+		}
+
+		.sub-row .left .top {
+			font-size: 40px;
+			font-weight: normal;
+			color: #767171;
+			flex: 1;
+			line-height: 85px;
+		}
+
+		.sub-row .left .bottom {
+			font-size: 40px;
+			flex: 1;
+			line-height: 45px;
+		}
+
+		.sub-row .right {
+			display: flex;
+			flex: 4;
+		}
+
+		.sub-row .right .item {
+			margin: 0 15px;
+			display: flex;
+			flex-direction: column;
+			flex: 1;
+			background-color: #F2F2F2;
+			border-radius: 16px;
+			text-align: center;
+		}
+
+		.sub-row .right .item .top {
+			font-size: 40px;
+			font-weight: normal;
+			flex: 1;
+			color: #767171;
+			line-height: 85px;
+		}
+
+		.sub-row .right .item .bottom {
+			font-size: 40px;
+			flex: 1;
+			line-height: 45px;
+		}
+
+		.information-header {
+			margin: 0 400px;
+			margin-top: 30px;
+			height: 60px;
+			line-height: 60px;
+			border-radius: 16px;
+			background-color: #D9D9D9;
+			text-align: center;
+		}
+
+		.title {
+			margin: 30px 450px;
+			background-color: #A6A6A6;
+			height: 60px;
+			font-size: 40px;
+			line-height: 60px;
+			text-align: center;
+			border-radius: 30px;
+		}
+
+		.total-information {
+			margin: 0 75px;
+			margin-top: 30px;
+			background-color: #F2F2F2;
+			border-radius: 16px;
+			color: #303133;
+		}
+
+		.total-item {
+			height: 60px;
+			text-align: center;
+			display: flex;
+			line-height: 60px;
+		}
+
+		.random-information {
+			margin: 0 75px;
+			margin-top: 30px;
+			background-color: #F2F2F2;
+			border-radius: 16px;
+			color: #303133;
+		}
+
+		.random-item {
+			display: flex;
+			text-align: center;
+			height: 75px;
+			line-height: 75px;
+			padding: 0 10px;
+		}
+
+		.random-item:nth-child(even) {
+			background-color: rgb(228, 228, 228);
+		}
+
+		.win {
+			/* background: linear-gradient(to right bottom, #95E66CFF, #F2F2F2FF); */
+		}
+		.win:before{
+			content: "";
+		    position: absolute;
+		    height: 55px;
+		    width: 10px;
+		    background-color: #92d050;
+		    margin-top: 10px;
+		    margin-left: 0px;
+		    border-radius: 2px;
+		}
+
+		.loss {
+			/* background: linear-gradient(to right bottom, #DD3B2FFF, #F2F2F2FF); */
+		}
+		.loss:before{
+			content: "";
+		    position: absolute;
+		    height: 55px;
+		    width: 10px;
+		    background-color: #DD3B2FFF;
+		    margin-top: 10px;
+		    margin-left: 0px;
+		    border-radius: 2px;
+		}
+		.tie {
+			/* background: linear-gradient(to right bottom, #FFE699FF, #F2F2F2FF); */
+		}
+		.tie:before{
+			content: "";
+		    position: absolute;
+		    height: 55px;
+		    width: 10px;
+		    background-color: #ffcc29;
+		    margin-top: 10px;
+		    margin-left: 0px;
+		    border-radius: 2px;
+		}
+
+		.footer {
+			margin-top: 30px;
+			text-align: center;
+			font-weight: bold;
+			font-size: 24px;
+			color: #909399;
+			margin-bottom: 20px;
+		}
+		.recent-time {
+			text-align: center;
+			font-weight: normal;
+		}
 	</style>
 	<body>
 		<div class="main-content">
@@ -270,24 +320,28 @@
 			<div class="pr">
 				<!-- 动态设置长度及颜色，填写PR即可 -->
 				<div class="pr-bar-bg">
-					<span class="pr-number">0&nbsp;&nbsp;<span class="pr-text"></span></span>
+					<span class="pr-number">{{ data['battleTypeInfo']['PVP']['prInfo']['value'] }}&nbsp;&nbsp;<span class="pr-text"></span></span>
 					<div class="pr-bar"></div>
 				</div>
 			</div>
 			
+			<div class="recent-time">
+					<span>激活状态：</span><span>已过期</span>
+				</div>
+
 			<div class="main-information">
 				<div class="main-row">
 					<div class="item">
 						<div class="top">场次</div>
-						<div class="bottom">测试</div>
+						<div class="bottom">{{ data['battleTypeInfo']['PVP']['battleInfo']['battleInfo']['battle'] }}</div>
 					</div>
 					<div class="item">
 						<div class="top">胜率</div>
-						<div class="bottom" style="color: #9C27B0;">测试%</div>
+						<div class="bottom" style="color: {{ data['battleTypeInfo']['PVP']['battleInfo']['avgInfo']['winsData']['color'] }};">{{ data['battleTypeInfo']['PVP']['battleInfo']['avgInfo']['win'] }}%</div>
 					</div>
 					<div class="item">
 						<div class="top">场均</div>
-						<div class="bottom" style="color: #9C27B0;">测试</div>
+						<div class="bottom" style="color: {{ data['battleTypeInfo']['PVP']['battleInfo']['avgInfo']['damageData']['color'] }};">{{ data['battleTypeInfo']['PVP']['battleInfo']['avgInfo']['damage'] }}</div>
 					</div>
 				</div>
 				<div class="sub-row">
@@ -298,17 +352,17 @@
 					<div class="right">
 						<div class="item">
 							<div class="top">击杀</div>
-							<div class="bottom">测试</div>
+							<div class="bottom">{{ '%.2f' | format(data['battleTypeInfo']['PVP']['battleInfo']['avgInfo']['frags']) }}</div>
 						</div>
 						<div class="item">
-							<div class="top">命中</div>
-							<div class="bottom">测试%</div>
+							<div class="top">KD</div>
+							<div class="bottom">{{ '%.2f' | format(data['battleTypeInfo']['PVP']['battleInfo']['avgInfo']['kd']) }}</div>
 						</div>
 					</div>
 				</div>
 			</div>
 			
-			<div class="title">总体战绩</div>
+			<div class="information-header">总体战绩</div>
 			
 			<div class="total-information">
 				<div class="total-item" style="height: 75px;line-height: 75px; color: #606266;">
@@ -366,7 +420,33 @@
 				{% endif %}
 			</div>
 			
-			<div class="title">随机战数据</div>
+			<div class="information-header">随机单船</div>
+			<div class="random-information">
+				<div class="random-item" style="height: 75px;line-height: 75px; color: #606266;">
+					<div style="flex: 3;">等级</div>
+					<div style="flex: 8;">战舰</div>
+					<div style="flex: 3;">场次</div>
+					<div style="flex: 3;">PR</div>
+					<div style="flex: 3;">胜率</div>
+					<div style="flex: 4;">场均</div>
+					<div style="flex: 3;">击杀</div>
+					<div style="flex: 3;">命中</div>
+				</div>
+				{% for ship in data['shipnfosTotal'] %}
+					<div class="random-item" style="height: 75px;line-height: 75px;">
+						<div class="ship-level" style="flex: 3;">{{ ship['shipInfo']['level'] }}</div>
+						<div style="flex: 8;">{{ ship['shipInfo']['nameCn'] }}</div>
+						<div style="flex: 3;">{{ ship['battleInfo']['battleInfo']['battle'] }}</div>
+						<div style="flex: 3; color: {{ ship['prInfo']['color'] }};">{{ ship['prInfo']['value'] }}</div>
+						<div style="flex: 3; color: {{ ship['battleInfo']['avgInfo']['winsData']['color'] }};">{{ ship['battleInfo']['avgInfo']['win'] }}%</div>
+						<div style="flex: 4; color: {{ ship['battleInfo']['avgInfo']['damageData']['color'] }};">{{ ship['battleInfo']['avgInfo']['damage'] }}</div>
+						<div style="flex: 3;">{{ '%.2f' | format(ship['battleInfo']['avgInfo']['frags']) }}</div>
+						<div style="flex: 3;">{{ '%.2f' | format(ship['battleInfo']['hitRatioInfo']['ratioMain']) }}%</div>
+					</div>
+				{% endfor %}
+			</div>
+
+			<div class="information-header">单场战绩</div>
 			<div class="random-information">
 				<div class="random-item" style="height: 75px;line-height: 75px; color: #606266;">
 					<div style="flex: 3;">时间</div>
