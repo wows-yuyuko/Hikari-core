@@ -16,6 +16,7 @@ from .game.sx import get_sx_info
 from .model import Hikari_Model
 from .moudle.publicAPI import get_ship_name
 from .moudle.wws_bind import change_BindInfo, delete_BindInfo, get_BindInfo, set_BindInfo, set_special_BindInfo
+from .moudle.wws_clan import get_ClanInfo
 from .moudle.wws_info import get_AccountInfo
 from .moudle.wws_real_game import add_listen_list, delete_listen_list
 from .moudle.wws_recent import get_RecentInfo
@@ -219,6 +220,16 @@ async def extract_with_function(hikari: Hikari_Model) -> Hikari_Model:  # noqa: 
                     return hikari.error('请确认输入序号是否正确')
             else:
                 return hikari.error('请检查是否仅输入了要删除的监控序号')
+        elif hikari.Function in [get_ClanInfo]:
+            if hikari.Input.Search_Type == 3:
+                if len(hikari.Input.Command_List) == 2:
+                    hikari.Input.Server, hikari.Input.Command_List = await match_keywords(hikari.Input.Command_List, servers)
+                    if hikari.Input.Server:
+                        hikari.Input.ClanName = str(hikari.Input.Command_List[0])
+                    else:
+                        return hikari.error('服务器名输入错误')
+                else:
+                    return hikari.error('您似乎准备用公会TAG查询水表，请检查参数中是否包含服务器和公会TAG，以空格分隔，顺序不限')
         return hikari
     except Exception:
         logger.error(traceback.format_exc())

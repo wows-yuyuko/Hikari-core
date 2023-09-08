@@ -1,466 +1,585 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<style>
-    body {
-        font-size: 26px;
-        font-family: "Microsoft YaHei UI";
-    }
-
-    .font-size {
-        font-weight: bold;
-        font-size: 28px;
-    }
-
-    .font-data {
-        font-weight: bold;
-    }
-
-    .greyColor {
-        color: #696969;
-    }
-
-    .greyColor2 {
-        color: #404040;
-    }
-
-    .blueColor {
-        font-weight: bold;
-        color: #000080;
-    }
-
-    .blackColor {
-        font-weight: bold;
-        color: black;
-    }
-
-    .bold-data {
-        font-weight: bold;
-    }
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+  <style>
+    *{
+    padding: 0;
+    margin: 0;
+  }
+  body{
+    color: #4e4e4e;
+  }
+  .clan-main{
+    width: 1200px;
+    padding: 20px;
+    box-sizing: border-box;
+  }
 
 
-    table {
-        border-spacing: 20px 15px;
-        text-align: center;
-    }
-</style>
+  /* 顶部信息 */
+  .clan-name{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
 
-<body>
-    <div>
-        <table id="ship-data" width="920" style="table-layout: fixed;">
-            <tr>
-                <td colspan="6" class="font-data">
-                    &nbsp;&nbsp;&nbsp;&nbsp;<span
-                        style="text-align: center;color: #A00DC5;font-size : 35px;">[茶会]</span><sup
-                        style="color:green">CN</sup>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="6" class="font-data">
-                    <span>被酒莫惊春睡重，赌书消得泼茶香，当时只道是寻常。</span>
+  .clan-name>div:nth-child(1),.clan-name>div:nth-child(3){
+    text-align: center;
+    width: 120px;
+  }
 
-                </td>
-            </tr>
-            <tr>
-                <td colspan="6" style="text-align: center;background-color: #A00DC5">3000 神佬平均</td>
-            </tr>
-            <tr>
-                <td colspan="1" style="text-align: center;"></td>
-                <td colspan="2" style="text-align: center;">刷新时间</td>
-                <td colspan="2" style="text-align: center;">创建时间</td>
-                <td colspan="1" style="text-align: center;"></td>
-            </tr>
-            <tr>
-                <td colspan="1" style="text-align: center;"></td>
-                <td colspan="2" class="greyColor" style="text-align: center;">2022-06-18 12:47:03</td>
-                <td colspan="2" class="greyColor" style="text-align: center;">2016-07-01 17:05:20</td>
-                <td colspan="1" style="text-align: center;"></td>
-            </tr>
-            <tr>
-                <td colspan="2" class="greyColor2 font-size">场次</td>
-                <td colspan="2" class="greyColor2 font-size">胜率</td>
-                <td colspan="2" class="greyColor2 font-size">场均</td>
-            </tr>
-            <tr>
-                <td colspan="2" class="blueColor font-size">{{battles}}</td>
-                <td colspan="2" class="blueColor font-size" style="color: {{winsColor}}">{{wins}}%</td>
-                <td colspan="2" class="blueColor font-size" style="color: {{damageColor}}">{{damage}}</td>
-            </tr>
-            <tr>
-                <td colspan="2" class="greyColor2 font-size">击杀</td>
-                <td colspan="2" class="greyColor2 font-size">人数</td>
-                <td colspan="2" class="greyColor2 font-size">活跃</td>
-            </tr>
-            <tr>
-                <td colspan="2" class="blueColor font-size">{{frags}}</td>
-                <td colspan="2" class="blueColor font-size">39/40</td>
-                <td colspan="2" class="blueColor font-size">{{activity}}%</td>
-            </tr>
-            <tr>
-                <td colspan="6" class="blackColor" style="text-align: center;"></td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <div>
-                        <div id="barChart1" style="width: 260px;height:260px;"></div>
-                    </div>
-                </td>
-                <td colspan="2">
+  .clan-name>div:nth-child(3)>div:nth-child(1){
+    background-color: rgb(233, 233, 233);
+    border-radius: 50px;
+    font-weight: bold;
+  }
 
-                    <div id="barChart2" style="width: 260px;height:260px;"></div>
-                </td>
-                <td colspan="2">
+  .clan-name>div:nth-child(3)>div:nth-child(2){
+    font-size: 12px;
+    padding-top: 8px;
+    color: rgb(129, 129, 129);
+  }
 
-                    <div id="barChart3" style="width: 260px;height:260px;"></div>
-                </td>
-            </tr>
-            <!--<tr>
-            <td colspan="6" class="bold-data greyColor2" style="text-align: center;">Warships stats by ShipType</td>
-        </tr>
-        <tr>
-            <td class="greyColor">类型</td>
-            <td class="greyColor">场次</td>
-            <td class="greyColor">PR</td>
-            <td class="greyColor">胜率</td>
-            <td class="greyColor">场均</td>
-            <td class="greyColor">命中</td>
-        </tr>
-        {% if bb_battles %}
-        <tr>
-            <td class="bold-data greyColor">战列舰</td>
-            <td class="blueColor">{{bb_battles}}</td>
-            <td class="blueColor" style="color: {{bb_prColor}}">{{bb_pr}}</td>
-            <td class="blueColor" style="color: {{bb_winsColor}}">{{bb_wins}}%</td>
-            <td class="blueColor" style="color: {{bb_damageColor}}">{{bb_damage}}</td>
-            <td class="blueColor">{{bb_hit}}%</td>
-        </tr>
-        {% endif %}
-        {% if ca_battles %}
-        <tr>
-            <td class="bold-data greyColor">巡洋舰</td>
-            <td class="blueColor">{{ca_battles}}</td>
-            <td class="blueColor" style="color: {{ca_prColor}}">{{ca_pr}}</td>
-            <td class="blueColor" style="color: {{ca_winsColor}}">{{ca_wins}}%</td>
-            <td class="blueColor" style="color: {{ca_damageColor}}">{{ca_damage}}</td>
-            <td class="blueColor">{{ca_hit}}%</td>
-        </tr>
-        {% endif %}
-        {% if dd_battles %}
-        <tr>
-            <td class="bold-data greyColor">驱逐舰</td>
-            <td class="blueColor">{{dd_battles}}</td>
-            <td class="blueColor" style="color: {{dd_prColor}}">{{dd_pr}}</td>
-            <td class="blueColor" style="color: {{dd_winsColor}}">{{dd_wins}}%</td>
-            <td class="blueColor" style="color: {{dd_damageColor}}">{{dd_damage}}</td>
-            <td class="blueColor">{{dd_hit}}%</td>
-        </tr>
-        {% endif %}
-        {% if cv_battles %}
-        <tr>
-            <td class="bold-data greyColor">航空母舰</td>
-            <td class="blueColor">{{cv_battles}}</td>
-            <td class="blueColor" style="color: {{cv_prColor}}">{{cv_pr}}</td>
-            <td class="blueColor" style="color: {{cv_winsColor}}">{{cv_wins}}%</td>
-            <td class="blueColor" style="color: {{cv_damageColor}}">{{cv_damage}}</td>
-            <td class="blueColor">N/A</td>
-        </tr>
-        <tr>
-            <td colspan="6" class="bold-data greyColor2" style="text-align: center;">Warships stats by BattleType</td>
-        </tr>
-        <tr>
-            <td class="greyColor">类型</td>
-            <td class="greyColor">场次</td>
-            <td class="greyColor">PR</td>
-            <td class="greyColor">胜率</td>
-            <td class="greyColor">场均</td>
-            <td class="greyColor">击杀</td>
-        </tr>
-        {% endif %}
+  .clan-name>div:nth-child(2){
+    text-align: center;
+  }
 
-        {% if solo_battles %}
-        <tr>
-            <td class="bold-data greyColor">单野</td>
-            <td class="blueColor">{{solo_battles}}</td>
-            <td class="blueColor" style="color: {{solo_winsColor}}">{{solo_wins}}%</td>
-            <td class="blueColor" style="color: {{solo_prColor}}">{{solo_pr}}</td>
-            <td class="blueColor" style="color: {{solo_damageColor}}">{{solo_damage}}</td>
-            <td class="blueColor">{{solo_frags}}</td>
-        </tr>
-        {% endif %}
-        {% if div2_battles %}
+  .clan-name>div:nth-child(2)>div:nth-child(1){
+    font-size:larger;
+    font-weight: bold;
+    font-size: 25px;
+  }
+  .clan-name>div:nth-child(2)>div:nth-child(2){
+    font-size:large;
+    font-size: 25px;
+  }
 
-        <tr>
-            <td class="bold-data greyColor">自行车</td>
-            <td class="blueColor">{{div2_battles}}</td>
-            <td class="blueColor" style="color: {{div2_winsColor}}">{{div2_wins}}%</td>
-            <td class="blueColor" style="color: {{div2_prColor}}">{{div2_pr}}</td>
-            <td class="blueColor" style="color: {{div2_damageColor}}">{{div2_damage}}</td>
-            <td class="blueColor">{{div2_frags}}</td>
-        </tr>
-        {% endif %}
-        {% if div3_battles %}
-        <tr>
-            <td class="bold-data greyColor">三轮车</td>
-            <td class="blueColor">{{div3_battles}}</td>
-            <td class="blueColor" style="color: {{div3_winsColor}}">{{div3_wins}}%</td>
-            <td class="blueColor" style="color: {{div3_prColor}}">{{div3_pr}}</td>
-            <td class="blueColor" style="color: {{div3_damageColor}}">{{div3_damage}}</td>
-            <td class="blueColor">{{div3_frags}}</td>
-        </tr>
-        {% endif %}
-        {% if rank_battles %}
-        <tr>
-            <td class="bold-data greyColor">排位</td>
-            <td class="blueColor">{{rank_battles}}</td>
-            <td class="blueColor" style="color: {{rank_winsColor}}">{{rank_wins}}%</td>
-            <td class="blueColor" style="color: {{rank_prColor}}">{{rank_pr}}</td>
-            <td class="blueColor" style="color: {{rank_damageColor}}">{{rank_damage}}</td>
-            <td class="blueColor">{{rank_frags}}</td>
-        </tr>
-        {% endif %}-->
-            <tr>
-                <td colspan="6">
-                    <div>
-                        <canvas id="myChart" width="800" height="331"></canvas>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="6" class="bold-data greyColor2" style="text-align: center;">Clan Desciption</td>
-            </tr>
-            <tr>
-                <td colspan="6">
-                    不知道描述是啥总之先加上去点看起来有点东西好了
-                </td>
-            </tr>
-            <tr>
-                <td colspan="6" class="font-data greyColor" style="text-align: center;">
-                    <span>© 西行寺雨季</span>&nbsp;&nbsp;<span>© 本心</span>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="6" class="font-data greyColor" style="text-align: center;">
-                    <span>https://github.com/benx1n/HikariBot</span>
-                </td>
-            </tr>
-        </table>
+
+
+
+  /* 进度条 */
+  .progress-bar{
+    background-color: rgb(218, 218, 218);
+    border-radius: 50px;
+    position: relative;
+    margin-bottom: 10px;
+  }
+  .progress-bar>div:nth-child(2){
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    padding: 5px;
+    position: relative;
+  }
+
+  .progress-bar>div:nth-child(1){
+    height: 100%;
+    width: 50%;
+    border-radius: 50px;
+    position: absolute;
+    background: aquamarine;
+  }
+
+  .pr {
+		display: flex;
+		height: 50px;
+		font-weight: bold;
+		line-height: 60px;
+		padding: 0 80px;
+	}
+
+	.pr-bar-bg {
+		position: relative;
+		flex: 1;
+		line-height: 40px;
+		background-color: #A6A6A6;
+		height: 40px;
+		border-radius: 20px;
+		margin-top: 5px;
+		text-align: center;
+		color: #FFFFFF;
+	}
+
+	.pr-bar {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 40px;
+		z-index: 1;
+		border-radius: 20px;
+	}
+
+	.pr-number {
+		z-index: 99;
+		position: absolute;
+		left: 0px;
+		right: 0px;
+		font-size: 20px;
+		font-weight: bold;
+	}
+
+
+  /* 时间信息 */
+  .date{
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 14px;
+    color: rgb(129, 129, 129);
+  }
+
+  /* 总体信息 */
+  .overall-info{
+    display: flex;
+    margin-bottom: 10px;
+  }
+  .overall-info>div:nth-child(1){
+    flex-grow: 3;
+  }
+  .overall-info>div:nth-child(2),.overall-info>div:nth-child(3){
+    flex-grow: 2;
+  }
+
+  .data-group{
+    width: 0;
+    text-align: center;
+  }
+  .data-group>div:nth-child(2){
+    display: flex;
+  }
+  .data-group>div:nth-child(2)>div{
+    flex-grow: 1;
+    width: 0;
+    background-color: #f1f1f1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 80px;
+    border-radius: 10px;
+    margin-right: 10px;
+  }
+  .data-group>div:nth-child(1){
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #f1f1f1;
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+  .data-group>div:nth-child(2)>div>div:nth-child(1){
+    color: rgb(129, 129, 129);
+    padding-bottom: 3px;
+  }
+  .data-group>div:nth-child(2)>div>div:nth-child(2){
+    font-weight: bold;
+  }
+
+  .clan-rank{
+    font-size: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(129, 129, 129);
+  }
+  .clan-rank>span{
+    font-size: 32px;
+    font-weight: bold;
+    padding-left: 20px;
+  }
+
+  .clan-info{
+    font-size: 24px;
+    color: rgb(129, 129, 129);
+  }
+  .clan-info>div:nth-child(2){
+    padding-top: 10px;
+    font-weight: bold;
+  }
+
+  /* 分组名 */
+  .group-name{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+  .group-name>div{
+    width: 70%;
+    background-color: #d4d4d4;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 5px;
+    border-radius: 50px;
+  }
+
+  /* 赛季信息 */
+  .clan-rank-table{
+    background-color: #f1f1f1;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  .clan-rank-table>div:nth-child(1){
+    display: flex;
+    justify-content: space-between;
+    padding: 0 40px 5px 40px;
+    font-size: 18px;
+  }
+  .rank-num{
+    font-size: 14px;
+    color: rgb(129, 129, 129);
+  }
+  .rank-num>span{
+    font-size: 18px;
+    font-weight: bold;
+    padding-left: 20px;
+  }
+
+  .color-line>div{
+    background-color: red;
+    height: 2px;
+  }
+  .tr-flex{
+    display: flex;
+    justify-content: space-between;
+    padding-left: 40px;
+  }
+  .tr-flex>div{
+    flex-grow: 1;
+    width: 0;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    /* text-align: center; */
+  }
+  .table-title{
+    background-color: #d4d4d4;
+    border-radius: 4px;
+    color: #4e4e4e;
+  }
+  .table-data{
+    font-weight: bold;
+  }
+  .group-lev{
+    padding-right: 100px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .group-lev>div:nth-child(1){
+    display: flex;
+  }
+  .group-lev>div:nth-child(1)>div{
+    width:5px;
+    background-color: red;
+    margin-right: 5px;
+    border-radius: 10px;
+  }
+
+  /* 军团设施 */
+  .clan-facilities{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .clan-facilities>div{
+    flex-grow: 1;
+    width: 0;
+  }
+  .facilities-item{
+    background-color: #f1f1f1;
+    border-radius: 10px;
+    padding: 20px 50px;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    box-sizing: border-box;
+  }
+  .facilities-item>div:nth-child(1){
+    font-weight: bold;
+    font-size: 20px;
+    padding-right: 40px;
+  }
+
+  .facilities-item-info{
+    display: flex;
+  }
+  .facilities-item-info>div:nth-child(1){
+    width: 140px;
+  }
+  </style>
+	<body>
+		<div class="clan-main">
+      <!-- 顶部名称信息 -->
+      <div class="clan-name">
+        <div></div>
+        <div>
+          <div style="color:{{ data['colorRgb'] }};">[{{ data['tag'] }}]</div>
+          <div>{{ data['name'] }}</div>
+        </div>
+        <div>
+          <div class="server">{{ data['server'] }}</div>
+          <div>Clan ID: {{ data['clanId'] }}</div>
+        </div>
+      </div>
+      <!-- 进度条信息 -->
+      <div class="pr">
+					<!-- 动态设置长度及颜色，填写PR即可 -->
+					<div class="pr-bar-bg">
+						<span class="pr-number">1800&nbsp;&nbsp;&nbsp;&nbsp;<span
+								class="pr-text"></span></span>
+						<div class="pr-bar"></div>
+					</div>
+				</div>
+      <!-- 时间信息 -->
+      <div class="date">
+        <div>创建时间：{{ time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(abs(data['createdAt']/1000)))}}</div>
+        <div>数据更新：{{ time.strftime('%Y-%m-%d %H:%M',time.localtime(time.time())) }}</div>
+      </div>
+      <!-- 总体信息 -->
+      <div class="overall-info">
+        <!-- 第一列 -->
+        <div class="data-group">
+          <div >
+            <div class="clan-rank">军团排名 <span>暂无数据</span></div>
+          </div>
+          <div>
+            <div>
+              <div>军团活跃度</div>
+              <div>暂无数据</div>
+            </div>
+            <div>
+              <div>军团成员</div>
+              <div>{{ data['membersCount'] }}/暂无数据</div>
+            </div>
+          </div>
+        </div>
+        <!-- 第二列 -->
+        <div class="data-group">
+          <div class="clan-info" style="margin-left:10px;margin-right:10px;">
+            <div>总体胜率</div>
+            <div>63.99%</div>
+          </div>
+          <div>
+            <div>
+              <div>场次</div>
+              <div>114514</div>
+            </div>
+            <div>
+              <div>经验</div>
+              <div>2048</div>
+            </div>
+          </div>
+        </div>
+        <!-- 第三列 -->
+        <div class="data-group">
+          <div class="clan-info">
+            <div>场均</div>
+            <div>67842</div>
+          </div>
+          <div>
+            <div>
+              <div>击杀</div>
+              <div>1.18</div>
+            </div>
+            <div style="margin-right: 0px;">
+              <div>日均</div>
+              <div>7.0场</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 分组名称 -->
+      <div class="group-name">
+        <div>军团战斗</div>
+      </div>
+      <!-- 赛季信息 -->
+      <div class="clan-rank-table">
+        <div>
+          <div>S14赛及摘要</div>
+          <div class="rank-num">服务器排名<span>28</span></div>
+        </div>
+        <div class="color-line"><div></div></div>
+        <div class="tr-flex table-title">
+          <div>队伍</div><div>场次</div><div>胜场</div><div>最高连胜</div><div>组别</div>
+        </div>
+        <div class="tr-flex table-data">
+          <div>Alpha</div><div>72</div><div>44 (<span>61%</span>)</div><div>4场</div><div><div class="group-lev"><div><div></div><span>黄金I</span></div><span>39</span></div></div>
+        </div>
+        <div class="tr-flex table-data">
+          <div>Alpha</div><div>72</div><div>44 (<span>61%</span>)</div><div>4场</div><div><div class="group-lev"><div><div></div><span>黄金I</span></div><span>39</span></div></div>
+        </div>
+      </div>
+
+
+      <div class="clan-rank-table">
+        <div>
+          <div>本赛季最高记录</div>
+          <div class="rank-num">
+            <!-- 服务器排名<span>28</span> -->
+          </div>
+        </div>
+        <div class="color-line"><div></div></div>
+        <div class="tr-flex table-title">
+          <div>队伍</div><div>场次</div><div>胜场</div><div>最高连胜</div><div>组别</div>
+        </div>
+        <div class="tr-flex table-data">
+          <div>Alpha</div><div>72</div><div>44 (<span>61%</span>)</div><div>4场</div><div><div class="group-lev"><div><div></div><span>黄金I</span></div><span>39</span></div></div>
+        </div>
+        <div class="tr-flex table-data">
+          <div>Alpha</div><div>72</div><div>44 (<span>61%</span>)</div><div>4场</div><div><div class="group-lev"><div><div></div><span>黄金I</span></div><span>39</span></div></div>
+        </div>
+      </div>
+
+      <!-- 分组名称 -->
+      <div class="group-name">
+        <div>军团设施</div>
+      </div>
+      <!-- 设施信息 -->
+      <div class="clan-facilities">
+        <div>
+          <div class="facilities-item" style="margin-right: 5px;">
+            <div>折扣</div>
+            <div>
+              <div class="facilities-item-info">
+                <div><span>6/6</span>级干船坞</div>
+                <div>I-X整备费用<span>-15%</span></div>
+              </div>
+              <div class="facilities-item-info">
+                <div><span>6/6</span>级造船厂</div>
+                <div>I-X研发费用<span>-15%</span></div>
+              </div>
+              <div class="facilities-item-info">
+                <div><span>2/3</span>特别项目</div>
+                <div>XI研发费用<span>-15%</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="facilities-item" style="margin-left: 5px;">
+            <div>加成</div>
+            <div>
+              <div class="facilities-item-info">
+                <div><span>3/3</span>级煤炭港</div>
+                <div>煤炭<span>+10%</span></div>
+              </div>
+              <div class="facilities-item-info">
+                <div><span>3/3</span>级钢铁港</div>
+                <div>钢铁<span>+10%</span></div>
+              </div>
+              <div class="facilities-item-info">
+                <div><span>3/3</span>特研究所</div>
+                <div>研发点<span>+5%</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="clan-facilities">
+        <div>
+          <div class="facilities-item" style="margin-right: 5px;">
+            <div>收入</div>
+            <div>
+              <div class="facilities-item-info">
+                <div><span>5/5</span>级学院</div>
+                <div>每场指挥官经验<span>+15%</span></div>
+              </div>
+              <div class="facilities-item-info">
+                <div><span>{{ data['buildingsInfos'][0]['level'] }}/6</span>级军事学院</div>
+                <div>I-X 每场战斗经验<span>+15%</span></div>
+              </div>
+              <div class="facilities-item-info">
+                <div><span>2/3</span>特别项目</div>
+                <div>每场战斗经验<span>+10%</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="facilities-item" style="margin-left: 5px;">
+            <div>设施</div>
+            <div>
+              <div class="facilities-item-info">
+                <div><span>3/3</span>级金库</div>
+                <div>提供每个礼包<span>"超级补给箱"</span>的机会</div>
+              </div>
+              <div class="facilities-item-info">
+                <div><span>4/4</span>级军官俱乐部</div>
+                <div>容纳人数：<span>50人</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="facilities-item">
+        <div>描述信息</div>
+        <div style="white-space: pre-wrap; ">{{ data['description'] }}</div>
+      </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/echarts@5.3.3/dist/echarts.js"></script>
+  </div>
+	</body>
+	<script>
+	// PR条颜色动态变化
+	let bar_bg_width = document.querySelector('.pr-bar-bg').clientWidth;
+	let pr_number = document.querySelector('.pr-number').innerText;
+	pr_number = parseInt(pr_number);
+	if (pr_number == 0) {
+		document.querySelector(".pr-bar").style.backgroundColor = "#828282";
+		document.querySelector(".pr-text").innerText = "暂无数据";
+	} else if (pr_number < 750) {
+		document.querySelector(".pr-bar").style.backgroundColor = "#F44336";
+		document.querySelector(".pr-text").innerText = "还需努力";
+	} else if (pr_number < 1100) {
+		document.querySelector(".pr-bar").style.backgroundColor = "#FF9800";
+		document.querySelector(".pr-text").innerText = "低于平均";
+	} else if (pr_number < 1350) {
+		document.querySelector(".pr-bar").style.backgroundColor = "#FFC107";
+		document.querySelector(".pr-text").innerText = "平均水平";
+		document.querySelector(".pr-number").style.color = "#303133";
+	} else if (pr_number < 1550) {
+		document.querySelector(".pr-bar").style.backgroundColor = "#8BC34A";
+		document.querySelector(".pr-text").innerText = "好";
+	} else if (pr_number < 1750) {
+		document.querySelector(".pr-bar").style.backgroundColor = "#4CAF50";
+		document.querySelector(".pr-text").innerText = "很好";
+	} else if (pr_number < 2100) {
+		document.querySelector(".pr-bar").style.backgroundColor = "#00BCD4";
+		document.querySelector(".pr-text").innerText = "非常好";
+	} else if (pr_number < 2450) {
+		document.querySelector(".pr-bar").style.backgroundColor = "#9C27B0";
+		document.querySelector(".pr-text").innerText = "大佬水平";
+	} else {
+		document.querySelector(".pr-bar").style.backgroundColor = "#673AB7";
+		document.querySelector(".pr-text").innerText = "神佬水平";
+		pr_number = 2450; //防止pr条溢出
+	}
 
-    <script>
+	if (pr_number < 220 && pr_number > 0) {
+		pr_number = 220; //防止pr过低导致圆角异常
+	}
+	// PR条动态长度
+	let width = bar_bg_width * (pr_number / 2450);
+	document.querySelector('.pr-bar').style.width = width + "px";
+</script>
 
-        var myChart = echarts.init(document.getElementById('myChart'));
-        var myChart1 = echarts.init(document.getElementById('barChart1'));
-        var myChart2 = echarts.init(document.getElementById('barChart2'));
-        var myChart3 = echarts.init(document.getElementById('barChart3'));
-        myChart.setOption(
-            {
-                xAxis: {
-                    type: "category",
-                },
-                yAxis: {
-                    type: "value",
-                },
-                color: ["#33CCFF", "#7ba3a8", " #bead92", "#f35a4a", "#5b4947"], // 柱状图颜色
-                dataset: {
-                    source: [
-                        // 数据源
-                        ["Ⅰ", 0, 400, 00, 0, 0],
-                        ["Ⅱ", 0, 430, 0, 0, 0],
-                        ["Ⅲ", 0, 850, 0, 0, 0],
-                        ["Ⅳ", 60, 170, 400, 0, 0],
-                        ["Ⅴ", 901, 880, 360, 0, 0],
-                        ["Ⅵ", 499, 800, 400, 100, 0],
-                        ["Ⅶ", 600, 900, 600, 120, 0],
-                        ["Ⅷ", 1100, 1000, 900, 900, 30],
-                        ["Ⅸ", 600, 1200, 900, 1200, 20],
-                        ["Ⅹ", 1500, 1400, 2000, 1000, 100],
-                        ["Ⅺ", 300, 470, 700, 300, 0]
-                    ]
-                },
-                series: [
-                    // 图标列设置
-                    {
-                        type: "bar", stack: "total", name: "DD", barWidth: 40},
-                    { type: "bar", stack: "total", name: "CA" },
-                    { type: "bar", stack: "total", name: "BB" },
-                    { type: "bar", stack: "total", name: "CV" },
-                    { type: "bar", stack: "total", name: "SS" },
-                ],
-                tooltip: {
-                    // 提示框组件
-                },
-                grid: {
-                    left: 0,
-                    right: 12,
-                    bottom: 0,
-                    top: 40,
-                    containLabel: true,
-                },
-                // 图例设置
-                legend: {
-                    top: 0,
-                    left: -5,
-                    icon: "circle",
-                    itemHeight: 8, // 修改icon图形大小
-                    itemGap: 24,
-                    textStyle: {
-                        fontSize: 16,
-                        fontWeight: 'bold',
-                        color: "#333",
-                        padding: [0, 0, 0, -8], // 修改文字和图标距离
-                    },
-                }
-            })
-        myChart1.setOption({
-            title: {
-                text: this.title
-            },
-            color: ["#33CCFF", "#7ba3a8", " #bead92", "#f35a4a", "#5b4947"],
-            series: [
-                {
-                    name: this.title,
-                    type: 'pie',
-                    selectedMode: 'single',
-                    radius: ['40%', '92%'],
-                    clockwise: false,
-                    itemStyle: {
-                        borderWidth: 5,
-                        borderColor: '#fff'
-                    },
-                    label: {
-                        position: 'inside',
-                        formatter: '{b}\n{d}%',
-                        fontSize: 15, //文字大小
-                        fontWeight: 'bold',
-                    },
-                    data: [
-                        { value: 1000, name: 'DD' },
-                        { value: 1700, name: 'CA' },
-                        { value: 3000, name: 'BB' },
-                        { value: 2500, name: 'CV' },
-                        { value: 100, name: 'SS' }
-                    ]
-                }
-            ],
-            graphic: { // 添加原生图形元素组件
-                elements: [{
-                    type: 'text', // 组件类型
-                    left: 'center', //定位
-                    top: 'center', // 定位
-                    style: { // 样式
-                        text: '舰船\n类型', //文字
-                        fontSize: 25, //文字大小
-                        textAlign: 'center', //定位
-                        width: 30,
-                        height: 30,
-                        fill: 'darkgray' // 字体颜色
-                    }
-                }]
-            }
-        })
-
-        myChart2.setOption({
-            title: {
-                text: this.title
-            },
-            color: ["#33CCFF", "#7ba3a8", "#f35a4a", " #bead92"],
-            series: [
-                {
-                    name: this.title,
-                    type: 'pie',
-                    selectedMode: 'single',
-                    radius: ['40%', '92%'],
-                    clockwise: false,
-                    itemStyle: {
-                        borderWidth: 5,
-                        borderColor: '#fff'
-                    },
-                    label: {
-                        position: 'inside',
-                        formatter: '{b}\n{d}%',
-                        fontSize: 15, //文字大小
-                        fontWeight: 'bold',
-                    },
-                    data: [
-                        { value: 1400, name: '单野' },
-                        { value: 2700, name: '自行车' },
-                        { value: 4600, name: '三轮车' },
-                        { value: 1200, name: '排位' }
-                    ]
-                }
-            ],
-            graphic: { // 添加原生图形元素组件
-                elements: [{
-                    type: 'text', // 组件类型
-                    left: 'center', //定位
-                    top: 'center', // 定位
-                    style: { // 样式
-                        text: '组队\n类型', //文字
-                        fontSize: 25, //文字大小
-                        textAlign: 'center', //定位
-                        width: 30,
-                        height: 30,
-                        fill: 'darkgray' // 字体颜色
-                    }
-                }]
-            }
-        })
-        myChart3.setOption({
-            title: {
-                text: this.title
-            },
-            color: ["#FE0E00", "#FE7903", "#FFC71F", " #44B300", "#318000", "#02C9B3", "#D042F3", "#A00DC5"],
-            series: [
-                {
-                    name: this.title,
-                    type: 'pie',
-                    selectedMode: 'single',
-                    radius: ['40%', '92%'],
-                    clockwise: false,
-                    itemStyle: {
-                        borderWidth: 5,
-                        borderColor: '#fff'
-                    },
-                    label: {
-                        position: 'inside',
-                        formatter: '{b}\n{d}%',
-                        fontSize: 15, //文字大小
-                        fontWeight: 'bold',
-                    },
-                    data: [
-                        { value: 0, name: '还需努力' },
-                        { value: 0, name: '低于平均' },
-                        { value: 2, name: '平均水平' },
-                        { value: 4, name: '好' },
-                        { value: 4, name: '很好' },
-                        { value: 6, name: '非常好' },
-                        { value: 11, name: '大佬' },
-                        { value: 7, name: '神佬' },
-                    ]
-                }
-            ],
-            graphic: { // 添加原生图形元素组件
-                elements: [{
-                    type: 'text', // 组件类型
-                    left: 'center', //定位
-                    top: 'center', // 定位
-                    style: { // 样式
-                        text: 'PR\n分布', //文字
-                        fontSize: 25, //文字大小
-                        textAlign: 'center', //定位
-                        width: 30,
-                        height: 30,
-                        fill: 'darkgray' // 字体颜色
-                    }
-                }]
-            }
-        })
-    </script>
-</body>
-
+<script>
+	// 服务器字体颜色自动填充
+	let server_name = document.querySelector(".server").innerText;
+	if (server_name == "亚服") {
+		document.querySelector(".server").style.color = "#92D050";
+	} else if (server_name == "国服") {
+		document.querySelector(".server").style.color = "#BF9000";
+	} else if (server_name == "欧服") {
+		document.querySelector(".server").style.color = "#009664";
+	} else if (server_name == "美服") {
+		document.querySelector(".server").style.color = "#6872C4";
+	} else if (server_name == "俄服") {
+		document.querySelector(".server").style.color = "#FF0000";
+	}
+</script>
 </html>

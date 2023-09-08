@@ -281,7 +281,7 @@
 		    position: absolute;
 		    height: 55px;
 		    width: 10px;
-		    background-color: #ffcc29;
+		    background-color: #87CEEB;
 		    margin-top: 10px;
 		    margin-left: 0px;
 		    border-radius: 2px;
@@ -491,7 +491,7 @@
 						<div style="flex: 3; color: #DD3B2FFF;">{{ time.strftime('%H:%M',time.localtime(int(abs(ship['recordTime']/1000)))) }}</div>
 					{% else %}
 						<div class="random-item tie">
-						<div style="flex: 3; color: #ffcc29;">{{ time.strftime('%H:%M',time.localtime(int(abs(ship['recordTime']/1000)))) }}</div>
+						<div style="flex: 3; color: #87CEEB;">{{ time.strftime('%H:%M',time.localtime(int(abs(ship['recordTime']/1000)))) }}</div>
 					{% endif %}
 						{% if ship['type'] == 'PVP_SOLO'%}
 							<div style="flex: 3;">单野</div>
@@ -503,7 +503,11 @@
 							<div style="flex: 3;">排位</div>
 						{% endif %}
 						<div class="ship-level" style="flex: 3;">{{ ship['shipInfo']['level'] }}</div>
-						<div style="flex: 8;">{{ ship['shipInfo']['nameCn'] }}</div>
+						<div style="flex: 8;">{{ ship['shipInfo']['nameCn'] }}
+						{% if ship['battleInfo']['battleInfo']['battle'] > 1 %}
+						×{{ ship['battleInfo']['battleInfo']['battle'] }}
+						{% endif %}
+						</div>
 						<div style="flex: 3; color: {{ ship['prInfo']['color'] }};">{{ ship['prInfo']['value'] }}</div>
 						<div style="flex: 3; color: {{ ship['battleInfo']['avgInfo']['damageData']['color'] }};">{{ ship['battleInfo']['avgInfo']['damage'] }}</div>
 						<div style="flex: 3;">{{ '%.2f' | format(ship['battleInfo']['avgInfo']['frags']) }}</div>

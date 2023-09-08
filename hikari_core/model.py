@@ -36,6 +36,7 @@ class Input_Model(BaseModel):
     AccountName: Optional[str]
     AccountId: Optional[int]
     ClanName: Optional[str]
+    ClanId: Optional[int]
     Recent_Day: Optional[int] = 0
     Recent_Date: Optional[str] = time.strftime('%Y-%m-%d', time.localtime())
     Select_Index: Optional[int]

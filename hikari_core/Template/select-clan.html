@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<style>
+		* {
+			padding: 0;
+			margin: 0;
+		}
+		.main-content {
+			width: 360px;
+			font-family: 'Microsoft YaHei';
+			font-family: "Microsoft YaHei";
+			font-size: 20px;
+			border-radius: 16px;
+			font-weight: bold;
+			background-color: #F2F2F2;
+		}
+		.header {
+			height: 80px;
+			display: flex;
+			line-height: 40px;
+		}
+		.sec {
+			margin: 15px;
+			height: 50px;
+			width: 50px;
+			text-align: center;
+			line-height: 50px;
+			border-radius: 30px;
+			border: #008272 3px solid;
+			font-weight: normal;
+		}
+		.ship-list {
+			display: flex;
+			flex-direction: column;
+			border-radius: 16px;
+		}
+		.ship-item {
+			display: flex;
+			height: 60px;
+			line-height: 60px;
+		}
+		.ship-inf {
+			flex: 1;
+			display: flex;
+		}
+		.index {
+			width: 60px;
+			text-align: center;
+			font-weight: bold;
+		}
+		.ship-level {
+			width: 100px;
+			text-align: center;
+			display: inline-block;
+		}
+		.ship-name {
+			width: 200px;
+			text-align: left;
+			display: inline-block;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+		.icon{
+			width: 40px;
+		}
+		.icon img {
+			display: block;
+			width: 30px;
+			height: 30px;
+			margin: 15px 0;
+		}
+	</style>
+	<body>
+		<div class="main-content">
+			<div class="header">
+				<div class="sec">20s</div>
+				<div class="header-text">
+					<div>存在多个符合条件的公会</div>
+					<div>请在20秒内选择对应的序号</div>
+				</div>
+			</div>
+			<div class="ship-list">
+				{% for clan in data %}
+				<div class="ship-item">
+					<div class="index"></div>
+					<div class="ship-inf">
+						<div class="ship-level">[{{ clan['tag'] }}]</div>
+						<div class="ship-name">{{ clan['name'] }}</div>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+	</body>
+	
+	<script>
+		let index_doc = document.getElementsByClassName('index');
+		for(let idx=0;idx<index_doc.length;idx++) {
+			index_doc[idx].innerText = idx+1;
+		}
+	</script>
+</html>
