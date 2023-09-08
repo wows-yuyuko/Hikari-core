@@ -121,7 +121,7 @@ async def output_hikari(hikari: Hikari_Model) -> Hikari_Model:
         return Hikari_Model().error('Hikari-core顶层错误，请检查log')
 
 
-update_template()
+# update_template()
 scheduler = BackgroundScheduler(timezone='Asia/Shanghai')
 scheduler.add_job(update_template, 'cron', hour='4,12')
 scheduler.start()

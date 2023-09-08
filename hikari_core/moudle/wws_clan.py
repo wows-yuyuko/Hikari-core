@@ -52,11 +52,10 @@ async def get_ClanInfo(hikari: Hikari_Model) -> Hikari_Model:
         hikari.Output.Yuyuko_Code = result['code']
 
         if result['code'] == 200 and result['data']:
-            if result['data']['typeInfo']['PVP']['battle'] or result['data']['typeInfo']['RANK_SOLO']['battle']:
-                hikari.set_template_info('wws-ship.html', 800, 100)
-                return hikari.success(result['data'])
-            else:
-                return hikari.failed('查询不到战绩数据')
+            latest_season = str(result['data']['clanLeagueInfo']['lastSeason'])
+            result['data']['latest_season'] = latest_season
+            hikari.set_template_info('wws-clan.html', 800, 100)
+            return hikari.success(result['data'])
         elif result['code'] == 403:
             return hikari.failed(f"{result['message']}\n请先绑定账号")
         elif result['code'] == 500:

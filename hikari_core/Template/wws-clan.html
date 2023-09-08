@@ -327,7 +327,7 @@
       <div class="pr">
 					<!-- 动态设置长度及颜色，填写PR即可 -->
 					<div class="pr-bar-bg">
-						<span class="pr-number">1800&nbsp;&nbsp;&nbsp;&nbsp;<span
+						<span class="pr-number">0&nbsp;&nbsp;&nbsp;&nbsp;<span
 								class="pr-text"></span></span>
 						<div class="pr-bar"></div>
 					</div>
@@ -351,7 +351,7 @@
             </div>
             <div>
               <div>军团成员</div>
-              <div>{{ data['membersCount'] }}/暂无数据</div>
+              <div>{{ data['membersCount'] }}/{{ data['maxMembersCount'] }}</div>
             </div>
           </div>
         </div>
@@ -359,16 +359,16 @@
         <div class="data-group">
           <div class="clan-info" style="margin-left:10px;margin-right:10px;">
             <div>总体胜率</div>
-            <div>63.99%</div>
+            <div>暂无数据%</div>
           </div>
           <div>
             <div>
               <div>场次</div>
-              <div>114514</div>
+              <div>暂无数据</div>
             </div>
             <div>
               <div>经验</div>
-              <div>2048</div>
+              <div>暂无数据</div>
             </div>
           </div>
         </div>
@@ -376,16 +376,16 @@
         <div class="data-group">
           <div class="clan-info">
             <div>场均</div>
-            <div>67842</div>
+            <div>暂无数据</div>
           </div>
           <div>
             <div>
               <div>击杀</div>
-              <div>1.18</div>
+              <div>暂无数据</div>
             </div>
             <div style="margin-right: 0px;">
               <div>日均</div>
-              <div>7.0场</div>
+              <div>暂无数据</div>
             </div>
           </div>
         </div>
@@ -397,25 +397,37 @@
       <!-- 赛季信息 -->
       <div class="clan-rank-table">
         <div>
-          <div>S14赛及摘要</div>
+          <div>S{{ data['clanLeagueInfo']['lastSeason'] }}赛季摘要</div>
           <div class="rank-num">服务器排名<span>28</span></div>
         </div>
         <div class="color-line"><div></div></div>
         <div class="tr-flex table-title">
-          <div>队伍</div><div>场次</div><div>胜场</div><div>最高连胜</div><div>组别</div>
+          <div>队伍</div><div>场次</div><div>胜率</div><div>连胜</div><div>组别</div>
         </div>
+        {% if data['clanLeagueInfo']['dataMap'][data['latest_season']]['alpha'] and data['clanLeagueInfo']['dataMap'][data['latest_season']]['alpha']['battlesCount'] != 0 %}
         <div class="tr-flex table-data">
-          <div>Alpha</div><div>72</div><div>44 (<span>61%</span>)</div><div>4场</div><div><div class="group-lev"><div><div></div><span>黄金I</span></div><span>39</span></div></div>
+          <div>Alpha</div>
+          <div>{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['alpha']['battlesCount'] }}</div>
+          <div>{{ '%.1f' | format(data['clanLeagueInfo']['dataMap'][data['latest_season']]['alpha']['winsCount']/data['clanLeagueInfo']['dataMap'][data['latest_season']]['alpha']['battlesCount']*100) }}%<span></span></div>
+          <div>{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['alpha']['currentWinningStreak'] }}</div>
+          <div><div class="group-lev"><div><div></div><span>{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['alpha']['leagueName']['buff'] }}{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['alpha']['divisionName'] }}</span></div><span>{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['alpha']['divisionRating'] }}</span></div></div>
         </div>
+        {% endif %}
+        {% if data['clanLeagueInfo']['dataMap'][data['latest_season']]['bravo'] and data['clanLeagueInfo']['dataMap'][data['latest_season']]['bravo']['battlesCount'] != 0 %}
         <div class="tr-flex table-data">
-          <div>Alpha</div><div>72</div><div>44 (<span>61%</span>)</div><div>4场</div><div><div class="group-lev"><div><div></div><span>黄金I</span></div><span>39</span></div></div>
+          <div>Bravo</div>
+          <div>{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['bravo']['battlesCount'] }}</div>
+          <div>{{ '%.1f' | format(data['clanLeagueInfo']['dataMap'][data['latest_season']]['bravo']['winsCount']/data['clanLeagueInfo']['dataMap'][data['latest_season']]['bravo']['battlesCount']*100) }}%<span></span></div>
+          <div>{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['bravo']['currentWinningStreak'] }}</div>
+          <div><div class="group-lev"><div><div></div><span>{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['bravo']['leagueName']['buff'] }}{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['bravo']['divisionName'] }}</span></div><span>{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['bravo']['divisionRating'] }}</span></div></div>
         </div>
+        {% endif %}
       </div>
 
 
       <div class="clan-rank-table">
         <div>
-          <div>本赛季最高记录</div>
+          <div>S{{ data['clanLeagueInfo']['lastSeason'] }}赛季摘要最高记录</div>
           <div class="rank-num">
             <!-- 服务器排名<span>28</span> -->
           </div>
@@ -443,12 +455,12 @@
             <div>折扣</div>
             <div>
               <div class="facilities-item-info">
-                <div><span>6/6</span>级干船坞</div>
-                <div>I-X整备费用<span>-15%</span></div>
+                <div><span>{{ data['buildingsInfos'][8]['level'] }}/{{ data['buildingsInfos'][8]['maxLevel'] }}</span>级干船坞</div>
+                <div>I-X整备费用<span>{{ data['buildingsInfos'][8]['buff']['buff'] }}</span></div>
               </div>
               <div class="facilities-item-info">
-                <div><span>6/6</span>级造船厂</div>
-                <div>I-X研发费用<span>-15%</span></div>
+                <div><span>{{ data['buildingsInfos'][1]['level'] }}/{{ data['buildingsInfos'][1]['maxLevel'] }}</span>级造船厂</div>
+                <div>I-X研发费用<span>{{ data['buildingsInfos'][1]['buff']['buff'] }}</span></div>
               </div>
               <div class="facilities-item-info">
                 <div><span>2/3</span>特别项目</div>
@@ -462,16 +474,16 @@
             <div>加成</div>
             <div>
               <div class="facilities-item-info">
-                <div><span>3/3</span>级煤炭港</div>
-                <div>煤炭<span>+10%</span></div>
+                <div><span>{{ data['buildingsInfos'][7]['level'] }}/{{ data['buildingsInfos'][7]['maxLevel'] }}</span>级煤炭港</div>
+                <div>煤炭<span>{{ data['buildingsInfos'][7]['buff']['buff'] }}</span></div>
               </div>
               <div class="facilities-item-info">
-                <div><span>3/3</span>级钢铁港</div>
-                <div>钢铁<span>+10%</span></div>
+                <div><span>{{ data['buildingsInfos'][11]['level'] }}/{{ data['buildingsInfos'][11]['maxLevel'] }}</span>级钢铁港</div>
+                <div>钢铁<span>{{ data['buildingsInfos'][11]['buff']['buff'] }}</span></div>
               </div>
               <div class="facilities-item-info">
-                <div><span>3/3</span>特研究所</div>
-                <div>研发点<span>+5%</span></div>
+                <div><span>{{ data['buildingsInfos'][12]['level'] }}/{{ data['buildingsInfos'][12]['maxLevel'] }}</span>级研究所</div>
+                <div>研究点<span>{{ data['buildingsInfos'][12]['buff']['buff'] }}</span></div>
               </div>
             </div>
           </div>
@@ -484,16 +496,16 @@
             <div>收入</div>
             <div>
               <div class="facilities-item-info">
-                <div><span>5/5</span>级学院</div>
-                <div>每场指挥官经验<span>+15%</span></div>
+                <div><span>{{ data['buildingsInfos'][3]['level'] }}/{{ data['buildingsInfos'][3]['maxLevel'] }}</span>级学院</div>
+                <div>每场指挥官经验<span>{{ data['buildingsInfos'][3]['buff']['buff'] }}</span></div>
               </div>
               <div class="facilities-item-info">
-                <div><span>{{ data['buildingsInfos'][0]['level'] }}/6</span>级军事学院</div>
-                <div>I-X 每场战斗经验<span>+15%</span></div>
+                <div><span>{{ data['buildingsInfos'][0]['level'] }}/{{ data['buildingsInfos'][0]['maxLevel'] }}</span>级军事学院</div>
+                <div>I-X 每场战斗经验<span>{{ data['buildingsInfos'][0]['buff']['buff'] }}</span></div>
               </div>
               <div class="facilities-item-info">
-                <div><span>2/3</span>特别项目</div>
-                <div>每场战斗经验<span>+10%</span></div>
+                <div><span>{{ data['buildingsInfos'][2]['level'] }}/{{ data['buildingsInfos'][2]['maxLevel'] }}</span>级设计局</div>
+                <div>I-X 每场战斗全局经验<span>{{ data['buildingsInfos'][2]['buff']['buff'] }}</span></div>
               </div>
             </div>
           </div>
@@ -507,8 +519,8 @@
                 <div>提供每个礼包<span>"超级补给箱"</span>的机会</div>
               </div>
               <div class="facilities-item-info">
-                <div><span>4/4</span>级军官俱乐部</div>
-                <div>容纳人数：<span>50人</span></div>
+                <div><span>{{ data['buildingsInfos'][10]['level'] }}/{{ data['buildingsInfos'][10]['maxLevel'] }}</span>级军官俱乐部</div>
+                <div>容纳人数：<span>{{ data['buildingsInfos'][10]['buff']['buff'] }}</span></div>
               </div>
             </div>
           </div>
