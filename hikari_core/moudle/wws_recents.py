@@ -47,7 +47,7 @@ async def get_RecentsInfo(hikari: Hikari_Model) -> Hikari_Model:
             hikari = hikari.set_template_info('wws-info-recents.html', 1200, 100)
             return hikari.success(result['data'])
         elif result['code'] == 403:
-            return hikari.failed(f"{result['message']}\n请先绑定账号")
+            return hikari.failed(f"{result['message']}")
         elif result['code'] == 404 or result['code'] == 405:
             return hikari.failed(f"{result['message']}\n您可以发送wws help查看recents相关说明")
         elif result['code'] == 500:

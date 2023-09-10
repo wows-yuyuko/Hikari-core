@@ -48,20 +48,22 @@ async def get_ShipRecent(hikari: Hikari_Model) -> Hikari_Model:
         else:
             logger.success('跳过上报数据，直接请求')
 
-        url = 'https://api.wows.shinoaki.com/api/wows/recent/v2/recent/info/ship'
+        url = 'https://recent.wows.shinoaki.com:8890/api/wows/recent/day/info'
         if hikari.Input.Search_Type == 3:
             params = {
                 'server': hikari.Input.Server,
                 'accountId': hikari.Input.AccountId,
-                'shipId': hikari.Input.ShipInfo.Ship_Id,
+                'dateTime': hikari.Input.Recent_Date,
                 'day': hikari.Input.Recent_Day,
+                'shipId': hikari.Input.ShipInfo.Ship_Id,
             }
         else:
             params = {
                 'server': hikari.Input.Platform,
                 'accountId': hikari.Input.PlatformId,
-                'shipId': hikari.Input.ShipInfo.Ship_Id,
+                'dateTime': hikari.Input.Recent_Date,
                 'day': hikari.Input.Recent_Day,
+                'shipId': hikari.Input.ShipInfo.Ship_Id,
             }
 
         client_yuyuko = await get_client_yuyuko()

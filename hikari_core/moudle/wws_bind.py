@@ -49,10 +49,10 @@ async def set_BindInfo(hikari: Hikari_Model) -> Hikari_Model:
                     return hikari.error(f'{hikari.Input.AccountId}')
         else:
             return hikari.error('当前请求状态错误')
-        url = 'https://api.wows.shinoaki.com/api/wows/bind/account/platform/bind/put'
+        url = 'https://v3-api.wows.shinoaki.com:8443/api/user/platform/switch/bind'
         params = {'platformType': hikari.Input.Platform, 'platformId': hikari.Input.PlatformId, 'accountId': hikari.Input.AccountId}
         client_yuyuko = await get_client_yuyuko()
-        resp = await client_yuyuko.get(url, params=params, timeout=10)
+        resp = await client_yuyuko.post(url, json=params, timeout=10)
         result = orjson.loads(resp.content)
         if result['code'] == 200 and result['message'] == 'success':
             return hikari.success('绑定成功')
@@ -76,10 +76,10 @@ async def set_special_BindInfo(hikari: Hikari_Model) -> Hikari_Model:
     try:
         if hikari.Status != 'init':
             return hikari.error('当前请求状态错误')
-        url = 'https://api.wows.shinoaki.com/api/wows/bind/account/platform/bind/put'
+        url = 'https://v3-api.wows.shinoaki.com:8443/api/user/platform/switch/bind'
         params = {'platformType': hikari.Input.Platform, 'platformId': hikari.Input.PlatformId, 'accountId': hikari.Input.AccountId}
         client_yuyuko = await get_client_yuyuko()
-        resp = await client_yuyuko.get(url, params=params, timeout=10)
+        resp = await client_yuyuko.post(url, json=params, timeout=10)
         result = orjson.loads(resp.content)
         if result['code'] == 200 and result['message'] == 'success':
             return hikari.success('绑定成功')
@@ -161,10 +161,10 @@ async def delete_BindInfo(hikari: Hikari_Model) -> Hikari_Model:
             if hikari.Input.Select_Index > len(hikari.Input.Select_Data):
                 return hikari.error('请选择正确的序号')
             hikari.Input.AccountId = hikari.Input.Select_Data[hikari.Input.Select_Index - 1]['accountId']
-            url = 'https://api.wows.shinoaki.com/api/wows/bind/account/platform/bind/remove'
+            url = 'https://v3-api.wows.shinoaki.com:8443/api/user/platform/remove/bind'
             params = {'platformType': hikari.Input.Platform, 'platformId': hikari.Input.PlatformId, 'accountId': hikari.Input.AccountId}
             client_yuyuko = await get_client_yuyuko()
-            resp = await client_yuyuko.get(url, params=params, timeout=10)
+            resp = await client_yuyuko.request('DELETE', url=url, json=params, timeout=10)
             result = orjson.loads(resp.content)
             if result['code'] == 200 and result['message'] == 'success':
                 return hikari.success(
@@ -188,7 +188,7 @@ async def delete_BindInfo(hikari: Hikari_Model) -> Hikari_Model:
 
 async def get_DefaultBindInfo(platformType, platformId):
     try:
-        url = 'https://api.wows.shinoaki.com/public/wows/bind/account/platform/bind/list'
+        url = 'https://v3-api.wows.shinoaki.com:8443/api/user/platform/bind/list'
         params = {
             'platformType': platformType,
             'platformId': platformId,
