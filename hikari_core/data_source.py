@@ -7,7 +7,7 @@ from typing import Tuple
 dir_path = Path(__file__).parent
 template_path = dir_path / 'Template'
 yuyuko_url = 'https://api.wows.shinoaki.com'
-__version__ = '1.0.2.2'
+__version__ = '1.0.3'
 
 
 @dataclass
