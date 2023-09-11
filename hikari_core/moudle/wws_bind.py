@@ -21,7 +21,7 @@ async def get_BindInfo(hikari: Hikari_Model) -> Hikari_Model:
         result = orjson.loads(resp.content)
         if result['code'] == 200 and result['message'] == 'success':
             if result['data']:
-                hikari = hikari.set_template_info('bind-list.html', 900, 440)
+                hikari = hikari.set_template_info('bind-list.html', 900, 240)
                 return hikari.success(result['data'])
             else:
                 return hikari.failed('该用户似乎还没绑定窝窝屎账号')
