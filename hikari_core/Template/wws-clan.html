@@ -599,6 +599,10 @@ body{
                 return parseInt(value.max/100 +1 )*100;
         },
         axisLabel: {
+          textStyle: {
+            fontSize: 20,
+            fontWeight:'bold',  
+        },
       		formatter: function (value, index) {
       		  const temp = {
       		    1000:'青铜',
@@ -647,7 +651,7 @@ body{
         y: 'top',
         itemGap: 5,
         textStyle: {
-            fontSize: 16,      
+            fontSize: 20,      
         },
         data:['结算分数','最高分数'],
         backgroundColor: 'rgba(0,0,0,0)',
