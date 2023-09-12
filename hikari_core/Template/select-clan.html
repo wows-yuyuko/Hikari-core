@@ -104,4 +104,16 @@
 			index_doc[idx].innerText = idx+1;
 		}
 	</script>
+	<script>
+		let arr_information = document.getElementsByClassName('ship-item');
+		for(let i=0;i<arr_information.length;i++) {
+			if(i%2 == 0 && i == (arr_information.length-1)) {
+				arr_information[i].style.backgroundColor = "#E4E4E4";
+				arr_information[i].style.borderBottomLeftRadius = "16px";
+				arr_information[i].style.borderBottomRightRadius = "16px";
+			} else if (i%2 == 0) {
+				arr_information[i].style.backgroundColor = "#E4E4E4";
+			}
+		}
+	</script>
 </html>

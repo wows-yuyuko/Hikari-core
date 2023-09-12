@@ -230,7 +230,7 @@ body{
   font-weight: bold;
 }
 .group-lev{
-  padding-right: 70px;
+  padding-right: 50px;
   display: flex;
   justify-content: space-between;
 }
@@ -238,7 +238,7 @@ body{
   display: flex;
 }
 .group-lev>div:nth-child(1)>div{
-  width:5px;
+  width:10px;
   background-color: red;
   margin-right: 5px;
   border-radius: 10px;
@@ -353,7 +353,7 @@ body{
       <div class="pr">
 					<!-- 动态设置长度及颜色，填写PR即可 -->
 					<div class="pr-bar-bg">
-						<span class="pr-number">0&nbsp;&nbsp;&nbsp;&nbsp;<span
+						<span class="pr-number">{{ data['userStatisticsInfo']['pr']['details']['pr'] }}&nbsp;&nbsp;&nbsp;&nbsp;<span
 								class="pr-text"></span></span>
 						<div class="pr-bar"></div>
 					</div>
@@ -368,12 +368,12 @@ body{
         <!-- 第一列 -->
         <div class="data-group">
           <div >
-            <div class="clan-rank">军团排名 <span>暂无数据</span></div>
+            <div class="clan-rank">军团排名 <span>{{ data['userStatisticsInfo']['rank'] }}</span></div>
           </div>
           <div>
             <div>
               <div>军团活跃度</div>
-              <div>暂无数据</div>
+              <div>{{ data['userStatisticsInfo']['vitality'] }}%</div>
             </div>
             <div>
               <div>军团成员</div>
@@ -385,16 +385,16 @@ body{
         <div class="data-group">
           <div class="clan-info" style="margin-left:10px;margin-right:10px;">
             <div>总体胜率</div>
-            <div>暂无数据%</div>
+            <div style="color: {{ data['userStatisticsInfo']['winsData']['color'] }};">{{ data['userStatisticsInfo']['winsPercentage'] }}%</div>
           </div>
           <div>
             <div>
-              <div>场次</div>
-              <div>暂无数据</div>
+              <div>人均在团</div>
+              <div>{{ '%d' | format(data['userStatisticsInfo']['avgTimeInTheGroup']) }}天</div>
             </div>
             <div>
-              <div>经验</div>
-              <div>暂无数据</div>
+              <div>人均经验</div>
+              <div>{{ data['userStatisticsInfo']['expPerBattle'] }}</div>
             </div>
           </div>
         </div>
@@ -402,16 +402,16 @@ body{
         <div class="data-group">
           <div class="clan-info">
             <div>场均</div>
-            <div>暂无数据</div>
+            <div style="color: {{ data['userStatisticsInfo']['damageData']['color'] }};">{{ data['userStatisticsInfo']['damagePerBattle'] }}</div>
           </div>
           <div>
             <div>
-              <div>击杀</div>
-              <div>暂无数据</div>
+              <div>人均战斗</div>
+              <div>{{ '%.1f' | format(data['userStatisticsInfo']['battlesCount']) }}场</div>
             </div>
             <div style="margin-right: 0px;">
-              <div>日均</div>
-              <div>暂无数据</div>
+              <div>日均战斗</div>
+              <div>{{ '%.1f' | format(data['userStatisticsInfo']['avgDayBattleCount']) }}场/人</div>
             </div>
           </div>
         </div>
@@ -428,25 +428,25 @@ body{
         </div>
         <div class="color-line"><div></div></div>
         <div class="tr-flex table-title">
-          <div>队伍</div><div>场次</div><div>胜场</div><div>当前段位</div><div>最高段位</div>
+          <div style="flex: 3;">队伍</div><div style="flex: 3;">场次</div><div style="flex: 4;">胜场</div><div style="flex: 6;">当前段位</div><div style="flex: 6;">最高段位</div>
         </div>
         {% if data['clanLeagueInfo']['battle'] %}
           {% if data['clanLeagueInfo']['dataMap'][data['latest_season']]['alpha'] and data['clanLeagueInfo']['dataMap'][data['latest_season']]['alpha']['battlesCount'] != 0 %}
           <div class="tr-flex table-data">
-            <div>Alpha</div>
-            <div>{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['alpha']['battlesCount'] }}</div>
-            <div>{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['alpha']['winsCount'] }}(<span>{{ '%.1f' | format(data['clanLeagueInfo']['dataMap'][data['latest_season']]['alpha']['winsCount']/data['clanLeagueInfo']['dataMap'][data['latest_season']]['alpha']['battlesCount']*100) }}%</span>)</div>
-            <div><div class="group-lev"><div><div></div><span>{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['alpha']['leagueName']['buff'] }}{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['alpha']['divisionName'] }}</span></div><span>{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['alpha']['divisionRating'] }} ({{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['alpha']['currentWinningStreak'] }}连胜)</span></div></div>
-            <div><div class="group-lev"><div><div></div><span>{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['alpha']['maxLeagueName']['buff'] }}{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['alpha']['maxDivisionName'] }}</span></div><span>{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['alpha']['maxPositionDivisionRating'] }} ({{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['alpha']['longestWinningStreak'] }}连胜)</span></div></div>
+            <div style="flex: 3;">Alpha</div>
+            <div style="flex: 3;">{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['alpha']['battlesCount'] }}</div>
+            <div style="flex: 4;">{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['alpha']['winsCount'] }}(<span style="color:{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['alpha']['winsData']['color'] }};">{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['alpha']['wins'] }}%</span>)</div>
+            <div style="flex: 6;"><div class="group-lev"><div><div style="background-color:{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['alpha']['leagueName']['color'] }};"></div><span>{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['alpha']['leagueName']['buff'] }}{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['alpha']['divisionName'] }}</span></div><span>{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['alpha']['divisionRating'] }} ({{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['alpha']['currentWinningStreak'] }}连胜)</span></div></div>
+            <div style="flex: 6;"><div class="group-lev"><div><div style="background-color:{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['alpha']['maxLeagueName']['color'] }};"></div><span>{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['alpha']['maxLeagueName']['buff'] }}{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['alpha']['maxDivisionName'] }}</span></div><span>{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['alpha']['maxPositionDivisionRating'] }} ({{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['alpha']['longestWinningStreak'] }}连胜)</span></div></div>
           </div>
           {% endif %}
           {% if data['clanLeagueInfo']['dataMap'][data['latest_season']]['bravo'] and data['clanLeagueInfo']['dataMap'][data['latest_season']]['bravo']['battlesCount'] != 0 %}
           <div class="tr-flex table-data">
-            <div>Bravo</div>
-            <div>{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['bravo']['battlesCount'] }}</div>
-            <div>{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['bravo']['winsCount'] }}(<span>{{ '%.1f' | format(data['clanLeagueInfo']['dataMap'][data['latest_season']]['bravo']['winsCount']/data['clanLeagueInfo']['dataMap'][data['latest_season']]['bravo']['battlesCount']*100) }}%</span>)</div>
-            <div><div class="group-lev"><div><div></div><span>{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['bravo']['leagueName']['buff'] }}{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['bravo']['divisionName'] }}</span></div><span>{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['bravo']['divisionRating'] }} ({{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['bravo']['currentWinningStreak'] }}连胜)</span></div></div>
-            <div><div class="group-lev"><div><div></div><span>{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['bravo']['maxLeagueName']['buff'] }}{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['bravo']['maxDivisionName'] }}</span></div><span>{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['bravo']['maxPositionDivisionRating'] }} ({{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['bravo']['longestWinningStreak'] }}连胜)</span></div></div>
+            <div style="flex: 3;">Bravo</div>
+            <div style="flex: 3;">{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['bravo']['battlesCount'] }}</div>
+            <div style="flex: 4;">{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['bravo']['winsCount'] }}(<span style="color:{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['bravo']['winsData']['color'] }};">{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['bravo']['wins'] }}%</span>)</div>
+            <div style="flex: 6;"><div class="group-lev"><div><div style="background-color:{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['bravo']['leagueName']['color'] }};"></div><span>{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['bravo']['leagueName']['buff'] }}{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['bravo']['divisionName'] }}</span></div><span>{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['bravo']['divisionRating'] }} ({{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['bravo']['currentWinningStreak'] }}连胜)</span></div></div>
+            <div style="flex: 6;"><div class="group-lev"><div><div style="background-color:{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['bravo']['maxLeagueName']['color'] }};"></div><span>{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['bravo']['maxLeagueName']['buff'] }}{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['bravo']['maxDivisionName'] }}</span></div><span>{{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['bravo']['maxPositionDivisionRating'] }} ({{ data['clanLeagueInfo']['dataMap'][data['latest_season']]['bravo']['longestWinningStreak'] }}连胜)</span></div></div>
           </div>
           {% endif %}
         {% endif %}
@@ -464,11 +464,11 @@ body{
             <div>
               <div class="facilities-item-info">
                 <div><span style="font-weight:bold;color:{{ data['buildingsInfos'][3]['fullLevelColor'] }};">{{ data['buildingsInfos'][3]['level'] }}/{{ data['buildingsInfos'][3]['maxLevel'] }}</span>级干船坞</div>
-                <div>I-X整备费用<span style="color:{{ data['buildingsInfos'][3]['fullLevelColor'] }};">{{ data['buildingsInfos'][3]['buff']['buff'] }}</span></div>
+                <div>I-X级战舰战后维护费用<span style="color:{{ data['buildingsInfos'][3]['fullLevelColor'] }};">{{ data['buildingsInfos'][3]['buff']['buff'] }}</span></div>
               </div>
               <div class="facilities-item-info">
                 <div><span style="font-weight:bold;color:{{ data['buildingsInfos'][7]['fullLevelColor'] }};">{{ data['buildingsInfos'][7]['level'] }}/{{ data['buildingsInfos'][7]['maxLevel'] }}</span>级造船厂</div>
-                <div>I-X研发费用<span style="color:{{ data['buildingsInfos'][7]['fullLevelColor'] }};">{{ data['buildingsInfos'][7]['buff']['buff'] }}</span></div>
+                <div>I-X级科研发战舰花费<span style="color:{{ data['buildingsInfos'][7]['fullLevelColor'] }};">{{ data['buildingsInfos'][7]['buff']['buff'] }}</span></div>
               </div>
             </div>
           </div>
@@ -479,15 +479,15 @@ body{
             <div>
               <div class="facilities-item-info">
                 <div><span style="font-weight:bold;color:{{ data['buildingsInfos'][1]['fullLevelColor'] }};">{{ data['buildingsInfos'][1]['level'] }}/{{ data['buildingsInfos'][1]['maxLevel'] }}</span>级煤炭港</div>
-                <div>煤炭<span style="color:{{ data['buildingsInfos'][1]['fullLevelColor'] }};">{{ data['buildingsInfos'][1]['buff']['buff'] }}</span></div>
+                <div>获得的煤炭数量<span style="color:{{ data['buildingsInfos'][1]['fullLevelColor'] }};">{{ data['buildingsInfos'][1]['buff']['buff'] }}</span></div>
               </div>
               <div class="facilities-item-info">
                 <div><span style="font-weight:bold;color:{{ data['buildingsInfos'][9]['fullLevelColor'] }};">{{ data['buildingsInfos'][9]['level'] }}/{{ data['buildingsInfos'][9]['maxLevel'] }}</span>级钢铁港</div>
-                <div>钢铁<span style="color:{{ data['buildingsInfos'][9]['fullLevelColor'] }};">{{ data['buildingsInfos'][9]['buff']['buff'] }}</span></div>
+                <div>获得的钢铁数量<span style="color:{{ data['buildingsInfos'][9]['fullLevelColor'] }};">{{ data['buildingsInfos'][9]['buff']['buff'] }}</span></div>
               </div>
               <div class="facilities-item-info">
                 <div><span style="font-weight:bold;color:{{ data['buildingsInfos'][6]['fullLevelColor'] }};">{{ data['buildingsInfos'][6]['level'] }}/{{ data['buildingsInfos'][6]['maxLevel'] }}</span>级研究所</div>
-                <div>研究点<span style="color:{{ data['buildingsInfos'][6]['fullLevelColor'] }};">{{ data['buildingsInfos'][6]['buff']['buff'] }}</span></div>
+                <div>获得的研究点<span style="color:{{ data['buildingsInfos'][6]['fullLevelColor'] }};">{{ data['buildingsInfos'][6]['buff']['buff'] }}</span></div>
               </div>
             </div>
           </div>
@@ -501,15 +501,15 @@ body{
             <div>
               <div class="facilities-item-info">
                 <div><span style="font-weight:bold;color:{{ data['buildingsInfos'][0]['fullLevelColor'] }};">{{ data['buildingsInfos'][0]['level'] }}/{{ data['buildingsInfos'][0]['maxLevel'] }}</span>级学院</div>
-                <div>每场指挥官经验<span style="color:{{ data['buildingsInfos'][0]['fullLevelColor'] }};">{{ data['buildingsInfos'][0]['buff']['buff'] }}</span></div>
+                <div>每场战斗获得的指挥官经验<span style="color:{{ data['buildingsInfos'][0]['fullLevelColor'] }};">{{ data['buildingsInfos'][0]['buff']['buff'] }}</span></div>
               </div>
               <div class="facilities-item-info">
                 <div><span style="font-weight:bold;color:{{ data['buildingsInfos'][12]['fullLevelColor'] }};">{{ data['buildingsInfos'][12]['level'] }}/{{ data['buildingsInfos'][12]['maxLevel'] }}</span>级军事学院</div>
-                <div>I-X 每场战斗经验<span style="color:{{ data['buildingsInfos'][12]['fullLevelColor'] }};">{{ data['buildingsInfos'][12]['buff']['buff'] }}</span></div>
+                <div>I-X级每场战斗获得的经验<span style="color:{{ data['buildingsInfos'][12]['fullLevelColor'] }};">{{ data['buildingsInfos'][12]['buff']['buff'] }}</span></div>
               </div>
               <div class="facilities-item-info">
                 <div><span style="font-weight:bold;color:{{ data['buildingsInfos'][2]['fullLevelColor'] }};">{{ data['buildingsInfos'][2]['level'] }}/{{ data['buildingsInfos'][2]['maxLevel'] }}</span>级设计局</div>
-                <div>I-X 每场战斗全局经验<span style="color:{{ data['buildingsInfos'][2]['fullLevelColor'] }};">{{ data['buildingsInfos'][2]['buff']['buff'] }}</span></div>
+                <div>I-X级每场战斗获得的全局经验<span style="color:{{ data['buildingsInfos'][2]['fullLevelColor'] }};">{{ data['buildingsInfos'][2]['buff']['buff'] }}</span></div>
               </div>
             </div>
           </div>
@@ -569,13 +569,13 @@ body{
   window.onload = function () {
 		drawChart();
 	};
-  max_description_alpha = [
+  description = [
               {% for each in data['clanLeagueInfo']['alphaCharts'] %}
-                '{{ each['maxLeagueName']['buff'] }}{{ each['maxDivisionName'] }}{{ each['maxPositionDivisionRating'] }}',
+                '{{ each['leagueName']['buff'] }}{{ each['divisionName'] }}{{ each['divisionRating'] }}',
               {% endfor %}
               ]
-  max_description_bravo = [
-              {% for each in data['clanLeagueInfo']['bravoCharts'] %}
+  max_description = [
+              {% for each in data['clanLeagueInfo']['alphaCharts'] %}
                 '{{ each['maxLeagueName']['buff'] }}{{ each['maxDivisionName'] }}{{ each['maxPositionDivisionRating'] }}',
               {% endfor %}
               ]
@@ -613,7 +613,21 @@ body{
       },
       series: [
         {
-          name: 'Alpha',
+          name: '结算分数',
+          data: [{% for each in data['clanLeagueInfo']['alphaCharts'] %}
+                  {{ each['source'] }},
+                {% endfor %}],
+          label: {
+            show: true,
+            position: 'top',
+            formatter(v){
+              return description[v.dataIndex] + ''
+            }
+          },
+          type: 'line',
+        },
+        {
+          name: '最高分数',
           data: [{% for each in data['clanLeagueInfo']['alphaCharts'] %}
                   {{ each['maxSource'] }},
                 {% endfor %}],
@@ -621,21 +635,7 @@ body{
             show: true,
             position: 'top',
             formatter(v){
-              return max_description_alpha[v.dataIndex] + ''
-            }
-          },
-          type: 'line',
-        },
-        {
-          name: 'Bravo',
-          data: [{% for each in data['clanLeagueInfo']['bravoCharts'] %}
-                  {{ each['maxSource'] }},
-                {% endfor %}],
-          label: {
-            show: true,
-            position: 'top',
-            formatter(v){
-              return max_description_bravo[v.dataIndex] + ''
+              return max_description[v.dataIndex] + ''
             }
           },
           type: 'line',
@@ -649,7 +649,7 @@ body{
         textStyle: {
             fontSize: 16,      
         },
-        data:['Alpha','Bravo'],
+        data:['结算分数','最高分数'],
         backgroundColor: 'rgba(0,0,0,0)',
         borderColor: '#ccc',
         borderWidth: 0, 
@@ -709,16 +709,21 @@ body{
 <script>
 	// 服务器字体颜色自动填充
 	let server_name = document.querySelector(".server").innerText;
-	if (server_name == "亚服") {
+	if (server_name == "asia") {
 		document.querySelector(".server").style.color = "#92D050";
-	} else if (server_name == "国服") {
+    document.querySelector(".server").innerText = "亚服";
+	} else if (server_name == "cn") {
 		document.querySelector(".server").style.color = "#BF9000";
-	} else if (server_name == "欧服") {
+    document.querySelector(".server").innerText = "国服";
+	} else if (server_name == "eu") {
 		document.querySelector(".server").style.color = "#009664";
-	} else if (server_name == "美服") {
+    document.querySelector(".server").innerText = "欧服";
+	} else if (server_name == "na") {
 		document.querySelector(".server").style.color = "#6872C4";
-	} else if (server_name == "俄服") {
+    document.querySelector(".server").innerText = "美服";
+	} else if (server_name == "ru") {
 		document.querySelector(".server").style.color = "#FF0000";
+    document.querySelector(".server").innerText = "俄服";
 	}
 </script>
 </html>
