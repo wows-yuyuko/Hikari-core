@@ -54,7 +54,7 @@ async def get_ClanInfo(hikari: Hikari_Model) -> Hikari_Model:
         if result['code'] == 200 and result['data']:
             latest_season = str(result['data']['clanLeagueInfo']['lastSeason'])
             result['data']['latest_season'] = latest_season
-            hikari.set_template_info('wws-clan.html', 800, 100)
+            hikari.set_template_info('wws-clan.html', 1200, 100)
             return hikari.success(result['data'])
         elif result['code'] == 403:
             return hikari.failed(f"{result['message']}\n请先绑定账号")
