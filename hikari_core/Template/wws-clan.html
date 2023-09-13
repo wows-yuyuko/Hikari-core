@@ -571,7 +571,11 @@ body{
 	};
   description = [
               {% for each in data['clanLeagueInfo']['alphaCharts'] %}
-                '{{ each['leagueName']['buff'] }}{{ each['divisionName'] }}{{ each['divisionRating'] }}',
+                {% if each['source'] == each['maxSource']  %}
+                  '',
+                {% else %}
+                  '{{ each['leagueName']['buff'] }}{{ each['divisionName'] }}{{ each['divisionRating'] }}',
+                {% endif %}
               {% endfor %}
               ]
   max_description = [
@@ -623,7 +627,8 @@ body{
                 {% endfor %}],
           label: {
             show: true,
-            position: 'top',
+            position: 'bottom',
+            color:'red',
             formatter(v){
               return description[v.dataIndex] + ''
             }
@@ -638,6 +643,7 @@ body{
           label: {
             show: true,
             position: 'top',
+            color:'blue',
             formatter(v){
               return max_description[v.dataIndex] + ''
             }
