@@ -12,6 +12,7 @@ from ..model import Hikari_Model
 
 
 async def get_help(hikari: Hikari_Model):
+    """获取帮助列表"""
     try:
         url = 'https://benx1n.oss-cn-beijing.aliyuncs.com/version.json'
         client_default = await get_client_default()
@@ -37,6 +38,7 @@ async def get_help(hikari: Hikari_Model):
 
 
 async def check_version(hikari: Hikari_Model):
+    """检查版本信息"""
     try:
         url = 'https://benx1n.oss-cn-beijing.aliyuncs.com/version.json'
         client_default = await get_client_default()
@@ -66,6 +68,7 @@ async def check_version(hikari: Hikari_Model):
 
 
 def update_template():
+    """更新模板"""
     try:
         # tasks = []
         url = 'https://hikari-resource.oss-cn-shanghai.aliyuncs.com/hikari_core_template/template.json'

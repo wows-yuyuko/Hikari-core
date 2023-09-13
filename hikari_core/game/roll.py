@@ -10,6 +10,7 @@ from ..model import Hikari_Model
 
 
 async def roll_ship(hikari: Hikari_Model):
+    """roll船出港"""
     try:
         if not hikari.Input.ShipInfo.Ship_Nation:
             hikari.Input.ShipInfo.Ship_Nation = ''

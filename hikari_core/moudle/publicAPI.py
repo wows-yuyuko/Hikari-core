@@ -40,6 +40,7 @@ async def get_nation_list():
 
 
 async def get_ship_name(hikari: Hikari_Model):
+    """根据国家等级类型查船名"""
     msg = ''
     try:
         params = {

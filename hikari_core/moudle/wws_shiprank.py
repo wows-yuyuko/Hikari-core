@@ -13,6 +13,7 @@ from .publicAPI import get_ship_byName
 
 
 async def get_ShipRank(hikari: Hikari_Model):
+    """查询单船排行榜"""
     try:
         if hikari.Status == 'init':
             shipList = await get_ship_byName(hikari.Input.ShipInfo.Ship_Name_Cn)

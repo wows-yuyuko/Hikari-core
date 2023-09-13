@@ -11,6 +11,7 @@ from .publicAPI import check_yuyuko_cache, get_AccountIdByName, get_MyShipRank_y
 
 
 async def get_ShipInfo(hikari: Hikari_Model) -> Hikari_Model:  # noqa: PLR0915
+    """查询单船水表"""
     try:
         if hikari.Status == 'init':
             shipList = await get_ship_byName(hikari.Input.ShipInfo.Ship_Name_Cn)

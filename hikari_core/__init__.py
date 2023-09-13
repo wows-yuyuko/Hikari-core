@@ -8,6 +8,7 @@ from playwright._impl._api_types import Error as playwright_Error
 from pydantic import ValidationError
 
 from .analyze import analyze_command
+from .command_select import *  # noqa: F403
 from .config import hikari_config, set_hikari_config  # noqa:F401
 from .data_source import set_render_params, template_path
 from .game.help import update_template
@@ -28,6 +29,7 @@ async def init_hikari(
     PlatformId: str,
     command_text: str = None,
     GroupId: str = None,
+    Ignore_List=[],  # noqa: B006
 ) -> Hikari_Model:
     """Hikari初始化
 
@@ -36,7 +38,7 @@ async def init_hikari(
         PlatformId (str): 平台ID
         command_text (str): 传入指令，不带wws
         GroupId (str): 群号,不配置无法使用部分分群功能
-
+        Ignore_List(List):  禁用功能列表，通过import导入
     Returns:
         Hikari_Model: 可通过Hikari.Status和Hikari.Output.Data内数据判断是否输出
     """
@@ -47,6 +49,8 @@ async def init_hikari(
         hikari = await analyze_command(hikari)
         if not hikari.Status == 'init' or not hikari.Function:
             return hikari
+        if hikari.Function in Ignore_List:
+            return hikari.error('该功能已被禁用')
         hikari: Hikari_Model = await hikari.Function(hikari)
         return await output_hikari(hikari)
     except ValidationError:

@@ -13,6 +13,7 @@ from .publicAPI import get_AccountIdByName
 
 
 async def get_RecentsInfo(hikari: Hikari_Model) -> Hikari_Model:
+    """查询Recents"""
     try:
         if hikari.Status == 'init':
             if hikari.Input.Search_Type == 3:

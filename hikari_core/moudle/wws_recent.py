@@ -13,6 +13,7 @@ from .publicAPI import check_yuyuko_cache, get_AccountIdByName
 
 
 async def get_RecentInfo(hikari: Hikari_Model) -> Hikari_Model:
+    """查询Recent"""
     try:
         if hikari.Status == 'init':
             if hikari.Input.Search_Type == 3:

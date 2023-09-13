@@ -11,6 +11,7 @@ from ..moudle.publicAPI import get_AccountIdByName
 
 
 async def check_christmas_box(hikari: Hikari_Model) -> Hikari_Model:
+    """查询圣诞箱船池"""
     try:
         if hikari.Status == 'init':
             if hikari.Input.Search_Type == 3:

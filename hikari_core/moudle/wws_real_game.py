@@ -117,6 +117,7 @@ def write_config(config):
 
 
 async def get_diff_ship(hikari: Hikari_Model):  # noqa: PLR0915
+    """查询最新一轮监控信息"""
     try:
         listen_data_path = f'{hikari_config.game_path}/account_data'
         config = get_config()
@@ -217,6 +218,7 @@ async def get_diff_ship(hikari: Hikari_Model):  # noqa: PLR0915
 
 
 async def get_listen_list(hikari: Hikari_Model):
+    """获取本群监控列表"""
     try:
         config = get_config()
         group_id = hikari.UserInfo.GroupId

@@ -11,6 +11,7 @@ from .publicAPI import get_ClanIdByName
 
 
 async def get_ClanInfo(hikari: Hikari_Model) -> Hikari_Model:
+    """查询公会基础信息"""
     try:
         if hikari.Status == 'init':
             if hikari.Input.Search_Type == 3:

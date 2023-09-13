@@ -11,6 +11,7 @@ from .publicAPI import check_yuyuko_cache, get_AccountIdByName
 
 
 async def get_AccountInfo(hikari: Hikari_Model) -> Hikari_Model:
+    """查询账号总表"""
     try:
         if hikari.Status == 'init':
             if hikari.Input.Search_Type == 3:

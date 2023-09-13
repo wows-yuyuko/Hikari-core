@@ -12,6 +12,7 @@ from ..moudle.wws_bind import get_DefaultBindInfo
 
 
 async def get_BanInfo(hikari: Hikari_Model) -> Hikari_Model:
+    """查询封禁匹配记录"""
     try:
         if hikari.Status == 'init':
             if hikari.Input.Search_Type == 3:

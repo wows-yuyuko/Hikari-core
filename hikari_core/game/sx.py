@@ -11,6 +11,7 @@ from ..moudle.publicAPI import get_AccountIdByName
 
 
 async def get_sx_info(hikari: Hikari_Model) -> Hikari_Model:
+    """查询扫雪收益"""
     try:
         if hikari.Status == 'init':
             if hikari.Input.Search_Type == 3:

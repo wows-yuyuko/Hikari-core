@@ -11,6 +11,7 @@ from .publicAPI import get_AccountIdByName
 
 
 async def get_BindInfo(hikari: Hikari_Model) -> Hikari_Model:
+    """获取用户绑定信息"""
     try:
         if hikari.Status != 'init':
             return hikari.error('当前请求状态错误')
@@ -41,6 +42,7 @@ async def get_BindInfo(hikari: Hikari_Model) -> Hikari_Model:
 
 
 async def set_BindInfo(hikari: Hikari_Model) -> Hikari_Model:
+    """通过昵称绑定账号"""
     try:
         if hikari.Status == 'init':
             if hikari.Input.Search_Type == 3 and not hikari.Input.AccountId:
@@ -73,6 +75,7 @@ async def set_BindInfo(hikari: Hikari_Model) -> Hikari_Model:
 
 # 防止混淆纯数字名与AID，单独添加特殊绑定指令
 async def set_special_BindInfo(hikari: Hikari_Model) -> Hikari_Model:
+    """通过AID绑定账号"""
     try:
         if hikari.Status != 'init':
             return hikari.error('当前请求状态错误')
@@ -99,6 +102,7 @@ async def set_special_BindInfo(hikari: Hikari_Model) -> Hikari_Model:
 
 
 async def change_BindInfo(hikari: Hikari_Model) -> Hikari_Model:
+    """切换绑定"""
     try:
         if hikari.Status not in ['init', 'wait']:
             return hikari.error('当前请求状态错误')
@@ -138,6 +142,7 @@ async def change_BindInfo(hikari: Hikari_Model) -> Hikari_Model:
 
 
 async def delete_BindInfo(hikari: Hikari_Model) -> Hikari_Model:
+    """删除绑定"""
     try:
         if hikari.Status not in ['init', 'wait']:
             return hikari.error('当前请求状态错误')
@@ -187,6 +192,13 @@ async def delete_BindInfo(hikari: Hikari_Model) -> Hikari_Model:
 
 
 async def get_DefaultBindInfo(platformType, platformId):
+    """获取默认绑定账号
+     Args:
+        platformType (str):平台类型
+        platformId (str):平台ID
+    Returns:
+        Dict:绑定用户信息
+    """
     try:
         url = 'https://v3-api.wows.shinoaki.com:8443/api/user/platform/bind/list'
         params = {
