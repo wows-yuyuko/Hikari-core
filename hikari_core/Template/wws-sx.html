@@ -285,15 +285,9 @@
 						</div>
 						
 						<div class="xi-mid">
-							<div class="unup">{{ data['research']['bonusMap']['0'] }}</div>
-							<div class="up-1">{{ data['research']['bonusMap']['1'] }}</div>
-							<div class="up-2">{{ data['research']['bonusMap']['2'] }}</div>
-							<div class="up-3">{{ data['research']['bonusMap']['3'] }}</div>
+							<div class="unup">{{ 200*data['research']['totalShip'] }}</div>
 						</div>
 						
-						<div class="xi-right">
-							<img src="https://hikari-resource.oss-cn-shanghai.aliyuncs.com/resource_Icon/research.svg">
-						</div>
 					</div>
 				</div>
 				
@@ -307,17 +301,8 @@
 					</div>
 					
 					<div class="x-right">
-						<div class="big" style="color: #DF9D21">
-							<span style="font-size: 50px;">{{ data['box']['smallBox'] }}</span>
-							<span>个 小型圣诞补给箱</span>
-						</div>
 						<div class="mid" style="color: #12C8AE">
-							<span style="font-size: 50px;">{{ data['box']['bigBox'] }}</span>
-							<span>个 大型圣诞补给箱</span>
-						</div>
-						<div class="small" style="color: #B400B4">
-							<span style="font-size: 50px;">{{ data['box']['hugeBox'] }}</span>
-							<span>个 超大圣诞补给箱</span>
+							<span style="font-size: 50px;">{{ 200*data['box']['totalShip'] }}</span>
 						</div>
 					</div>
 				</div>
@@ -331,13 +316,7 @@
 						<div class="number">{{ data['steel']['totalShip'] }}</div>
 					</div>
 					<div class="ix-mid">
-						<div class="unup">{{ data['steel']['bonusMap']['0'] }}</div>
-						<div class="up-1">{{ data['steel']['bonusMap']['1'] }}</div>
-						<div class="up-2">{{ data['steel']['bonusMap']['2'] }}</div>
-						<div class="up-3">{{ data['steel']['bonusMap']['3'] }}</div>
-					</div>
-					<div class="ix-right">
-						<img src="https://hikari-resource.oss-cn-shanghai.aliyuncs.com/resource_Icon/steel.svg"/>
+						<div class="unup">{{ 75*data['steel']['totalShip'] }}</div>
 					</div>
 				</div>
 				
@@ -350,13 +329,15 @@
 						<div class="number">{{ data['coal']['totalShip'] }}</div>
 					</div>
 					<div class="ix-mid">
-						<div class="unup">{{ data['coal']['bonusMap']['0'] }}</div>
-						<div class="up-1">{{ data['coal']['bonusMap']['1'] }}</div>
-						<div class="up-2">{{ data['coal']['bonusMap']['2'] }}</div>
-						<div class="up-3">{{ data['coal']['bonusMap']['3'] }}</div>
+						<div class="unup">{{ 30*data['coal']['totalShip'] }}</div>
 					</div>
-					<div class="ix-right">
-						<img src="https://hikari-resource.oss-cn-shanghai.aliyuncs.com/resource_Icon/coal.svg"/>
+				</div>
+				<div class="ix-row">
+					<div class="ix-left">
+						<div class="type">共计</div>
+					</div>
+					<div class="ix-mid">
+						<div class="unup">{{ 200*data['research']['totalShip']+200*data['box']['totalShip']+75*data['steel']['totalShip']+30*data['coal']['totalShip'] }}</div>
 					</div>
 				</div>
 				{% if not data['auth'] %}
