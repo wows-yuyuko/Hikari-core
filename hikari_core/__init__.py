@@ -3,6 +3,7 @@ import traceback
 
 import jinja2
 from apscheduler.schedulers.background import BackgroundScheduler
+from jinja2.exceptions import UndefinedError
 from loguru import logger
 from playwright._impl._api_types import Error as playwright_Error
 from pydantic import ValidationError
@@ -117,12 +118,15 @@ async def output_hikari(hikari: Hikari_Model) -> Hikari_Model:
                 )
                 hikari.Output.Data_Type = type(hikari.Output.Data)
         return hikari
-    except playwright_Error:
+    except UndefinedError as e:
         logger.error(traceback.format_exc())
-        return Hikari_Model().error('playwright错误，请检查浏览器内核是否异常结束，可能是由于服务器版本过低，请升级至winserver2016+或改为firefox启动。')
-    except Exception:
+        return Hikari_Model().error(f'模板渲染错误，请将错误日志提交给开发者\n{e}')
+    except playwright_Error as e:
         logger.error(traceback.format_exc())
-        return Hikari_Model().error('Hikari-core顶层错误，请检查log')
+        return Hikari_Model().error(f'playwright错误，请检查浏览器内核是否异常结束，可能是由于服务器版本过低，请升级至winserver2016+或改为firefox启动。\n{e}')
+    except Exception as e:
+        logger.error(traceback.format_exc())
+        return Hikari_Model().error(f'Hikari-core顶层错误，请检查log\n{e}')
 
 
 update_template()
