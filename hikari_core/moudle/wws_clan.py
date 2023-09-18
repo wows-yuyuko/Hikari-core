@@ -5,6 +5,7 @@ import orjson
 from httpx import ConnectTimeout, PoolTimeout
 from loguru import logger
 
+from ..config import hikari_config
 from ..HttpClient_Pool import get_client_yuyuko, recreate_client_yuyuko
 from ..model import Hikari_Model
 from .publicAPI import get_ClanIdByName
@@ -42,7 +43,7 @@ async def get_ClanInfo(hikari: Hikari_Model) -> Hikari_Model:
         # else:
         #    logger.success('跳过上报数据，直接请求')
 
-        url = 'https://v3-api.wows.shinoaki.com:8443/public/wows/clan/info'
+        url = f'{hikari_config.yuyuko_url}/public/wows/clan/info'
         if hikari.Input.Search_Type == 3:
             params = {'server': hikari.Input.Server, 'accountId': hikari.Input.ClanId}
         else:

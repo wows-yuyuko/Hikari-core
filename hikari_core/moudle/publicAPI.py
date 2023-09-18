@@ -10,6 +10,7 @@ from bs4 import BeautifulSoup
 from httpx import ConnectTimeout, PoolTimeout
 from loguru import logger
 
+from ..config import hikari_config
 from ..data_source import number_url_homes
 from ..HttpClient_Pool import (
     get_client_default,
@@ -25,7 +26,7 @@ from ..model import Hikari_Model, Ship_Model
 async def get_nation_list():
     try:
         msg = ''
-        url = 'https://v3-api.wows.shinoaki.com:8443/public/wows/encyclopedia/nation/list'
+        url = f'{hikari_config.yuyuko_url}/public/wows/encyclopedia/nation/list'
         client_yuyuko = await get_client_yuyuko()
         resp = await client_yuyuko.get(url, timeout=10)
         result = orjson.loads(resp.content)
@@ -50,7 +51,7 @@ async def get_ship_name(hikari: Hikari_Model):
             'shipType': hikari.Input.ShipInfo.Ship_Type,
             'groupType': 'default',
         }
-        url = 'https://v3-api.wows.shinoaki.com:8443/public/wows/encyclopedia/ship/search'
+        url = f'{hikari_config.yuyuko_url}/public/wows/encyclopedia/ship/search'
         client_yuyuko = await get_client_yuyuko()
         resp = await client_yuyuko.get(url, params=params, timeout=10)
         result = orjson.loads(resp.content)
@@ -78,7 +79,7 @@ async def get_ship_byName(shipname: str) -> List:
         if len(result) == 2 and result[1].isdigit():
             shipname = result[0]
             shipname_select_index = int(result[1])
-        url = 'https://v3-api.wows.shinoaki.com:8443/public/wows/encyclopedia/ship/search'
+        url = f'{hikari_config.yuyuko_url}/public/wows/encyclopedia/ship/search'
         params = {'country': '', 'level': '', 'shipName': shipname, 'shipType': '', 'groupType': 'default'}
         client_yuyuko = await get_client_yuyuko()
         resp = await client_yuyuko.get(url, params=params, timeout=10)
@@ -116,7 +117,7 @@ async def get_ship_byName(shipname: str) -> List:
 
 async def get_all_shipList():
     try:
-        url = 'https://v3-api.wows.shinoaki.com:8443/public/wows/encyclopedia/ship/search'
+        url = f'{hikari_config.yuyuko_url}/public/wows/encyclopedia/ship/search'
         params = {'country': '', 'level': '', 'shipName': '', 'shipType': '', 'groupType': 'default'}
         client_yuyuko = await get_client_yuyuko()
         resp = await client_yuyuko.get(url, params=params, timeout=10)
@@ -134,7 +135,7 @@ async def get_all_shipList():
 
 async def get_AccountIdByName(server: str, name: str) -> str:
     try:
-        url = f'https://v3-api.wows.shinoaki.com:8443/public/wows/account/search/{server}/user'
+        url = f'{hikari_config.yuyuko_url}/public/wows/account/search/{server}/user'
         params = {'userName': name, 'one': True}
         client_yuyuko = await get_client_yuyuko()
         resp = await client_yuyuko.post(url, json=params, timeout=10)
@@ -156,7 +157,7 @@ async def get_AccountIdByName(server: str, name: str) -> str:
 
 async def get_ClanIdByName(server: str, tag: str):
     try:
-        url = f'https://v3-api.wows.shinoaki.com:8443/public/wows/clan/search/{server}'
+        url = f'{hikari_config.yuyuko_url}/public/wows/clan/search/{server}'
         params = {
             'tag': tag,
         }
@@ -180,7 +181,7 @@ async def get_ClanIdByName(server: str, tag: str):
 
 async def check_yuyuko_cache(server, id):
     try:
-        yuyuko_cache_url = 'https://v3-api.wows.shinoaki.com:8443/api/wows/cache/check'
+        yuyuko_cache_url = f'{hikari_config.yuyuko_url}/api/wows/cache/check'
         params = {'accountId': id, 'server': server}
         client_yuyuko = await get_client_yuyuko()
         resp = await client_yuyuko.post(yuyuko_cache_url, json=params, timeout=5)

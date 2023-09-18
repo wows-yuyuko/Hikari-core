@@ -5,6 +5,7 @@ import orjson
 from httpx import ConnectTimeout, PoolTimeout
 from loguru import logger
 
+from ..config import hikari_config
 from ..HttpClient_Pool import get_client_yuyuko, recreate_client_yuyuko
 from ..model import Hikari_Model
 from .publicAPI import get_AccountIdByName
@@ -15,7 +16,7 @@ async def get_BindInfo(hikari: Hikari_Model) -> Hikari_Model:
     try:
         if hikari.Status != 'init':
             return hikari.error('当前请求状态错误')
-        url = 'https://v3-api.wows.shinoaki.com:8443/api/user/platform/bind/list'
+        url = f'{hikari_config.yuyuko_url}/api/user/platform/bind/list'
         params = {'platformType': hikari.Input.Platform, 'platformId': hikari.Input.PlatformId}
         client_yuyuko = await get_client_yuyuko()
         resp = await client_yuyuko.get(url, params=params, timeout=10)
@@ -51,7 +52,7 @@ async def set_BindInfo(hikari: Hikari_Model) -> Hikari_Model:
                     return hikari.error(f'{hikari.Input.AccountId}')
         else:
             return hikari.error('当前请求状态错误')
-        url = 'https://v3-api.wows.shinoaki.com:8443/api/user/platform/switch/bind'
+        url = f'{hikari_config.yuyuko_url}/api/user/platform/switch/bind'
         params = {'platformType': hikari.Input.Platform, 'platformId': hikari.Input.PlatformId, 'accountId': hikari.Input.AccountId}
         client_yuyuko = await get_client_yuyuko()
         resp = await client_yuyuko.post(url, json=params, timeout=10)
@@ -79,7 +80,7 @@ async def set_special_BindInfo(hikari: Hikari_Model) -> Hikari_Model:
     try:
         if hikari.Status != 'init':
             return hikari.error('当前请求状态错误')
-        url = 'https://v3-api.wows.shinoaki.com:8443/api/user/platform/switch/bind'
+        url = f'{hikari_config.yuyuko_url}/api/user/platform/switch/bind'
         params = {'platformType': hikari.Input.Platform, 'platformId': hikari.Input.PlatformId, 'accountId': hikari.Input.AccountId}
         client_yuyuko = await get_client_yuyuko()
         resp = await client_yuyuko.post(url, json=params, timeout=10)
@@ -166,7 +167,7 @@ async def delete_BindInfo(hikari: Hikari_Model) -> Hikari_Model:
             if hikari.Input.Select_Index > len(hikari.Input.Select_Data):
                 return hikari.error('请选择正确的序号')
             hikari.Input.AccountId = hikari.Input.Select_Data[hikari.Input.Select_Index - 1]['accountId']
-            url = 'https://v3-api.wows.shinoaki.com:8443/api/user/platform/remove/bind'
+            url = f'{hikari_config.yuyuko_url}/api/user/platform/remove/bind'
             params = {'platformType': hikari.Input.Platform, 'platformId': hikari.Input.PlatformId, 'accountId': hikari.Input.AccountId}
             client_yuyuko = await get_client_yuyuko()
             resp = await client_yuyuko.request('DELETE', url=url, json=params, timeout=10)
@@ -200,7 +201,7 @@ async def get_DefaultBindInfo(platformType, platformId):
         Dict:绑定用户信息
     """
     try:
-        url = 'https://v3-api.wows.shinoaki.com:8443/api/user/platform/bind/list'
+        url = f'{hikari_config.yuyuko_url}/api/user/platform/bind/list'
         params = {
             'platformType': platformType,
             'platformId': platformId,

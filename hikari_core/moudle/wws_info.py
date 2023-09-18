@@ -5,6 +5,7 @@ import orjson
 from httpx import ConnectTimeout, PoolTimeout
 from loguru import logger
 
+from ..config import hikari_config
 from ..HttpClient_Pool import get_client_yuyuko, recreate_client_yuyuko
 from ..model import Hikari_Model
 from .publicAPI import check_yuyuko_cache, get_AccountIdByName
@@ -28,7 +29,7 @@ async def get_AccountInfo(hikari: Hikari_Model) -> Hikari_Model:
             logger.success('上报数据成功')
         else:
             logger.success('跳过上报数据，直接请求')
-        url = 'https://v3-api.wows.shinoaki.com:8443/public/wows/account/user/info'
+        url = f'{hikari_config.yuyuko_url}/public/wows/account/user/info'
         if hikari.Input.Search_Type == 3:
             params = {'server': hikari.Input.Server, 'accountId': hikari.Input.AccountId}
         else:
