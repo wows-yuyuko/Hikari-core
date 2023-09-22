@@ -234,7 +234,7 @@ async def get_MyShipRank_yuyuko(params) -> int:
     try:
         url = 'https://api.wows.shinoaki.com/upload/numbers/data/upload/user/ship/rank'
         client_yuyuko = await get_client_yuyuko()
-        resp = await client_yuyuko.get(url, params=params, timeout=10)
+        resp = await client_yuyuko.get(url, params=params, timeout=5)
         result = orjson.loads(resp.content)
         if result['code'] == 200 and result['data']:
             if result['data']['ranking']:
@@ -255,7 +255,7 @@ async def get_MyShipRank_yuyuko(params) -> int:
             return None
     except PoolTimeout:
         await recreate_client_yuyuko()
-        return
+        return None
     except Exception:
         logger.error(traceback.format_exc())
         return None
@@ -280,7 +280,7 @@ async def get_MyShipRank_Numbers(url, server) -> int:
             return None
     except PoolTimeout:
         await recreate_client_default()
-        return
+        return None
     except Exception:
         logger.error(traceback.format_exc())
         return None

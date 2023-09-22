@@ -13,12 +13,12 @@ async def start():
     global start_time
     start_time = time.time()
     set_hikari_config(use_broswer='chromium', http2=False, proxy='http://localhost:7890', token='test:yuyuko_test')
-    hikari_data = await init_hikari('QQ', '289217651', 'me', '693433753', Ignore_List=[get_ClanInfo])
+    hikari_data = await init_hikari('QQ_CHANNEL', '17395161655354812071', 'ru Ncarolina_class', '693433753', Ignore_List=[get_ClanInfo])
     if hikari_data.Status == 'success':
         await output_with_check_type(hikari_data)
     elif hikari_data.Status == 'wait':
         await output_with_check_type(hikari_data)
-        hikari_data.Input.Select_Index = 1
+        hikari_data.Input.Select_Index = 2
         hikari_data = await callback_hikari(hikari_data)
         await output_with_check_type(hikari_data)
     elif hikari_data.Status in ['error', 'failed']:
