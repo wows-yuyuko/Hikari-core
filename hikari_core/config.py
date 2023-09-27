@@ -15,6 +15,7 @@ class Config_Model(BaseModel):
     use_broswer: Optional[str] = 'chromium'
     game_path: Optional[str] = f'{dir_path}/game'
     yuyuko_url: Optional[str] = 'https://v3-api.wows.shinoaki.com:8443'
+    yuyuko_type: Optional[str] = 'BOT'
 
 
 hikari_config = Config_Model()
@@ -29,6 +30,7 @@ def set_hikari_config(  # noqa: PLR0913
     use_broswer: Optional[str] = 'chromium',
     game_path: Optional[str] = f'{dir_path}/game',
     yuyuko_url: Optional[str] = 'https://v3-api.wows.shinoaki.com:8443',
+    yuyuko_type: Optional[str] = 'BOT',
 ):
     """配置Hikari-core
 
@@ -51,4 +53,5 @@ def set_hikari_config(  # noqa: PLR0913
     hikari_config.use_broswer = use_broswer
     hikari_config.game_path = game_path
     hikari_config.yuyuko_url = yuyuko_url
+    hikari_config.yuyuko_type = yuyuko_type
     logger.info(f'当前hikari-core配置\n{hikari_config}')

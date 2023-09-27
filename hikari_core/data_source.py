@@ -6,7 +6,7 @@ from typing import Tuple
 
 dir_path = Path(__file__).parent
 template_path = dir_path / 'Template'
-__version__ = '1.0.4.2'
+__version__ = '1.0.4.3'
 
 
 @dataclass

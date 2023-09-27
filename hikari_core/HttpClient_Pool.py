@@ -26,7 +26,7 @@ async def create_client_yuyuko() -> AsyncClient:
             'Authorization': hikari_config.token,
             'accept': 'application/json',
             'Content-Type': 'application/json',
-            'Yuyuko-Client-Type': f'BOT;{__version__}',
+            'Yuyuko-Client-Type': f'{hikari_config.yuyuko_type};{__version__}',
         },
         event_hooks={
             'request': [
