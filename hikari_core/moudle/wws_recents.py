@@ -50,7 +50,7 @@ async def get_RecentsInfo(hikari: Hikari_Model) -> Hikari_Model:
         elif result['code'] == 403:
             return hikari.failed(f"{result['message']}")
         elif result['code'] == 404 or result['code'] == 405:
-            return hikari.failed(f"{result['message']}\n您可以发送wws help查看recents相关说明")
+            return hikari.failed(f"{result['message']}")
         elif result['code'] == 500:
             return hikari.failed(f"{result['message']}\n这是服务器问题，请联系雨季麻麻")
         else:
