@@ -326,8 +326,12 @@
 			</div>
 			
 			<div class="recent-time">
-					<span>激活状态：</span><span>已过期</span>
-				</div>
+			{% if data['activate'] != 0 %}
+				<span>到期时间：</span><span>{{ time.strftime('%Y-%m-%d %H:%M',time.localtime(int(abs(data['activate']/1000)))) }}</span>
+			{% else %}
+				<span>到期时间：</span><span>已过期</span>
+			{% endif %}
+			</div>
 
 			<div class="main-information">
 				<div class="main-row">
