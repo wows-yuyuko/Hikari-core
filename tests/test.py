@@ -13,7 +13,7 @@ async def start():
     global start_time
     start_time = time.time()
     set_hikari_config(use_broswer='chromium', http2=False, proxy='http://localhost:7890', token='test:yuyuko_test', yuyuko_type='QQ_CHANNEL')
-    hikari_data = await init_hikari('QQ', '1119809439', 'me recents 2', '693433753', Ignore_List=[get_ClanInfo])
+    hikari_data = await init_hikari('QQ', '1010073142', 'asia ship.rank 蒙大拿', '693433753', Ignore_List=[get_ClanInfo])
     if hikari_data.Status == 'success':
         await output_with_check_type(hikari_data)
     elif hikari_data.Status == 'wait':

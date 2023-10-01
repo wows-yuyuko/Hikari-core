@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 from httpx import ConnectTimeout, PoolTimeout
 from loguru import logger
 
+from ..config import hikari_config
 from ..data_source import number_url_homes, set_ShipRank_Numbers
 from ..HttpClient_Pool import get_client_default, get_client_yuyuko, recreate_client_default, recreate_client_yuyuko
 from ..model import Hikari_Model
@@ -58,7 +59,7 @@ async def get_ShipRank(hikari: Hikari_Model):
 
 async def search_ShipRank_Yuyuko(hikari: Hikari_Model):
     try:
-        url = 'https://api.wows.shinoaki.com/upload/numbers/data/v2/upload/ship/rank'
+        url = f'{hikari_config.yuyuko_url}/api/upload/numbers/data/v2/upload/ship/rank'
         params = {'server': hikari.Input.Server, 'shipId': int(hikari.Input.ShipInfo.Ship_Id)}
         client_yuyuko = await get_client_yuyuko()
         resp = await client_yuyuko.get(url, params=params, timeout=10)
@@ -107,7 +108,7 @@ async def search_ShipRank_Numbers(hikari: Hikari_Model):
 
 async def post_ShipRank(data):
     try:
-        url = 'https://api.wows.shinoaki.com/upload/numbers/data/v2/upload/ship/rank'
+        url = f'{hikari_config.yuyuko_url}/api/upload/numbers/data/upload/ship/rank'
         client_yuyuko = await get_client_yuyuko()
         resp = await client_yuyuko.post(url, json=data, timeout=10)
         result = orjson.loads(resp.content)
