@@ -26,13 +26,14 @@ api_list = {
     'eu': 'https://api.worldofwarships.eu/wows/ships/stats/',
     'na': 'https://api.worldofwarships.com/wows/ships/stats/',
     'cn': 'https://vortex.wowsgame.cn/api/accounts/',
+    'ru': 'https://vortex.korabli.su/api/accounts/',
 }
 seach_ship_url = 'https://api.wows.shinoaki.com/public/wows/encyclopedia/ship/info'
 
 
 async def get_latest_info(server, account_id):
     try:
-        if server != 'cn':
+        if server not in ['cn', 'ru']:
             client_wg = await get_client_wg()
             params = {
                 'application_id': '907d9c6bfc0d896a2c156e57194a97cf',
@@ -166,7 +167,7 @@ async def get_diff_ship(hikari: Hikari_Model):  # noqa: PLR0915
                         loss += each['value']
                     if 'pvp/damage_dealt' in each['path']:
                         damage += each['value']
-                    if account['server'] != 'cn':
+                    if account['server'] not in ['cn', 'ru']:
                         match = re.search(f"^/data/{account['account_id']}/(.*?)/pvp/battles$", each['path'])
                     else:
                         match = re.search(f"^/data/{account['account_id']}/statistics/(.*?)/pvp/battles_count$", each['path'])
@@ -175,7 +176,7 @@ async def get_diff_ship(hikari: Hikari_Model):  # noqa: PLR0915
                         if match_count > 5:
                             break
                         battles += each['value']
-                        if account['server'] != 'cn':
+                        if account['server'] not in ['cn', 'ru']:
                             index = int(match.group(1))
                             shipId = int(latest_data['data'][str(account['account_id'])][index]['ship_id'])
                         else:
