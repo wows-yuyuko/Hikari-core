@@ -11,6 +11,8 @@ from .game.sx import get_sx_info
 from .moudle.publicAPI import get_ship_name
 from .moudle.wws_bind import change_BindInfo, delete_BindInfo, get_BindInfo, set_BindInfo, set_special_BindInfo
 from .moudle.wws_clan import get_ClanInfo
+from .moudle.wws_clanrank import get_ClanRank
+from .moudle.wws_cwrank import get_CwRank
 from .moudle.wws_info import get_AccountInfo
 from .moudle.wws_real_game import add_listen_list, delete_listen_list, get_diff_ship, get_listen_list, reset_config
 from .moudle.wws_recent import get_RecentInfo
@@ -33,6 +35,27 @@ class command:
     keywords: Tuple[str, ...]
     func: Func
     default_func: Func = None
+    second_select: list = None
+
+
+ship_command_list = [
+    command(('recent', '近期'), get_ShipRecent),
+]
+
+recent_command_list = [
+    command(('ship', '单船'), get_ShipRecent),
+]
+
+
+rank_command_list = [
+    command(('ship',), get_ShipRank),
+    command(('cw',), get_CwRank),
+    command(('clan',), get_ClanRank),
+]
+
+clan_command_list = [
+    command(('rank',), get_ClanRank),
+]
 
 
 first_command_list = [  # 同指令中越长的匹配词越靠前
@@ -40,13 +63,16 @@ first_command_list = [  # 同指令中越长的匹配词越靠前
     command(('查询绑定', '绑定查询', '绑定列表', '查绑定'), get_BindInfo),
     command(('删除绑定',), delete_BindInfo),
     command(('特殊绑定',), set_special_BindInfo),
-    command(('ship.rank', 'rank'), get_ShipRank),
+    command(('ship.rank',), get_ShipRank),
+    command(('cw.rank',), get_CwRank),
+    command(('clan.rank',), get_ClanRank),
+    command(('rank',), None, get_ShipRank, rank_command_list),
     command(('bind', '绑定', 'set'), set_BindInfo),
-    command(('recents', '单场近期'), None, get_RecentsInfo),
-    command(('recent', '近期'), None, get_RecentInfo),
-    command(('ship', '单船'), None, get_ShipInfo),
+    command(('recents', '单场近期'), get_RecentsInfo),
+    command(('recent', '近期'), None, get_RecentInfo, recent_command_list),
+    command(('ship', '单船'), None, get_ShipInfo, ship_command_list),
     # command(("record", "历史记录"), None, get_record),
-    command(('clan', '军团', '公会', '工会'), get_ClanInfo),
+    command(('clan', '军团', '公会', '工会'), None, get_ClanInfo, clan_command_list),
     # command(("随机表情包",), get_Random_Ocr_Pic),
     command(('roll', '随机'), roll_ship),
     command(('sx', '扫雪'), get_sx_info),
@@ -63,13 +89,6 @@ first_command_list = [  # 同指令中越长的匹配词越靠前
     command(('重置监控',), reset_config),
 ]
 
-second_command_list = [
-    command(('recent', '近期'), get_ShipRecent),
-    command(('ship', '单船'), get_ShipRecent),
-    # command(("clan", "军团", "公会", "工会"), get_record),
-    # command(("record", "历史记录"), get_record),
-]
-
 
 async def findFunction_and_replaceKeywords(match_list, command_List, default_func) -> Tuple[command, List]:
     for com in command_List:
@@ -80,11 +99,14 @@ async def findFunction_and_replaceKeywords(match_list, command_List, default_fun
                     if not match_list[i]:  # 为空时才删除，防止未加空格没有被split切割
                         match_list.remove('')
                     return com, match_list
-    return command(None, default_func, None), match_list
+    return (
+        command(None, default_func, None),
+        match_list,
+    )
 
 
 async def select_command(search_list) -> Tuple[Func, List]:
     command, search_list = await findFunction_and_replaceKeywords(search_list, first_command_list, get_AccountInfo)
     if command.func is None:
-        command, search_list = await findFunction_and_replaceKeywords(search_list, second_command_list, command.default_func)
+        command, search_list = await findFunction_and_replaceKeywords(search_list, command.second_select, command.default_func)
     return command.func, search_list
