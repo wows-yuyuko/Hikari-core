@@ -32,10 +32,10 @@ class Func(Protocol):
 
 @dataclass
 class command:
-    keywords: Tuple[str, ...]
-    func: Func
-    default_func: Func = None
-    second_select: list = None
+    keywords: Tuple[str, ...]  # 指令字段
+    func: Func  # 匹配到的方法，为空进入二级指令匹配
+    default_func: Func = None  # 二级指令未匹配到时返回选择的默认方法
+    second_select: list = None  # 二级指令列表
 
 
 ship_command_list = [
