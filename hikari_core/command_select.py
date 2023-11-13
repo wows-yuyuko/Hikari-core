@@ -59,6 +59,13 @@ clan_command_list = [
 
 
 first_command_list = [  # 同指令中越长的匹配词越靠前
+    command(('check_version', '检查更新'), check_version),
+    command(('更新样式',), async_update_template),
+    command(('查询监控', '监控列表', '查询监听', '监听列表'), get_listen_list),
+    command(('测试监控',), get_diff_ship),
+    command(('添加监控',), add_listen_list),
+    command(('删除监控',), delete_listen_list),
+    command(('重置监控',), reset_config),
     command(('切换绑定', '更换绑定', '更改绑定'), change_BindInfo),
     command(('查询绑定', '绑定查询', '绑定列表', '查绑定'), get_BindInfo),
     command(('删除绑定',), delete_BindInfo),
@@ -80,13 +87,6 @@ first_command_list = [  # 同指令中越长的匹配词越靠前
     command(('box', 'sd', '圣诞船池'), check_christmas_box),
     command(('搜船名', '查船名', '船名'), get_ship_name),
     command(('help', '帮助'), get_help),
-    command(('check_version', '检查更新'), check_version),
-    command(('更新样式',), async_update_template),
-    command(('查询监控', '监控列表', '查询监听', '监听列表'), get_listen_list),
-    command(('测试监控',), get_diff_ship),
-    command(('添加监控',), add_listen_list),
-    command(('删除监控',), delete_listen_list),
-    command(('重置监控',), reset_config),
 ]
 
 
