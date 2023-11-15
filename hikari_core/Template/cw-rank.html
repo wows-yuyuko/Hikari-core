@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" href="css.css" />
+	</head>
+	<style>
+		* {
+			padding: 0;
+			margin: 0;
+		}
+
+		.flex-2 {
+			flex: 2;
+		}
+
+		.flex-3 {
+			flex: 3;
+		}
+
+		.flex-5 {
+			flex: 5;
+		}
+		
+		.flex-6 {
+			flex: 6;
+		}
+
+		.flex-10 {
+			flex: 10;
+		}
+
+		.main-content {
+			width: 2160px;
+			font-size: 30px;
+			font-family: 'Microsoft YaHei';
+			font-family: "Microsoft YaHei";
+			font-weight: bold;
+		}
+
+		.page-box {
+			width: 2160px;
+			display: flex;
+			flex-direction: column;
+		}
+
+		.ship-level {
+			display: inline-block;
+			text-align: center;
+			margin-right: 60px;
+		}
+
+		.season-name {
+			display: inline-block;
+		}
+
+		.page-header {
+			text-align: center;
+			font-size: 55px;
+			height: 120px;
+			line-height: 120px;
+		}
+
+
+		.rank-header {
+			margin: 0px 50px;
+			display: flex;
+			text-align: center;
+			color: #008272;
+			font-weight: normal;
+			height: 100px;
+			line-height: 100px;
+			border-bottom: #008272 solid 5px;
+		}
+
+		.rank-header .hest-frag,
+		.rank-header .ar-frag,
+		.rank-header .max-ar-frag {
+			line-height: 50px;
+		}
+
+		.rank-item {
+			margin: 0px 50px;
+			display: flex;
+			text-align: center;
+			height: 80px;
+			line-height: 80px;
+		}
+		.clan-name {
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+		}
+		.footer {
+			margin-top: 30px;
+			text-align: center;
+			font-weight: bold;
+			font-size: 24px;
+			color: #909399;
+			margin-bottom: 20px;
+		}
+		.group-lev{
+			text-align: center;
+  			padding-right: 0px;
+  			display: flex;
+  			justify-content: space-between;
+		}
+		.group-lev>div:nth-child(1){
+		  	display: flex;
+		}
+		.group-lev>div:nth-child(1)>div{
+		  	width: 10px;
+			height: 50px;
+			margin-top: 15px;
+		  	background-color: red;
+		  	margin-right: 5px;
+		  	border-radius: 10px;
+		}
+	</style>
+	<body>
+		<div class="main-content">
+			<div class="page-box">
+				<div class="page-header">
+					<div class="season-name">
+						{{ data['season'] }}赛季 {{ data['server']|upper }}
+					</div>
+				</div>
+				<div class="rank-header">
+					<div class="ranks flex-2 col">排名</div>
+					<div class="server flex-2 col">所属服务器</div>
+					<div class="clan-name flex-10 col">公会</div>
+					<div class="league flex-6 col">段位</div>
+					<div class="battles flex-3 col">总场次</div>
+					<div class="time flex-3 col">最后战斗时间</div>
+				</div>
+				{% for rank in data['data']['records'] %}
+				<div class="rank-item">
+					<div class="ranks flex-2 col">{{ rank['rank'] }}</div>
+					<div class="server flex-2 col">{{ rank['server'] }}</div>
+					<div class="clan-name flex-10 col"><span style="color: {{rank['color']}};">[{{ rank['tag'] }}]</span>{{ rank['name'] }}</div>
+					<div class="league flex-6 col">
+						<div class="group-lev">
+							<div style="margin:auto;">
+								<div style="background-color:{{ rank['leagueName']['color'] }};"></div>
+								<span>{{ rank['leagueName']['buff'] }}{{ rank['divisionName'] }}</span>
+								<span>&nbsp;{{ rank['publicRating'] }}</span>
+							</div>
+						</div>
+					</div>
+					<div class="league flex-3 col">{{ rank['battlesCount'] }}</div>
+					<div class="time flex-3 col">{{ time.strftime('%Y-%m-%d',time.localtime(abs(rank['lastBattleAt']/1000)))}}</div>
+				</div>
+				{% endfor %}
+				
+				<div class="footer">
+					<p>©西行寺雨季&nbsp;&nbsp;©本心</p>
+					<p>https://github.com/benx1n/HikariBot</p>
+					<p>QQ频道搜索”yuyuko”即可使用稳定的腾讯官方机器人~</p>
+					<p>Design By 冷眠 H5 Converted By C1ystal</p>
+					<p>赞助鸣谢：科长、男人们的定远号、海上最速暴毙传说</p>
+				</div>
+
+				<div style="margin: 0 50px; border-bottom: #008272 solid 5px; margin-bottom:20px;"></div>
+			</div>
+		</div>
+	</body>
+	
+	<script>
+		document.querySelectorAll(".server").forEach(e => {
+			debugger
+			if (e.innerText == "asia") {
+				e.style.color = "#92D050";
+				e.innerText = "ASIA";
+			} else if (e.innerText == "cn") {
+				e.style.color = "#BF9000";
+				e.innerText = "CN";
+			} else if (e.innerText == "eu") {
+				e.style.color = "#009664";
+					e.innerText = "EU";
+			} else if (e.innerText == "na") {
+				e.style.color = "#6872C4";
+				e.innerText = "NA";
+			} else if (e.innerText == "ru") {
+				e.style.color = "#FF0000";
+				e.innerText = "RU";
+			}
+		})
+	</script>
+	
+	<script>
+		let arr_information = document.getElementsByClassName('rank-item');
+		for(let i=0;i<arr_information.length;i++) {
+			if(i%2 == 0) {
+				arr_information[i].style.backgroundColor = "#E4E4E4";
+			}
+		}
+	</script>
+</html>

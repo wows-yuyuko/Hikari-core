@@ -8,56 +8,32 @@ from loguru import logger
 from ..config import hikari_config
 from ..HttpClient_Pool import get_client_yuyuko, recreate_client_yuyuko
 from ..model import Hikari_Model
-from .publicAPI import get_ClanIdByName
 
 
 async def get_CwRank(hikari: Hikari_Model) -> Hikari_Model:
-    """查询公会基础信息"""
+    """查询军团战排行榜"""
     try:
         if hikari.Status == 'init':
-            if hikari.Input.Search_Type == 3:
-                clanList = await get_ClanIdByName(hikari.Input.Server, hikari.Input.ClanName)
-                if clanList:
-                    if len(clanList) < 2:
-                        hikari.Input.ClanId = clanList[0]['clanId']
-                    else:
-                        hikari.Input.Select_Data = clanList
-                        hikari.set_template_info('select-clan.html', 360, 100)
-                        return hikari.wait(clanList)
-                else:
-                    return hikari.failed('找不到军团，请确认军团名是否正确')
-        elif hikari.Status == 'wait':
-            if hikari.Input.Select_Data and hikari.Input.Select_Index and hikari.Input.Select_Index <= len(hikari.Input.Select_Data):
-                hikari.Input.ClanId = hikari.Input.Select_Data[hikari.Input.Select_Index - 1]['clanId']
-            else:
-                return hikari.error('请选择有效的序号')
+            if not hikari.Input.Server:
+                hikari.Input.Server = 'global'
         else:
             return hikari.error('当前请求状态错误')
 
-        # if hikari.Input.Search_Type == 3:
-        #    is_cache = await check_yuyuko_cache(hikari.Input.Server, hikari.Input.AccountId)
-        # else:
-        #    is_cache = await check_yuyuko_cache(hikari.Input.Platform, hikari.Input.PlatformId)
-        # if is_cache:
-        #    logger.success('上报数据成功')
-        # else:
-        #    logger.success('跳过上报数据，直接请求')
-
-        url = f'{hikari_config.yuyuko_url}/public/wows/clan/info'
-        if hikari.Input.Search_Type == 3:
-            params = {'server': hikari.Input.Server, 'accountId': hikari.Input.ClanId}
-        else:
-            params = {'server': hikari.Input.Platform, 'accountId': hikari.Input.PlatformId}
+        url = f'{hikari_config.yuyuko_url}/public/wows/clan/rank/cw'
+        params = {
+            'season': hikari.Input.CwSeasonId,
+            'server': hikari.Input.Server,
+            'page': 1,
+            'size': 100,
+        }
         client_yuyuko = await get_client_yuyuko()
         resp = await client_yuyuko.get(url, params=params, timeout=10)
         result = orjson.loads(resp.content)
         hikari.Output.Yuyuko_Code = result['code']
-
         if result['code'] == 200 and result['data']:
-            latest_season = str(result['data']['clanLeagueInfo']['lastSeason'])
-            result['data']['latest_season'] = latest_season
-            hikari.set_template_info('wws-clan.html', 1200, 100)
-            return hikari.success(result['data'])
+            hikari.set_template_info('cw-rank.html', 1300, 100)
+            result_data = {'data': result['data'], 'server': hikari.Input.Server, 'season': hikari.Input.CwSeasonId}
+            return hikari.success(result_data)
         elif result['code'] == 403:
             return hikari.failed(f"{result['message']}\n请先绑定账号")
         elif result['code'] == 500:

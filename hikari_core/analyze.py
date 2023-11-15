@@ -17,6 +17,7 @@ from .model import Hikari_Model
 from .moudle.publicAPI import get_ship_name
 from .moudle.wws_bind import change_BindInfo, delete_BindInfo, get_BindInfo, set_BindInfo, set_special_BindInfo
 from .moudle.wws_clan import get_ClanInfo
+from .moudle.wws_cwrank import get_CwRank
 from .moudle.wws_info import get_AccountInfo
 from .moudle.wws_real_game import add_listen_list, delete_listen_list
 from .moudle.wws_recent import get_RecentInfo
@@ -232,6 +233,18 @@ async def extract_with_function(hikari: Hikari_Model) -> Hikari_Model:  # noqa: 
                         return hikari.error('服务器名输入错误')
                 else:
                     return hikari.error('您似乎准备用公会TAG查询水表，请检查参数中是否包含服务器和公会TAG，以空格分隔，顺序不限')
+        elif hikari.Function in [get_CwRank]:
+            hikari.Input.Server, hikari.Input.Command_List = await match_keywords(hikari.Input.Command_List, servers)
+            delete_list = []
+            if len(hikari.Input.Command_List) == 1:
+                for i in hikari.Input.Command_List:
+                    if str(i).isdigit() and len(i) <= 3:
+                        hikari.Input.CwSeasonId = int(i)
+                        delete_list.append(i)
+                for each in delete_list:
+                    hikari.Input.Command_List.remove(each)
+            elif len(hikari.Input.Command_List) > 1:
+                return hikari.error('您似乎准备查询CW排行榜，请确认是否仅输入了赛季和服务器，留空为最新赛季和全服')
         return hikari
     except Exception:
         logger.error(traceback.format_exc())
