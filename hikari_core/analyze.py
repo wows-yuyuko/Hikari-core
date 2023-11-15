@@ -63,7 +63,7 @@ async def extract_with_special_name(hikari: Hikari_Model) -> Hikari_Model:
 
 async def extract_with_me_or_at(hikari: Hikari_Model) -> Hikari_Model:
     try:
-        if hikari.UserInfo.Platform in ['QQ', 'QQ_CHANNEL']:
+        if hikari.UserInfo.Platform in ['QQ', 'QQ_CHANNEL', 'QQ_OFFICIAL']:
             for i in hikari.Input.Command_List:
                 if str(i).lower() == 'me':
                     hikari.Input.Search_Type = 1
