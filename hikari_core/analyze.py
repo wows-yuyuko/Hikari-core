@@ -75,6 +75,8 @@ async def extract_with_me_or_at(hikari: Hikari_Model) -> Hikari_Model:
                     match = re.search(r'CQ:at,qq=(\d+)', i)
                 elif hikari.UserInfo.Platform == 'QQ_CHANNEL':
                     match = re.search(r'<@!(\d+)', i)
+                else:
+                    match = None
                 if match:
                     hikari.Input.Search_Type = 2
                     hikari.Input.Platform = hikari.UserInfo.Platform
