@@ -65,6 +65,14 @@ async def extract_with_special_name(hikari: Hikari_Model) -> Hikari_Model:
 async def extract_with_me_or_at(hikari: Hikari_Model) -> Hikari_Model:
     try:
         if hikari.UserInfo.Platform in ['QQ', 'QQ_CHANNEL', 'QQ_OFFICIAL']:
+            # 频道无其他参数时默认me
+            if hikari.UserInfo.Platform == 'QQ_OFFICIAL':
+                analyze_command_list = hikari.Input.Command_List.copy()
+                analyze_server, analyze_command_list = await match_keywords(analyze_command_list, servers)
+                if not analyze_server:
+                    hikari.Input.Search_Type = 1
+                    hikari.Input.Platform = hikari.UserInfo.Platform
+                    hikari.Input.PlatformId = hikari.UserInfo.PlatformId
             for i in hikari.Input.Command_List:
                 if str(i).lower() == 'me':
                     hikari.Input.Search_Type = 1
