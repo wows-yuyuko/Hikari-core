@@ -101,7 +101,7 @@
 			margin-bottom: 20px;
 		}
 		.group-lev{
-			text-align: center;
+			padding-left: 30px;
   			padding-right: 0px;
   			display: flex;
   			justify-content: space-between;
@@ -130,7 +130,7 @@
 					<div class="ranks flex-2 col">排名</div>
 					<div class="server flex-2 col">所属服务器</div>
 					<div class="clan-name flex-10 col">公会</div>
-					<div class="league flex-6 col">段位</div>
+					<div class="league flex-3 col">段位</div>
 					<div class="battles flex-3 col">总场次</div>
 					<div class="time flex-3 col">最后战斗时间</div>
 				</div>
@@ -139,12 +139,12 @@
 					<div class="ranks flex-2 col">{{ rank['rank'] }}</div>
 					<div class="server flex-2 col">{{ rank['server'] }}</div>
 					<div class="clan-name flex-10 col"><span style="color: {{rank['color']}};">[{{ rank['tag'] }}]</span>{{ rank['name'] }}</div>
-					<div class="league flex-6 col">
+					<div class="league flex-3 col">
 						<div class="group-lev">
-							<div style="margin:auto;">
+							<div style="margin-left:50px;">
 								<div style="background-color:{{ rank['leagueName']['color'] }};"></div>
 								<span>{{ rank['leagueName']['buff'] }}{{ rank['divisionName'] }}</span>
-								<span>&nbsp;{{ rank['publicRating'] }}</span>
+								<span>&nbsp;{{ rank['divisionRating'] }}</span>
 							</div>
 						</div>
 					</div>
