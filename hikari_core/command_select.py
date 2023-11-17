@@ -48,7 +48,7 @@ recent_command_list = [
 
 
 rank_command_list = [
-    command(('ship', '单船'), get_ShipRank),
+    command(('ship', '单船', '战舰'), get_ShipRank),
     command(('cw', '军团战', '公会战'), get_CwRank),
     command(('clan', '军团', '公会'), get_ClanRank),
 ]
@@ -70,7 +70,7 @@ first_command_list = [  # 同指令中越长的匹配词越靠前
     command(('查询绑定', '绑定查询', '绑定列表', '查绑定'), get_BindInfo),
     command(('删除绑定',), delete_BindInfo),
     command(('特殊绑定',), set_special_BindInfo),
-    command(('ship.rank', '单船排行榜'), get_ShipRank),
+    command(('ship.rank', '单船排行榜', '战舰排行榜'), get_ShipRank),
     command(('cw.rank', '军团战排行榜', '公会战排行榜'), get_CwRank),
     command(('clan.rank', '军团排行榜', '公会排行榜'), get_ClanRank),
     command(('rank', '排行榜'), None, get_ShipRank, rank_command_list),
