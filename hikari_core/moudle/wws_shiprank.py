@@ -35,17 +35,14 @@ async def get_ShipRank(hikari: Hikari_Model):
         else:
             return hikari.error('当前请求状态错误')
 
-        if not hikari.Input.Server == 'cn':
-            hikari = await search_ShipRank_Yuyuko(hikari)
-            # 无缓存，去Number爬
-            if not hikari.Status == 'success':
-                hikari, numbers_data = await search_ShipRank_Numbers(hikari)
-                # 上报缓存
-                if hikari.Status == 'success':
-                    await post_ShipRank(numbers_data)  # 上报Yuyuko
-            return hikari
-        else:
-            return await search_cn_rank(hikari)
+        hikari = await search_ShipRank_Yuyuko(hikari)
+        # 无缓存，去Number爬
+        if not hikari.Status == 'success':
+            hikari, numbers_data = await search_ShipRank_Numbers(hikari)
+            # 上报缓存
+            if hikari.Status == 'success':
+                await post_ShipRank(numbers_data)  # 上报Yuyuko
+        return hikari
     except (TimeoutError, ConnectTimeout):
         logger.warning(traceback.format_exc())
         return hikari.error('请求超时了，请过会儿再尝试哦~')
@@ -123,10 +120,9 @@ async def post_ShipRank(data):
 
 async def search_cn_rank(hikari: Hikari_Model):
     try:
-        url = 'https://api.wows.shinoaki.com/wows/rank/ship/server'
-        params = {'server': hikari.Input.Server, 'shipId': int(hikari.Input.ShipInfo.Ship_Id), 'page': 1}
+        url = f'{hikari_config.yuyuko_url}/public/rank/ship/cn/{int(hikari.Input.ShipInfo.Ship_Id)}/0?page=1&desc=true'
         client_yuyuko = await get_client_yuyuko()
-        resp = await client_yuyuko.get(url, params=params, timeout=10)
+        resp = await client_yuyuko.get(url, timeout=10)
         result = orjson.loads(resp.content)
         if result['code'] == 200 and result['data']:
             hikari.set_template_info('ship-rank.html', 1300, 100)
