@@ -6,6 +6,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from jinja2.exceptions import UndefinedError
 from loguru import logger
 from playwright._impl._api_types import Error as playwright_Error
+from playwright.async_api import Error as playwright_Error
 from pydantic import ValidationError
 
 from .analyze import analyze_command
