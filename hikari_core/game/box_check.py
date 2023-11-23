@@ -5,6 +5,7 @@ import orjson
 from httpx import ConnectTimeout, PoolTimeout
 from loguru import logger
 
+from ..config import hikari_config
 from ..HttpClient_Pool import get_client_yuyuko, recreate_client_yuyuko
 from ..model import Hikari_Model
 from ..moudle.publicAPI import get_AccountIdByName
@@ -20,7 +21,7 @@ async def check_christmas_box(hikari: Hikari_Model) -> Hikari_Model:
                     return hikari.error(f'{hikari.Input.AccountId}')
         else:
             return hikari.error('当前请求状态错误')
-        url = 'https://api.wows.shinoaki.com/public/wows/christmas/ship/box'
+        url = f'{hikari_config.yuyuko_url}/public/wows/christmas/ship/box'
         if hikari.Input.Search_Type == 3:
             params = {'server': hikari.Input.Server, 'accountId': hikari.Input.AccountId}
         else:
