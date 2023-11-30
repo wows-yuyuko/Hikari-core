@@ -14,8 +14,7 @@ from .game.roll import roll_ship
 from .game.sx import get_sx_info
 from .model import Hikari_Model
 from .moudle.publicAPI import get_ship_name
-from .moudle.wws_bind import (change_BindInfo, delete_BindInfo, get_BindInfo,
-                              set_BindInfo, set_special_BindInfo)
+from .moudle.wws_bind import change_BindInfo, delete_BindInfo, get_BindInfo, set_BindInfo, set_special_BindInfo
 from .moudle.wws_clan import get_ClanInfo
 from .moudle.wws_cwrank import get_CwRank
 from .moudle.wws_info import get_AccountInfo
