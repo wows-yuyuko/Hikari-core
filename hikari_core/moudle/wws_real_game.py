@@ -185,8 +185,11 @@ async def get_diff_ship(hikari: Hikari_Model):  # noqa: PLR0915
                         client_yuyuko = await get_client_yuyuko()
                         resp = await client_yuyuko.get(seach_ship_url, params=params)
                         result = orjson.loads(resp.content)
-                        if result['code'] == 200:
-                            ship_name_cn = ship_name_cn + result['data']['nameCn'] + ','
+                        try:
+                            if result['code'] == 200:
+                                ship_name_cn = ship_name_cn + result['data']['nameCn'] + ','
+                        except Exception:
+                            pass
                 if match_count > 5:
                     break
                 # 构建消息
