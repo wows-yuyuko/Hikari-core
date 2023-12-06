@@ -2,9 +2,10 @@
 <html>
 	<head>
 		<meta charset="utf-8">
+		<title></title>
 	</head>
 	<style>
-		* {
+			* {
 			margin: 0;
 			padding: 0;
 		}
@@ -62,20 +63,19 @@
 		
 		.xi-row {
 			margin: 0 50px;
-			margin-top: 30px;
 			height: 300px;
 			display: flex;
 			text-align: center;
 		}
 		
 		.ship-count {
-			flex: 6;
+			flex: 1;
 			background-color: #F2F2F2;
 			border-radius: 16px;
 		}
 		
 		.xi {
-			flex: 10;
+			flex: 2;
 			background-color: #F2F2F2;
 			margin-left: 20px;
 			border-radius: 16px;
@@ -83,16 +83,16 @@
 		}
 		
 		.type {
-			font-size: 60px;
+			font-size: 50px;
 			color: #767171;
 			font-weight: normal;
 			text-align: left;
 			margin-left: 75px;
-			margin-top: 55px;
+			margin-top: 70px;
 		}
 		
 		.in-port {
-			font-size: 25px;
+			font-size: 20px;
 			color: #767171;
 			font-weight: normal;
 			text-align: left;
@@ -100,8 +100,8 @@
 		}
 		
 		.number {
-			font-size: 60px;
-			color: #E60000;
+			font-size: 50px;
+			color: rgb(1,129,118);
 			text-align: left;
 			margin-left: 75px;
 		}
@@ -112,7 +112,7 @@
 		
 		.xi-mid {
 			flex: 1;
-			margin-top: 61px;
+			margin-top: 70px;
 		}
 		
 		.xi-right {
@@ -126,17 +126,17 @@
 		
 		.up-1 {
 			color: #DF9D21;
-			font-size: 30px;
+			font-size: 22px;
 		}
 		
 		.up-2 {
 			color: #12C8AE;
-			font-size: 30px;
+			font-size: 22px;
 		}
 		
 		.up-3 {
 			color: #B400B4;
-			font-size: 30px;
+			font-size: 22px;
 		}
 		
 		.xi-right {
@@ -158,27 +158,86 @@
 		}
 		
 		.x-left {
+			flex: 2;
+		}
+		
+		.x-right {
+			flex: 5;
+		}
+		
+		.x-right {
+			margin-bottom: 25px;
+			margin-right: 30px;
+			display: flex;
+		}
+
+		.total-item {
+			display: flex;
+			flex-direction: column;
 			flex: 1;
+			text-align: center;
 		}
-		
-		.x-right {
-			flex: 3;
+
+		.total-item img {
+			min-height: 150px;
 		}
+
+		.total-up {
+			height: 150px;
+		}
+
 		
-		.x-right {
-			text-align: right;
-			margin: 51px 0;
-			margin-right: 70px;
+
+		.mini-count {
+			font-size: 20px;
+			display: flex;
+			flex-direction: column;
 		}
 		
 		.ix-row {
 			margin: 0 50px;
 			margin-top: 30px;
-			height: 300px;
 			background-color: #F2F2F2;
 			border-radius: 16px;
 			display: flex;
 		}
+
+		.tier-item {
+			text-align: center;
+			flex: 1;
+			margin: 20px 30px;
+		}
+
+		.coin {
+			
+			margin: 0 50px;
+			margin-top: 30px;
+			background-color: #F2F2F2;
+			text-align: center;
+			height: 120px;
+			line-height: 120px;
+			display: flex;
+			justify-content: center;
+			font-weight: normal;
+			color: #767171;
+			font-size: 45px;
+			border-radius: 16px;
+			
+		}
+
+		.coin img {
+			height: 80px;
+			margin: 20px 0;
+		}
+
+
+		.shop-item	{
+			margin: 20px 0;
+			flex: 1;
+			text-align: center;
+		}
+
+
 		
 		.ix-left {
 			flex: 3;
@@ -219,21 +278,15 @@
 			line-height: 60px;
 			font-weight: normal;
 			text-align: center;
+			font-weight: normal;
 		}
 		
 		.status {
 			font-weight: bold;
 		}
-		
-		.tips {
-			padding: 10px 0;
-			margin: 0 50px;
-			margin-top: 30px;
-			background-color: #F2F2F2;
-			border-radius: 16px;
-			font-weight: normal;
-			text-align: center;
-			color: #909399;
+
+		.chart-bar {
+			flex: 6;
 		}
 	</style>
 	<body>
@@ -241,25 +294,18 @@
 			<div class="page-box">
 				<div class="page-header">
 					<div class="clan-user-server">
-						{% if data['clanInfo']['tag'] %}
-						<div class="clan" style="color: {{ data['clanInfo']['colorRgb'] }};">[{{ data['clanInfo']['tag'] }}]</div>
+						{% if data['userInfo']['clanInfo']['tag'] %}
+							<div class="clan" style="color: {{ data['userInfo']['clanInfo']['color'] }};">[{{ data['userInfo']['clanInfo']['tag'] }}]</div>
 						{% endif %}
-						<div class="user">{{ data['userName'] }}</div>
+						<div class="user">{{ data['userInfo']['userName'] }}</div>
 						<div class="server">
 							<div class="server-border">
-								{{ data['serverName'] }}
+								{{ data['userInfo']['serverCn'] }}
 							</div>
 						</div>
 					</div>
 				</div>
 				
-				<div class="auth-status">
-					{%if data['auth'] %}
-					<span>授权状态：</span><span style="color: #47A123; font-weight: bold;">已授权</span>
-					{% else %}
-					<span>授权状态：</span><span style="color: #E60000; font-weight: bold;">未授权</span>
-					{% endif %}
-				</div>
 				
 				<div class="xi-row">
 					<div class="ship-count">
@@ -272,113 +318,215 @@
 						</div>
 						
 						<div class="number">
-							{{ data['totalShip'] }}
+							{{ data['shipCount'] }}
 						</div>
 					</div>
 					<div class="xi">
-						<div class="xi-left">
-							<div class="type">★</div>
-							
-							<div class="in-port">港口中</div>
-							
-							<div class="number">{{ data['research']['totalShip'] }}</div>
-						</div>
-						
-						<div class="xi-mid">
-							<div class="unup">{{ 200*data['research']['totalShip'] }}</div>
-						</div>
-						
+						<!-- 等级柱形图 -->
+						<div class="chart-bar"></div>
 					</div>
 				</div>
 				
 				<div class="x-row">
-					<div class="x-left">
-						<div class="type">X</div>
-						
-						<div class="in-port">港口中</div>
-						
-						<div class="number">{{ data['box']['totalShip'] }}</div>
-					</div>
+					<!-- <div class="x-left">
+						<div style="height: 100%; font-size: 60px; font-weight: normal; line-height: 300px; text-align: center;">总获得</div>
+					</div> -->
 					
 					<div class="x-right">
-						<div class="mid" style="color: #12C8AE">
-							<span style="font-size: 50px;">{{ 200*data['box']['totalShip'] }}</span>
+						<div class="total-item">
+							<div class="total-top">
+								<img src="https://hikari-resource.oss-cn-shanghai.aliyuncs.com/resource_Icon/steel.svg"/>
+							</div>
+							<div class="total-bottom" style="color: rgb(0,131,216);">
+								<div><span id="steel">{{ data['resourceView']['sumResource'][0]['bonusMap']['0'] }}</span>钢铁</div>
+								<div class="mini-count">
+									<div id="steel-1"></div>
+									<div id="steel-2"></div>
+									<div id="steel-3"></div>
+								</div>
+							</div>
+						</div>
+						<div class="total-item">
+							<div class="total-top">
+								<img src="https://hikari-resource.oss-cn-shanghai.aliyuncs.com/resource_Icon/coal.svg"/>
+							</div>
+							<div class="total-bottom" style="color: rgb(144,206,87);">
+								<div><span id="coal">{{ data['resourceView']['sumResource'][1]['bonusMap']['0'] }}</span>煤炭</div>
+								<div class="mini-count">
+									<div id="coal-1"></div>
+									<div id="coal-2"></div>
+									<div id="coal-3"></div>
+								</div>
+							</div>
+						</div>
+						<div class="total-item">
+							<div class="total-top">
+								<img src="https://hikari-resource.oss-cn-shanghai.aliyuncs.com/resource_Icon/research.svg"/>
+							</div>
+							<div class="total-bottom" style="color: rgb(6,130,105);">
+								<div><span id="research">0</span>研发点</div>
+								<div class="mini-count">
+									<div id="research-1"></div>
+									<div id="research-2"></div>
+									<div id="research-3"></div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
 				
 				<div class="ix-row">
-					<div class="ix-left">
-						<div class="type">VIII-IX</div>
-						
-						<div class="in-port">港口中</div>
-						
-						<div class="number">{{ data['steel']['totalShip'] }}</div>
-					</div>
-					<div class="ix-mid">
-						<div class="unup">{{ 75*data['steel']['totalShip'] }}</div>
-					</div>
+
+					{% for each in data['resourceView']['infos'] %}
+						<div class="tier-item">
+							<div style="font-weight: normal; color: rgb(118,113,113); font-size: 45px;">{{ ['0','I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI'][each['level']] }}</div>
+							<div style="color: rgb(2,123,106);">{{ each['shipCount'] }}</div>
+							{% if each['bonusType'] == 'RESEARCH' %}
+								<div style="height: 10px; background-color: rgb(6,130,105); border-radius: 3px;"></div>
+								<div style="color: rgb(121, 93, 20);">{{ each['bonusMap']['0'] }}</div>
+								<div style="color: rgb(6,130,105);">研发</div>
+							{% elif each['bonusType'] == 'COAL' %}
+								<div style="height: 10px; background-color: rgb(144,206,87); border-radius: 3px;"></div>
+								<div style="color: rgb(121, 93, 20);">{{ each['bonusMap']['0'] }}</div>
+								<div style="color: rgb(144,206,87);">煤炭</div>
+							{% elif each['bonusType'] == 'STEEL' %}
+								<div style="height: 10px; background-color: rgb(0,131,216); border-radius: 3px;"></div>
+								<div style="color: rgb(121, 93, 20);">{{ each['bonusMap']['0'] }}</div>
+								<div style="color: rgb(0,131,216);">钢铁</div>
+							{% endif %}
+						</div>
+					{% endfor %}
+
+
+					
+				</div>
+
+				<div class="coin">
+					<img src="{{ data['exchangeView']['iconUrl'] }}">
+					<div style="width: 30px;"></div>
+					<div>新年代币&nbsp;&nbsp;</div>
+					<div style="font-weight: bold;">{{ data['exchangeView']['sumToken'] }}</div>
+					<div>个</div>
 				</div>
 				
 				<div class="ix-row">
-					<div class="ix-left">
-						<div class="type">V-VII</div>
-						
-						<div class="in-port">港口中</div>
-						
-						<div class="number">{{ data['coal']['totalShip'] }}</div>
+					{% for each in data['exchangeView']['exchangeList'] %}
+					<div class="shop-item">
+						<div style="height: 150px;">
+							<img src="{{ each['iconUrl'] }}" style="width: 80%; display: inline-block">
+						</div>
+						<div style="font-size: 18px; font-weight: normal;">{{ each['name'] }}</div>
+						{% if each['maxNumber'] == 0 %}
+						<div style="font-size: 18px; font-weight: normal;">可无限兑换</div>
+						{% else %}
+						<div style="font-size: 18px; font-weight: normal;">最多可兑换&nbsp;&nbsp;<span>{{ each['maxNumber'] }}</span></div>
+						{% endif %}
+						<div style="font-weight: normal; display: flex; justify-content: center;">
+							<img src="{{ data['exchangeView']['iconUrl'] }}" style="width: 30%; display: inline-block;">
+							<div style="width: 20px;"></div>
+							<div style="display: flex; justify-content: center; align-items: center; font-size: 24px;">{{ each['price'] }}</div>
+						</div>
 					</div>
-					<div class="ix-mid">
-						<div class="unup">{{ 30*data['coal']['totalShip'] }}</div>
-					</div>
+					{% endfor %}
+					
+
 				</div>
-				<div class="ix-row">
-					<div class="ix-left">
-						<div class="type">共计</div>
-					</div>
-					<div class="ix-mid">
-						<div class="unup">{{ 200*data['research']['totalShip']+200*data['box']['totalShip']+75*data['steel']['totalShip']+30*data['coal']['totalShip'] }}</div>
-					</div>
-				</div>
-				{% if not data['auth'] %}
-				<div class="tips">
-					<span>tips：未授权数据不准确，仅支持统计已战斗过的舰船</span><br />
-					<span>如需统计更精准数据请前往网页版授权。</span><br />
-					<span>网页版地址：https://wows.mgaia.top/</span>
-				</div>
-				{% else %}
-				<div class="tips">
-					<span>tips：没出过港的船只不会被统计在内</span>
-				</div>
-				{% endif %}
 				
 				<div class="footer">
 					<p>©西行寺雨季&nbsp;&nbsp;©本心</p>
+					<p>https://github.com/benx1n/HikariBot</p>
 					<p>QQ频道搜索”yuyuko”即可使用稳定的腾讯官方机器人~</p>
 					<p>Design By 冷眠 H5 Converted By C1ystal</p>
-					<p>赞助鸣谢：科长、男人们的定远号、海上最速暴毙传说</p>
 				</div>
 			</div>
 		</div>
 	</body>
+{% if template_path and template_path/"echarts.js" %}
+<script src="file:\\{{template_path}}/echarts.js"></script>
+{% else %}
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.3.3/dist/echarts.js"></script>
+{% endif %}
 	<script>
 		// 服务器字体颜色自动填充
 		let server_name = document.querySelector(".server").innerText;
-		if (server_name == "asia") {
+		if (server_name == "亚服") {
 			document.querySelector(".server").style.color = "#92D050";
-			document.querySelector(".server-border").innerText = "亚服";
-		} else if (server_name == "cn") {
+		} else if (server_name == "国服") {
 			document.querySelector(".server").style.color = "#BF9000";
-			document.querySelector(".server-border").innerText = "国服";
-		} else if (server_name == "eu") {
+		} else if (server_name == "欧服") {
 			document.querySelector(".server").style.color = "#009664";
-			document.querySelector(".server-border").innerText = "欧服";
-		} else if (server_name == "na") {
+		} else if (server_name == "美服") {
 			document.querySelector(".server").style.color = "#6872C4";
-			document.querySelector(".server-border").innerText = "美服";
-		} else if (server_name == "ru") {
+		} else if (server_name == "俄服") {
 			document.querySelector(".server").style.color = "#FF0000";
-			document.querySelector(".server-border").innerText = "俄服";
 		}
+	</script>
+
+	<script>
+		let steel_count = document.getElementById("steel").innerText;
+		document.getElementById("steel-1").innerText = parseInt(steel_count * 1.05) + " +5%";
+		document.getElementById("steel-2").innerText = parseInt(steel_count * 1.07) + " +7%";
+		document.getElementById("steel-3").innerText = parseInt(steel_count * 1.10) + " +10%";
+
+		let coal_count = document.getElementById("coal").innerText;
+		document.getElementById("coal-1").innerText = parseInt(coal_count * 1.05) + " +5%";
+		document.getElementById("coal-2").innerText = parseInt(coal_count * 1.07) + " +7%";
+		document.getElementById("coal-3").innerText = parseInt(coal_count * 1.10) + " +10%";
+
+		let research_count = document.getElementById("research").innerText;
+		document.getElementById("research-1").innerText = parseInt(research_count * 1.01) + " +1%";
+		document.getElementById("research-2").innerText = parseInt(research_count * 1.03) + " +3%";
+		document.getElementById("research-3").innerText = parseInt(research_count * 1.05) + " +5%";
+	</script>
+
+	<script>
+	window.onload = function () {
+		drawBarChart();
+	};
+
+	function drawBarChart() {
+		var barChart = echarts.init(document.querySelector('.chart-bar'));
+		var barOption = {
+			animation: false,
+			tooltip: {},
+			label: {
+				position: 'top',
+				show: true,
+				fontSize: '15',
+				color: '#303133',
+			},
+			xAxis: {
+				data: ['V', 'VI', 'VII', 'VIII', 'IX', 'X', '★'],
+				axisLabel: {
+					align: 'center',
+					fontSize: '20',
+				}
+			},
+			yAxis: {
+				axisLabel: {
+					align: 'center',
+					fontSize: '20',
+				}
+			},
+			series: [{
+				name: '持有数',
+				type: 'bar',
+				data: [
+					{% for each in data['levelCount'] %}
+						{{ each['value'] }},
+					{% endfor %}
+				],
+				itemStyle: {
+					color: '#D6ECFB40',
+					borderWidth: 1,
+					borderType: 'solid',
+					borderColor: '#9FB8FF',
+					shadowColor: '#9FB8FF',
+						shadowBlur: 3
+				},
+			}]
+		};
+		barChart.setOption(barOption);
+	}
 	</script>
 </html>
