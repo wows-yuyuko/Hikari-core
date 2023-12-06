@@ -5,6 +5,7 @@ import orjson
 from httpx import ConnectTimeout, PoolTimeout
 from loguru import logger
 
+from ..config import hikari_config
 from ..HttpClient_Pool import get_client_yuyuko, recreate_client_yuyuko
 from ..model import Hikari_Model
 
@@ -26,7 +27,7 @@ async def roll_ship(hikari: Hikari_Model):
             'shipName': '',
             'shipType': hikari.Input.ShipInfo.Ship_Type,
         }
-        url = 'https://api.wows.shinoaki.com/public/wows/roll/ship/roll'
+        url = f'{hikari_config.yuyuko_url}/public/wows/roll/ship/roll'
         client_yuyuko = await get_client_yuyuko()
         resp = await client_yuyuko.post(url, json=params, timeout=10)
         result = orjson.loads(resp.content)

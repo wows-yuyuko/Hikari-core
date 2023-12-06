@@ -232,7 +232,7 @@ async def get_wg_info(params, key, url):
 
 async def get_MyShipRank_yuyuko(params) -> int:
     try:
-        url = 'https://api.wows.shinoaki.com/upload/numbers/data/upload/user/ship/rank'
+        url = f'{hikari_config.yuyuko_url}/upload/numbers/data/upload/user/ship/rank'
         client_yuyuko = await get_client_yuyuko()
         resp = await client_yuyuko.get(url, params=params, timeout=5)
         result = orjson.loads(resp.content)
@@ -288,7 +288,7 @@ async def get_MyShipRank_Numbers(url, server) -> int:
 
 async def post_MyShipRank_yuyuko(accountId, ranking, serverId, shipId):
     try:
-        url = 'https://api.wows.shinoaki.com/upload/numbers/data/upload/user/ship/rank'
+        url = f'{hikari_config.yuyuko_url}/upload/numbers/data/upload/user/ship/rank'
         post_data = {
             'accountId': int(accountId),
             'ranking': int(ranking),

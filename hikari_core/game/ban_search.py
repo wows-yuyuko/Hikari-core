@@ -5,6 +5,7 @@ import orjson
 from httpx import ConnectTimeout, PoolTimeout
 from loguru import logger
 
+from ..config import hikari_config
 from ..HttpClient_Pool import get_client_yuyuko, recreate_client_yuyuko
 from ..model import Hikari_Model
 from ..moudle.publicAPI import get_AccountIdByName
@@ -30,7 +31,7 @@ async def get_BanInfo(hikari: Hikari_Model) -> Hikari_Model:
                     return hikari.error('未查询到该用户绑定信息，请使用wws 查询绑定 进行检查')
         else:
             return hikari.error('当前请求状态错误')
-        url = 'https://api.wows.shinoaki.com/public/wows/ban/cn/user'
+        url = f'{hikari_config.yuyuko_url}/public/wows/ban/cn/user'
         client_yuyuko = await get_client_yuyuko()
         resp = await client_yuyuko.post(url, json={'accountId': hikari.Input.AccountId}, timeout=10)
         result = orjson.loads(resp.content)

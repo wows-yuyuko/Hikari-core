@@ -28,7 +28,7 @@ api_list = {
     'cn': 'https://vortex.wowsgame.cn/api/accounts/',
     'ru': 'https://vortex.korabli.su/api/accounts/',
 }
-seach_ship_url = 'https://api.wows.shinoaki.com/public/wows/encyclopedia/ship/info'
+seach_ship_url = f'{hikari_config.yuyuko_url}/public/wows/encyclopedia/ship/info'
 
 
 async def get_latest_info(server, account_id):
