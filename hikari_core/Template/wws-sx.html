@@ -205,7 +205,7 @@
 		.tier-item {
 			text-align: center;
 			flex: 1;
-			margin: 20px 30px;
+			margin: 10px 10px;
 		}
 
 		.coin {
@@ -338,7 +338,7 @@
 								<img src="https://hikari-resource.oss-cn-shanghai.aliyuncs.com/resource_Icon/steel.svg"/>
 							</div>
 							<div class="total-bottom" style="color: rgb(0,131,216);">
-								<div><span id="steel">{{ data['resourceView']['sumResource'][0]['bonusMap']['0'] }}</span>钢铁</div>
+								<div><span id="steel">{{ data['resourceView']['sumResource'][1]['bonusMap']['0'] }}</span>钢铁</div>
 								<div class="mini-count">
 									<div id="steel-1"></div>
 									<div id="steel-2"></div>
@@ -351,7 +351,7 @@
 								<img src="https://hikari-resource.oss-cn-shanghai.aliyuncs.com/resource_Icon/coal.svg"/>
 							</div>
 							<div class="total-bottom" style="color: rgb(144,206,87);">
-								<div><span id="coal">{{ data['resourceView']['sumResource'][1]['bonusMap']['0'] }}</span>煤炭</div>
+								<div><span id="coal">{{ data['resourceView']['sumResource'][2]['bonusMap']['0'] }}</span>煤炭</div>
 								<div class="mini-count">
 									<div id="coal-1"></div>
 									<div id="coal-2"></div>
@@ -364,7 +364,7 @@
 								<img src="https://hikari-resource.oss-cn-shanghai.aliyuncs.com/resource_Icon/research.svg"/>
 							</div>
 							<div class="total-bottom" style="color: rgb(6,130,105);">
-								<div><span id="research">0</span>研发点</div>
+								<div><span id="research">{{ data['resourceView']['sumResource'][0]['bonusMap']['0'] }}</span>研发点</div>
 								<div class="mini-count">
 									<div id="research-1"></div>
 									<div id="research-2"></div>
@@ -380,19 +380,26 @@
 					{% for each in data['resourceView']['infos'] %}
 						<div class="tier-item">
 							<div style="font-weight: normal; color: rgb(118,113,113); font-size: 45px;">{{ ['0','I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI'][each['level']] }}</div>
-							<div style="color: rgb(2,123,106);">{{ each['shipCount'] }}</div>
 							{% if each['bonusType'] == 'RESEARCH' %}
+								<div style="color: rgb(2,123,106);">{{ each['shipCount'] }}</div>
 								<div style="height: 10px; background-color: rgb(6,130,105); border-radius: 3px;"></div>
 								<div style="color: rgb(121, 93, 20);">{{ each['bonusMap']['0'] }}</div>
 								<div style="color: rgb(6,130,105);">研发</div>
 							{% elif each['bonusType'] == 'COAL' %}
+								<div style="color: rgb(144,206,87);">{{ each['shipCount'] }}</div>
 								<div style="height: 10px; background-color: rgb(144,206,87); border-radius: 3px;"></div>
 								<div style="color: rgb(121, 93, 20);">{{ each['bonusMap']['0'] }}</div>
 								<div style="color: rgb(144,206,87);">煤炭</div>
 							{% elif each['bonusType'] == 'STEEL' %}
+								<div style="color: rgb(2,123,106);">{{ each['shipCount'] }}</div>
 								<div style="height: 10px; background-color: rgb(0,131,216); border-radius: 3px;"></div>
 								<div style="color: rgb(121, 93, 20);">{{ each['bonusMap']['0'] }}</div>
 								<div style="color: rgb(0,131,216);">钢铁</div>
+							{% elif each['bonusType'] == 'TOKEN' %}
+								<div style="color: rgb(226, 0, 0);">{{ each['shipCount'] }}</div>
+								<div style="height: 10px; background-color: rgb(226, 0, 0); border-radius: 3px;"></div>
+								<div style="color: rgb(121, 93, 20);">{{ each['bonusMap']['0'] }}</div>
+								<div style="color: rgb(226, 0, 0);">代币</div>
 							{% endif %}
 						</div>
 					{% endfor %}
@@ -404,7 +411,7 @@
 				<div class="coin">
 					<img src="{{ data['exchangeView']['iconUrl'] }}">
 					<div style="width: 30px;"></div>
-					<div>新年代币&nbsp;&nbsp;</div>
+					<div>{{ data['exchangeView']['name'] }}&nbsp;&nbsp;</div>
 					<div style="font-weight: bold;">{{ data['exchangeView']['sumToken'] }}</div>
 					<div>个</div>
 				</div>
@@ -413,7 +420,7 @@
 					{% for each in data['exchangeView']['exchangeList'] %}
 					<div class="shop-item">
 						<div style="height: 150px;">
-							<img src="{{ each['iconUrl'] }}" style="width: 80%; display: inline-block">
+							<img src="{{ each['iconUrl'] }}" style="width: 150px; display: inline-block">
 						</div>
 						<div style="font-size: 18px; font-weight: normal;">{{ each['name'] }}</div>
 						{% if each['maxNumber'] == 0 %}
@@ -422,7 +429,7 @@
 						<div style="font-size: 18px; font-weight: normal;">最多可兑换&nbsp;&nbsp;<span>{{ each['maxNumber'] }}</span></div>
 						{% endif %}
 						<div style="font-weight: normal; display: flex; justify-content: center;">
-							<img src="{{ data['exchangeView']['iconUrl'] }}" style="width: 30%; display: inline-block;">
+							<img src="{{ data['exchangeView']['iconUrl'] }}" style="max-width: 100px; display: inline-block;">
 							<div style="width: 20px;"></div>
 							<div style="display: flex; justify-content: center; align-items: center; font-size: 24px;">{{ each['price'] }}</div>
 						</div>
