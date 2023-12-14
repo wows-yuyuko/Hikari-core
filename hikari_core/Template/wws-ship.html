@@ -358,19 +358,19 @@
 						<div class="pr-bar-bg">
 							{% if data['typeInfo']['PVP']['prInfo']['color'] and data['typeInfo']['PVP']['prInfo']['color'] != '#828282' %}
 							<span class="pr-number">{{ data['typeInfo']['PVP']['prInfo']['value'] }} &nbsp;&nbsp;&nbsp;&nbsp;<span
-									class="pr-text"></span></span>
+									class="pr-text">{{ data['typeInfo']['PVP']['prInfo']['name'] }}</span></span>
 							{% else %}
 							<span class="pr-number">{{ data['typeInfo']['RANK_SOLO']['prInfo']['value'] }} &nbsp;&nbsp;&nbsp;&nbsp;<span
-									class="pr-text"></span></span>
+									class="pr-text">{{ data['typeInfo']['RANK_SOLO']['prInfo']['name'] }}</span></span>
 							{% endif %}
 							<div class="pr-bar"></div>
 						</div>
 					</div>
-					
+
 					<div class="last-time">
 						<span>最后战斗时间：</span><span>{{ time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(abs(data['typeInfo']['PVP']['battleInfo']['lastBattleTime']))) }}</span>
 					</div>
-					
+
 					{% if data['shipRank'] %}
 					<div class="ranking">
 						<div class="ranking_border"><span
@@ -557,32 +557,32 @@
 		pr_number = parseInt(pr_number);
 		if (pr_number == 0) {
 			document.querySelector(".pr-bar").style.backgroundColor = "#828282";
-			document.querySelector(".pr-text").innerText = "暂无数据";
+			{#document.querySelector(".pr-text").innerText = "暂无数据";#}
 		} else if (pr_number < 750) {
 			document.querySelector(".pr-bar").style.backgroundColor = "#F44336";
-			document.querySelector(".pr-text").innerText = "还需努力";
+			{#document.querySelector(".pr-text").innerText = "还需努力";#}
 		} else if (pr_number < 1100) {
 			document.querySelector(".pr-bar").style.backgroundColor = "#FF9800";
-			document.querySelector(".pr-text").innerText = "低于平均";
+			{#document.querySelector(".pr-text").innerText = "低于平均";#}
 		} else if (pr_number < 1350) {
 			document.querySelector(".pr-bar").style.backgroundColor = "#FFC107";
-			document.querySelector(".pr-text").innerText = "平均水平";
+			{#document.querySelector(".pr-text").innerText = "平均水平";#}
 			document.querySelector(".pr-number").style.color = "#303133";
 		} else if (pr_number < 1550) {
 			document.querySelector(".pr-bar").style.backgroundColor = "#8BC34A";
-			document.querySelector(".pr-text").innerText = "好";
+			{#document.querySelector(".pr-text").innerText = "好";#}
 		} else if (pr_number < 1750) {
 			document.querySelector(".pr-bar").style.backgroundColor = "#4CAF50";
-			document.querySelector(".pr-text").innerText = "很好";
+			{#document.querySelector(".pr-text").innerText = "很好";#}
 		} else if (pr_number < 2100) {
 			document.querySelector(".pr-bar").style.backgroundColor = "#00BCD4";
-			document.querySelector(".pr-text").innerText = "非常好";
+			{#document.querySelector(".pr-text").innerText = "非常好";#}
 		} else if (pr_number < 2450) {
 			document.querySelector(".pr-bar").style.backgroundColor = "#9C27B0";
-			document.querySelector(".pr-text").innerText = "大佬水平";
+			{#document.querySelector(".pr-text").innerText = "大佬水平";#}
 		} else {
 			document.querySelector(".pr-bar").style.backgroundColor = "#673AB7";
-			document.querySelector(".pr-text").innerText = "神佬水平";
+			{#document.querySelector(".pr-text").innerText = "神佬水平";#}
 			pr_number = 2450; //防止pr条溢出
 		}
 
@@ -648,5 +648,5 @@
 		let ship_level_roma = level_roma[level_number.indexOf(ship_level)]
 		document.querySelector(".ship-level").innerText = ship_level_roma;
 	</script>
-	
+
 </html>
