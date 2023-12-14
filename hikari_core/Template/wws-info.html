@@ -339,7 +339,7 @@
 					<!-- 动态设置长度及颜色，填写PR即可 -->
 					<div class="pr-bar-bg">
 						<span class="pr-number">{{ data['prInfo']['value'] }}&nbsp;&nbsp;&nbsp;&nbsp;<span
-								class="pr-text"></span></span>
+								class="pr-text">{{ data['prInfo']['name'] }}</span></span>
 						<div class="pr-bar"></div>
 					</div>
 				</div>
@@ -706,32 +706,32 @@
 	pr_number = parseInt(pr_number);
 	if (pr_number == 0) {
 		document.querySelector(".pr-bar").style.backgroundColor = "#828282";
-		document.querySelector(".pr-text").innerText = "暂无数据";
+		{#document.querySelector(".pr-text").innerText = "暂无数据";#}
 	} else if (pr_number < 750) {
 		document.querySelector(".pr-bar").style.backgroundColor = "#F44336";
-		document.querySelector(".pr-text").innerText = "还需努力";
+		{#document.querySelector(".pr-text").innerText = "还需努力";#}
 	} else if (pr_number < 1100) {
 		document.querySelector(".pr-bar").style.backgroundColor = "#FF9800";
-		document.querySelector(".pr-text").innerText = "低于平均";
+		{#document.querySelector(".pr-text").innerText = "低于平均";#}
 	} else if (pr_number < 1350) {
 		document.querySelector(".pr-bar").style.backgroundColor = "#FFC107";
-		document.querySelector(".pr-text").innerText = "平均水平";
+		{#document.querySelector(".pr-text").innerText = "平均水平";#}
 		document.querySelector(".pr-number").style.color = "#303133";
 	} else if (pr_number < 1550) {
 		document.querySelector(".pr-bar").style.backgroundColor = "#8BC34A";
-		document.querySelector(".pr-text").innerText = "好";
+		{#document.querySelector(".pr-text").innerText = "好";#}
 	} else if (pr_number < 1750) {
 		document.querySelector(".pr-bar").style.backgroundColor = "#4CAF50";
-		document.querySelector(".pr-text").innerText = "很好";
+		{#document.querySelector(".pr-text").innerText = "很好";#}
 	} else if (pr_number < 2100) {
 		document.querySelector(".pr-bar").style.backgroundColor = "#00BCD4";
-		document.querySelector(".pr-text").innerText = "非常好";
+		{#document.querySelector(".pr-text").innerText = "非常好";#}
 	} else if (pr_number < 2450) {
 		document.querySelector(".pr-bar").style.backgroundColor = "#9C27B0";
-		document.querySelector(".pr-text").innerText = "大佬水平";
+		{#document.querySelector(".pr-text").innerText = "大佬水平";#}
 	} else {
 		document.querySelector(".pr-bar").style.backgroundColor = "#673AB7";
-		document.querySelector(".pr-text").innerText = "神佬水平";
+		{#document.querySelector(".pr-text").innerText = "神佬水平";#}
 		pr_number = 2450; //防止pr条溢出
 	}
 
