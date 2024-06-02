@@ -27,7 +27,8 @@ async def start():
     await command("封号记录 国服 西行寺雨季", True)
     await command("公会战排行榜 20", True)
     # 以下指令不抛出异常，特殊情况特殊测试
-    await command("wws me recent 10", False)
+    await command("me ship 无比 recent 2024-05-30", False)
+    await command("wws me recent 3", False)
     await command("wws me recents 10", False)
 
 
