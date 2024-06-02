@@ -49,13 +49,13 @@ async def get_ShipRecent(hikari: Hikari_Model) -> Hikari_Model:
         else:
             logger.success('跳过上报数据，直接请求')
 
-        url = 'https://recent.wows.shinoaki.com:8890/api/wows/recent/day/info'
+        url = 'https://recent.wows.shinoaki.com:8890/api/wows/recent/day/list/info'
         if hikari.Input.Search_Type == 3:
             params = {
                 'server': hikari.Input.Server,
                 'accountId': hikari.Input.AccountId,
                 'dateTime': hikari.Input.Recent_Date,
-                'day': hikari.Input.Recent_Day,
+                # 'day': hikari.Input.Recent_Day,
                 'shipId': hikari.Input.ShipInfo.Ship_Id,
             }
         else:
@@ -63,7 +63,7 @@ async def get_ShipRecent(hikari: Hikari_Model) -> Hikari_Model:
                 'server': hikari.Input.Platform,
                 'accountId': hikari.Input.PlatformId,
                 'dateTime': hikari.Input.Recent_Date,
-                'day': hikari.Input.Recent_Day,
+                # 'day': hikari.Input.Recent_Day,
                 'shipId': hikari.Input.ShipInfo.Ship_Id,
             }
 
