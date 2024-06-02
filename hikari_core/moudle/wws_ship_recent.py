@@ -55,7 +55,7 @@ async def get_ShipRecent(hikari: Hikari_Model) -> Hikari_Model:
                 'server': hikari.Input.Server,
                 'accountId': hikari.Input.AccountId,
                 'dateTime': hikari.Input.Recent_Date,
-                # 'day': hikari.Input.Recent_Day,
+                'day': hikari.Input.Recent_Day,
                 'shipId': hikari.Input.ShipInfo.Ship_Id,
             }
         else:
@@ -63,7 +63,7 @@ async def get_ShipRecent(hikari: Hikari_Model) -> Hikari_Model:
                 'server': hikari.Input.Platform,
                 'accountId': hikari.Input.PlatformId,
                 'dateTime': hikari.Input.Recent_Date,
-                # 'day': hikari.Input.Recent_Day,
+                'day': hikari.Input.Recent_Day,
                 'shipId': hikari.Input.ShipInfo.Ship_Id,
             }
 
