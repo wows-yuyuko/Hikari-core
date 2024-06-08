@@ -17,19 +17,23 @@ async def start():
     global start_time
     start_time = time.time()
     set_hikari_config(use_broswer='chromium', http2=False, proxy='http://localhost:7890', token='test:yuyuko_test', yuyuko_type='QQ_CHANNEL')
-    await command("asia _nahida_", True)
-    await command("wws查询绑定 me", True)
-    await command("me ship 大和", True)
-    await command("wws me sx", True)
-    await command("wws me sd", True)
-    await command("clan asia YU_RI", True)
-    await command("战舰排行榜 cn 大和", True)
-    await command("封号记录 国服 西行寺雨季", True)
-    await command("公会战排行榜 20", True)
-    # 以下指令不抛出异常，特殊情况特殊测试
-    await command("me ship 无比 recent 2024-05-30", False)
-    await command("wws me recent 3", False)
-    await command("wws me recents 10", False)
+    await command("公会战记录 cn 团子大家族 25", False)
+    await command("公会战记录 cn 团子大家族 25 1", False)
+    await command("公会战记录 me 25", False)
+    await command("公会战记录 me 25 1", False)
+    # await command("asia _nahida", True)
+    # await command("wws查询绑定 me", True)
+    # await command("me ship 大和", True)
+    # await command("wws me sx", True)
+    # await command("wws me sd", True)
+    # await command("clan asia YU_RI", True)
+    # await command("战舰排行榜 cn 大和", True)
+    # await command("封号记录 国服 西行寺雨季", True)
+    # await command("公会战排行榜 20", True)
+    # # 以下指令不抛出异常，特殊情况特殊测试
+    # await command("me ship 无比 recent 2024-05-30", False)
+    # await command("wws me recent 3", False)
+    # await command("wws me recents 10", False)
 
 
 async def command(command_text: str, is_err: bool):
