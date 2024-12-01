@@ -89,10 +89,12 @@ async def get_ship_byName(shipname: str) -> List:
             for each in result['data']:
                 List.append(
                     Ship_Model(
+                        Ship_Server_Type=each['serverType'],
                         Ship_Nation=each['country'],
                         Ship_Tier=each['level'],
                         Ship_Type=each['shipType'],
                         Ship_Name_Cn=each['nameCn'],
+                        Ship_Name_Cn360=each['nameCn360'],
                         Ship_Name_English=each['nameEnglish'],
                         ship_Name_Numbers=each['nameEnglish'],
                         Ship_Id=each['shipId'],

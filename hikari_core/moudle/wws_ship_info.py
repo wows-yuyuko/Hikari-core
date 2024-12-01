@@ -21,7 +21,7 @@ async def get_ShipInfo(hikari: Hikari_Model) -> Hikari_Model:  # noqa: PLR0915
                     hikari.Input.ShipInfo = shipList[0]
                 else:
                     hikari.Input.Select_Data = shipList
-                    hikari.set_template_info('select-ship.html', 360, 100)
+                    hikari.set_template_info('select-ship-v2.html', 660, 100)
                     return hikari.wait(shipList)
             else:
                 return hikari.failed('找不到船，请确认船名是否正确，可以使用【wws 查船名】查询船只中英文')

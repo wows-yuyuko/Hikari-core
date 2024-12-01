@@ -23,7 +23,7 @@ async def get_ShipRecent(hikari: Hikari_Model) -> Hikari_Model:
                     hikari.Input.ShipInfo = shipList[0]
                 else:
                     hikari.Input.Select_Data = shipList
-                    hikari.set_template_info('select-ship.html', 360, 100)
+                    hikari.set_template_info('select-ship-v2.html', 660, 100)
                     return hikari.wait(shipList)
             else:
                 return hikari.failed('找不到船，请确认船名是否正确，可以使用【wws 查船名】查询船只中英文')
@@ -55,7 +55,7 @@ async def get_ShipRecent(hikari: Hikari_Model) -> Hikari_Model:
                 'server': hikari.Input.Server,
                 'accountId': hikari.Input.AccountId,
                 'dateTime': hikari.Input.Recent_Date,
-                # 'day': hikari.Input.Recent_Day,
+                'day': hikari.Input.Recent_Day,
                 'shipId': hikari.Input.ShipInfo.Ship_Id,
             }
         else:
@@ -63,7 +63,7 @@ async def get_ShipRecent(hikari: Hikari_Model) -> Hikari_Model:
                 'server': hikari.Input.Platform,
                 'accountId': hikari.Input.PlatformId,
                 'dateTime': hikari.Input.Recent_Date,
-                # 'day': hikari.Input.Recent_Day,
+                'day': hikari.Input.Recent_Day,
                 'shipId': hikari.Input.ShipInfo.Ship_Id,
             }
 

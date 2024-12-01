@@ -465,6 +465,7 @@
                 <div class="information-col-item">PR</div>
                 <div class="information-col-item">场均</div>
                 <div class="information-col-item">击杀</div>
+                <div class="information-col-item">命中</div>
             </div>
 
             {% if data['battleTypeInfoList']['PVP_SOLO']['battle'] %}
@@ -527,6 +528,7 @@
                 <div class="day-col-item">PR</div>
                 <div class="day-col-item">场均</div>
                 <div class="day-col-item">击杀</div>
+                <div class="day-col-item">命中</div>
             </div>
 
 
@@ -545,6 +547,7 @@
                                             <div class="day-col-item" style="color: {{ eachShipData['shipInfoBattleList'][0]['typeInfo'][each]['prInfo']['color'] }};">{{ eachShipData['shipInfoBattleList'][0]['typeInfo'][each]['prInfo']['value'] }}</div>
                                             <div class="day-col-item" style="color: {{ eachShipData['shipInfoBattleList'][0]['typeInfo'][each]['battleInfo']['avgInfo']['damageData']['color'] }};">{{ eachShipData['shipInfoBattleList'][0]['typeInfo'][each]['battleInfo']['avgInfo']['damage'] }}</div>
                                             <div class="day-col-item">{{ '%.2f' | format(eachShipData['shipInfoBattleList'][0]['typeInfo'][each]['battleInfo']['avgInfo']['frags']) }}</div>
+                                            <div class="day-col-item">{{ '%.2f' | format(eachShipData['shipInfoBattleList'][0]['typeInfo'][each]['battleInfo']['hitRatioInfo']['ratioMain']) }}</div>
                                         </div>
                                     </div>
                                 {% endif %}

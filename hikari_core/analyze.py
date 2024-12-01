@@ -16,6 +16,7 @@ from .model import Hikari_Model
 from .moudle.publicAPI import get_ship_name
 from .moudle.wws_bind import change_BindInfo, delete_BindInfo, get_BindInfo, set_BindInfo, set_special_BindInfo
 from .moudle.wws_clan import get_ClanInfo
+from .moudle.wws_cw_recent import get_cw_recent
 from .moudle.wws_cwrank import get_CwRank
 from .moudle.wws_info import get_AccountInfo
 from .moudle.wws_real_game import add_listen_list, delete_listen_list
@@ -251,6 +252,30 @@ async def extract_with_function(hikari: Hikari_Model) -> Hikari_Model:  # noqa: 
                     hikari.Input.Command_List.remove(each)
             elif len(hikari.Input.Command_List) > 1:
                 return hikari.error('您似乎准备查询CW排行榜，请确认是否仅输入了赛季和服务器，留空为最新赛季和全服')
+        elif hikari.Function in [get_cw_recent]:
+            if hikari.Input.Search_Type == 3:
+                hikari.Input.Server, hikari.Input.Command_List = await match_keywords(hikari.Input.Command_List, servers)
+                if hikari.Input.Server:
+                    hikari.Input.ClanName = str(hikari.Input.Command_List[0])
+                else:
+                    return hikari.error('服务器名输入错误')
+                if len(hikari.Input.Command_List) == 2:
+                    hikari.Input.CwSeasonId = int(hikari.Input.Command_List[1])
+                elif len(hikari.Input.Command_List) == 3:
+                    hikari.Input.CwSeasonId = int(hikari.Input.Command_List[1])
+                    hikari.Input.Recent_Day = int(hikari.Input.Command_List[2])
+                else:
+                    return hikari.error('请检查参数中是否包含服务器、公会TAG、赛季数字、团队数字(可选)')
+            else:
+                hikari.Input.Server = hikari.UserInfo.Platform
+                hikari.Input.ClanId = hikari.UserInfo.PlatformId
+                if len(hikari.Input.Command_List) == 1:
+                    hikari.Input.CwSeasonId = int(hikari.Input.Command_List[0])
+                elif len(hikari.Input.Command_List) == 2:
+                    hikari.Input.CwSeasonId = int(hikari.Input.Command_List[0])
+                    hikari.Input.Recent_Day = int(hikari.Input.Command_List[1])
+                else:
+                    return hikari.error('请检查参数中是否赛季数字、团队数字(可选)')
         return hikari
     except Exception:
         logger.error(traceback.format_exc())

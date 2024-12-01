@@ -13,6 +13,7 @@ from .moudle.wws_bind import change_BindInfo, delete_BindInfo, get_BindInfo, set
 from .moudle.wws_clan import get_ClanInfo
 from .moudle.wws_clanrank import get_ClanRank
 from .moudle.wws_cwrank import get_CwRank
+from .moudle.wws_cw_recent import get_cw_recent
 from .moudle.wws_info import get_AccountInfo
 from .moudle.wws_real_game import add_listen_list, delete_listen_list, get_diff_ship, get_listen_list, reset_config
 from .moudle.wws_recent import get_RecentInfo
@@ -72,6 +73,7 @@ first_command_list = [  # 同指令中越长的匹配词越靠前
     command(('特殊绑定',), set_special_BindInfo),
     command(('ship.rank', '单船排行榜', '战舰排行榜'), get_ShipRank),
     command(('cw.rank', '军团战排行榜', '公会战排行榜'), get_CwRank),
+    command(('cw.recent', '军团战记录', '公会战记录'), get_cw_recent),
     command(('clan.rank', '军团排行榜', '公会排行榜'), get_ClanRank),
     command(('rank', '排行榜'), None, get_ShipRank, rank_command_list),
     command(('bind', '绑定', 'set'), set_BindInfo),

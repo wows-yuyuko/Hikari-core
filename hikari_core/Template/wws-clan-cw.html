@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player Statistics</title>
+    <style>
+        body {
+            width: 1200px;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 1200%;
+            max-width: 1200px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            position: relative;
+            padding: 20px;
+            background-image: url('{{ data['avatar']['banner'] }}');
+            background-size: cover;
+            background-position: center;
+            color: white;
+        }
+
+        .header h2 {
+            margin: 0;
+        }
+
+        .header .info {
+            background-color: rgba(199, 199, 199, 0.7);
+            padding: 5px;
+            border-radius: 16px;
+            display: flex;
+            width: 500px;
+
+        }
+
+        .tier {
+            height: 180px;
+            color: black;
+            width: 400px;
+            text-align: center;
+            line-height: 70px;
+        }
+
+        .stats p {
+            margin: 5px 0;
+        }
+
+        /*表格相关*/
+        .chart, .table {
+            padding: 20px;
+        }
+
+        .table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table table, .table th, .table td {
+            border: 1px solid #ccc;
+        }
+
+        .table th, .table td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        .table th {
+            background-color: #f2f2f2;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="info">
+            <div style="color: black;width: 300px">
+                <h2>Clan:&nbsp;<span>[{{ data['clan']['tag'] }}]</span></h2>
+                <h3>{{ data['clan']['serverCn'] }} {{ data['season'] }}赛季 {{ data['clan']['teamNumber'] }}队</h3>
+                <table style="text-align: left;font-weight: bold;border-spacing:0px 10px;">
+                    <tbody>
+                    <tr>
+                        <td>场次:{{ data['clan']['battlesCount'] }}</td>
+                        <td></td>
+                        <td>胜率:{{ data['clan']['wins'] }}%</td>
+                    </tr>
+                    <tr>
+                        <td>最高连胜:{{ data['clan']['longestWinningStreak'] }}</td>
+                        <td></td>
+                        <td>当前连胜:{{ data['clan']['currentWinningStreak'] }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="tier">
+                {% if data['clan']['status'] == 0 %}
+                    <h2>{{ data['clan']['leagueName']['buff'] }}&nbsp;{{ data['clan']['divisionName'] }}</h2>
+                    <h2>{{ data['clan']['divisionRating'] }}</h2>
+                {% elif data['clan']['status'] == 1 %}
+                    <h2>{{ data['clan']['leagueName']['buff'] }}&nbsp;晋级赛</h2>
+                    <h2>{{ data['clan']['stageProgressStr'] }}</h2>
+                {% elif data['clan']['status'] == 2 %}
+                    <h2>{{ data['clan']['leagueName']['buff'] }}&nbsp;保级赛</h2>
+                    <h2>{{ data['clan']['stageProgressStr'] }}</h2>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="chart">
+        <!-- You can use any chart library to implement the chart, like Chart.js -->
+        <div id="myChart" style="width: 100%;height: 300px"></div>
+    </div>
+    <div class="table">
+        <table>
+            <thead>
+            <tr>
+                <th>场次</th>
+                <th>服务器</th>
+                <th>公会</th>
+                <th>小队</th>
+                <th>段位</th>
+                <th>分数</th>
+                <th>日期</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for each in data['list'] %}
+                <tr>
+                    <td>{{ each['myTeam']['battlesCount'] }}</td>
+                    <td>{{ each['opponentTeam']['serverCn'] }}</td>
+                    <td>{{ each['opponentTeam']['tag'] }}</td>
+                    <td>{{ each['opponentTeam']['teamNumber'] }}队</td>
+                    {% if each['opponentTeam']['status'] == 0 %}
+                        <td>{{ each['opponentTeam']['leagueName']['buff'] }}&nbsp;{{ each['opponentTeam']['divisionName'] }}&nbsp;{{ each['opponentTeam']['divisionRating'] }}</td>
+                    {% elif each['opponentTeam']['status'] == 1 %}
+                        <td>{{ each['opponentTeam']['leagueName']['buff'] }}&nbsp;晋级赛&nbsp;{{ each['opponentTeam']['stageProgressStr'] }}</td>
+                    {% elif each['opponentTeam']['status'] == 2 %}
+                        <td>{{ each['opponentTeam']['leagueName']['buff'] }}&nbsp;保级赛&nbsp;{{ each['opponentTeam']['stageProgressStr'] }}</td>
+                    {% endif %}
+                    {% if each['winBattle'] %}
+                        <td style="color: green;">+{{ each['score'] }}</td>
+                    {% else %}
+                        <td style="color: red;">{{ each['score'] }}</td>
+                    {% endif %}
+                    <td>{{ time.strftime('%Y-%m-%d %H:%M',time.localtime(abs(each['lastBattleTime']/1000))) }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div style="width: 100%; text-align: center;">©西行寺雨季 ©本心 @mgaia</div>
+</div>
+{% if template_path and template_path/"echarts.js" %}
+    <script src="file:\\{{ template_path }}/echarts.js"></script>
+{% else %}
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.3.3/dist/echarts.js"></script>
+{% endif %}
+<script>
+    var chartDom = document.getElementById('myChart');
+    var myChart = echarts.init(chartDom);
+    var option = {
+        title: {
+            text: '近期战斗'
+        },
+        animation: false,
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data: ['场次', '胜率']
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: [{% for each in data['echartsDate'] %}
+                '{{ each }}',
+            {% endfor %}]
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [
+            {
+                name: '场次',
+                type: 'line',
+                itemStyle: {normal: {label: {show: true}}},
+                data: [{% for each in data['echartsBattle'] %}
+                    {{ each }},
+                {% endfor %}]
+            },
+            {
+                name: '胜率',
+                type: 'line',
+                itemStyle: {normal: {label: {show: true, formatter: '{c}%'}}},
+                data: [{% for each in data['echartsWins'] %}
+                    {{ each }},
+                {% endfor %}]
+            }
+        ]
+    };
+    myChart.setOption(option)
+</script>
+</body>
+</html>
